@@ -11,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MI_1Theme {
-                UserDataScreen()
+
             }
         }
     }

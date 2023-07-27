@@ -12,7 +12,11 @@ fun  BaseScreen (
         mutableStateOf(ScreenState.Card)
     }
     when (setScreen.value) {
-        ScreenState.BaseData -> TODO()
+        ScreenState.BaseData -> {
+            UserDataScreen(
+                setScreen = setScreen
+            )
+        }
         ScreenState.Card -> {
             CardScreen(
                 setScreen = setScreen

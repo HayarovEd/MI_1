@@ -36,7 +36,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bettigres.mi_1.R
@@ -46,11 +45,10 @@ import com.bettigres.mi_1.ui.theme.green
 import com.bettigres.mi_1.ui.theme.white
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun UserDataScreen(
     modifier: Modifier = Modifier,
-    enabledButton: Boolean = true
+    setScreen: MutableState<ScreenState>,
 ) {
     val listItems = arrayOf(
         stringResource(id = R.string.male),
@@ -68,7 +66,7 @@ fun UserDataScreen(
     var expanded by remember {
         mutableStateOf(false)
     }
-    var selectedItem by remember {
+    var gender by remember {
         mutableStateOf("")
     }
     Box(
@@ -82,7 +80,9 @@ fun UserDataScreen(
                 .fillMaxWidth()
         ) {
             Title(
-                onClick = {}
+                onClick = {
+                    setScreen.value = ScreenState.Card
+                }
             )
             Spacer(modifier = modifier.height(47.dp))
             Text(
@@ -115,7 +115,7 @@ fun UserDataScreen(
             )
             Spacer(modifier = modifier.height(7.dp))
             TextField(
-                value = selectedItem,
+                value = gender,
                 onValueChange = { },
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -163,7 +163,7 @@ fun UserDataScreen(
                                 fontWeight = FontWeight.Medium,
                             )
                         }, onClick = {
-                            selectedItem = label
+                            gender = label
                             expanded = false
                         })
                 }
@@ -178,8 +178,14 @@ fun UserDataScreen(
                 containerColor = black,
                 contentColor = white
             ),
-            enabled = enabledButton,
-            onClick = { }) {
+            enabled = name.value != ""
+                    && city.value != ""
+                    && birthday.value != ""
+                    && gender != "",
+            onClick = {
+                setScreen.value = ScreenState.DateTime
+            }
+        ) {
             Row(
                 modifier = modifier
                     .fillMaxWidth()
