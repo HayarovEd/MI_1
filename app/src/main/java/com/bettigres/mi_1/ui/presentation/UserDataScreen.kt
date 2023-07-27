@@ -194,7 +194,7 @@ fun UserDataScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(id = R.string.checkout),
+                    text = stringResource(id = R.string.next),
                     fontSize = 18.sp,
                     color = white,
                     fontStyle = FontStyle(R.font.soyuz_grotesk_bold)
