@@ -2,6 +2,7 @@ package com.bettigres.mi_1.ui.presentation
 
 import android.net.Uri
 import android.os.Build.VERSION_CODES
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -155,7 +156,7 @@ fun SelfieScreen(
                     onError = {}
                 )
             }
-
+            Log.d ("AAAAAA", "uri ${photoUri.value}")
             if (shouldShowPhoto.value) {
                 AsyncImage(
                     model = photoUri.value,
