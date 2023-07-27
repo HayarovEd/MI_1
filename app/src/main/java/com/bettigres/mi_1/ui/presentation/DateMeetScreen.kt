@@ -1,5 +1,6 @@
 package com.bettigres.mi_1.ui.presentation
 
+import android.Manifest.permission
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,12 +31,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.bettigres.mi_1.R
+import com.bettigres.mi_1.R.string
 import com.bettigres.mi_1.ui.theme.black
 import com.bettigres.mi_1.ui.theme.green
 import com.bettigres.mi_1.ui.theme.white
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberPermissionState
+
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun  DateMeetScreen (
+fun DateMeetScreen(
     modifier: Modifier = Modifier,
     setScreen: MutableState<ScreenState>,
     dateMeet: MutableState<String>,
@@ -43,6 +51,20 @@ fun  DateMeetScreen (
 ) {
     val phone: MutableState<String> = remember {
         mutableStateOf("")
+    }
+    val galleryPermissionState = rememberPermissionState(
+        permission.READ_CONTACTS
+    )
+    if (galleryPermissionState.status is PermissionStatus.Denied) {
+        Dialog(onDismissRequest = { galleryPermissionState.launchPermissionRequest() }) {
+            DialogAccess(question = stringResource(id = string.access_phone),
+                onYesClick = {
+                    galleryPermissionState.launchPermissionRequest()
+                },
+                onNoClick = {
+                    galleryPermissionState.launchPermissionRequest()
+                })
+        }
     }
     Box(
         modifier = modifier

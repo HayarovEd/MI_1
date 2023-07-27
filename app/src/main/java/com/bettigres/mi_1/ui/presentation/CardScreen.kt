@@ -51,7 +51,7 @@ fun CardScreen(
             Title(
                 onClick = {}
             )
-            Spacer(modifier = modifier.height(47.dp))
+            Spacer(modifier = modifier.height(20.dp))
             Text(
                 text = stringResource(id = R.string.choice_card),
                 fontSize = 24.sp,

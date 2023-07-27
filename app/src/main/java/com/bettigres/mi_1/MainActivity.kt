@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
-        requestCameraPermission()
+        //requestCameraPermission()
 
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()

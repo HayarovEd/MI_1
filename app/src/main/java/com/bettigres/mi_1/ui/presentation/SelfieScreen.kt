@@ -1,6 +1,7 @@
 package com.bettigres.mi_1.ui.presentation
 
 import android.net.Uri
+import android.os.Build.VERSION_CODES
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -49,6 +50,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import java.io.File
 import java.util.concurrent.ExecutorService
 
+
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SelfieScreen(
@@ -69,17 +71,32 @@ fun SelfieScreen(
     val cameraPermissionState = rememberPermissionState(
         android.Manifest.permission.CAMERA
     )
+    val galleryPermissionState = rememberPermissionState(
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+
+    )
     if (cameraPermissionState.status is PermissionStatus.Denied) {
         Dialog(onDismissRequest = { cameraPermissionState.launchPermissionRequest() }) {
             DialogAccess(question = stringResource(id = R.string.access_camera),
                 onYesClick = {
-                    cameraPermissionState.status.isGranted
+                    cameraPermissionState.launchPermissionRequest()
                 },
                 onNoClick = {
                     cameraPermissionState.launchPermissionRequest()
                 })
         }
+    } else if (galleryPermissionState.status is PermissionStatus.Denied) {
+        Dialog(onDismissRequest = { galleryPermissionState.launchPermissionRequest() }) {
+            DialogAccess(question = stringResource(id = R.string.access_gallery),
+                onYesClick = {
+                    galleryPermissionState.launchPermissionRequest()
+                },
+                onNoClick = {
+                    galleryPermissionState.launchPermissionRequest()
+                })
+        }
     }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -124,6 +141,7 @@ fun SelfieScreen(
                         singlePhotoPickerLauncher.launch(
                             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                         )
+                        shouldShowPhoto.value = true
                     }
                 )
             }
