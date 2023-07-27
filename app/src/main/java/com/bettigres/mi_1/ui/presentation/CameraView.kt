@@ -48,7 +48,7 @@ fun CameraView(
     photoUri: MutableState<Uri?>
 ) {
 
-    val lensFacing = CameraSelector.LENS_FACING_FRONT
+    val lensFacing = CameraSelector.LENS_FACING_BACK
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
