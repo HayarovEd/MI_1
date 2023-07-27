@@ -21,10 +21,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     private var shouldShowCamera: MutableState<Boolean> = mutableStateOf(false)
-    private var isShowCamera: MutableState<Boolean> = mutableStateOf(false)
-
-    private lateinit var photoUri: Uri
-    private var shouldShowPhoto: MutableState<Boolean> = mutableStateOf(false)
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -37,17 +33,13 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        photoUri = Uri.EMPTY
+        //photoUri = Uri.EMPTY
         setContent {
             MI_1Theme {
                 if (shouldShowCamera.value) {
                     BaseScreen(
                         outputDirectory = outputDirectory,
                         executor = cameraExecutor,
-                        onImageCaptured = ::handleImageCapture,
-                        photoUri = photoUri,
-                        shouldShowPhoto = shouldShowPhoto,
-                        isShowCamera = isShowCamera
                     )
                 }
 
@@ -75,14 +67,6 @@ class MainActivity : ComponentActivity() {
 
             else -> requestPermissionLauncher.launch(android.Manifest.permission.CAMERA)
         }
-    }
-
-    private fun handleImageCapture(uri: Uri) {
-        shouldShowCamera.value = false
-        isShowCamera.value = false
-
-        photoUri = uri
-        shouldShowPhoto.value = true
     }
 
     private fun getOutputDirectory(): File {

@@ -12,10 +12,6 @@ import java.util.concurrent.ExecutorService
 fun  BaseScreen(
     outputDirectory: File,
     executor: ExecutorService,
-    onImageCaptured: (Uri) -> Unit,
-    photoUri: Uri,
-    shouldShowPhoto: MutableState<Boolean>,
-    isShowCamera: MutableState<Boolean>
 ) {
     val setScreen: MutableState<ScreenState> = remember {
         mutableStateOf(ScreenState.Card)
@@ -55,10 +51,6 @@ fun  BaseScreen(
                 setScreen = setScreen,
                 outputDirectory = outputDirectory,
                 executor = executor,
-                onImageCaptured = onImageCaptured,
-                photoUri = photoUri,
-                shouldShowPhoto = shouldShowPhoto,
-                isShowCamera = isShowCamera
             )
         }
     }

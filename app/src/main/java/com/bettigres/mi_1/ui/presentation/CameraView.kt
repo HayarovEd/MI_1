@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,8 +42,11 @@ import kotlin.coroutines.suspendCoroutine
 fun CameraView(
     outputDirectory: File,
     executor: Executor,
-    onImageCaptured: (Uri) -> Unit,
-    onError: (ImageCaptureException) -> Unit
+    //onImageCaptured: (Uri) -> Unit,
+    onError: (ImageCaptureException) -> Unit,
+    isShowCamera: MutableState<Boolean>,
+    shouldShowPhoto: MutableState<Boolean>,
+    photoUri: MutableState<Uri>
 ) {
 
     val lensFacing = CameraSelector.LENS_FACING_BACK
@@ -75,15 +79,18 @@ fun CameraView(
         AndroidView({ previewView }, modifier = Modifier.fillMaxSize())
 
         IconButton(
-            modifier = Modifier.padding(bottom = 20.dp),
+            modifier = Modifier.padding(bottom = 40.dp),
             onClick = {
+                isShowCamera.value = false
+                shouldShowPhoto.value = true
                 Log.i("kilo", "ON CLICK")
                 takePhoto(
                     filenameFormat = "yyyy-MM-dd-HH-mm-ss-SSS",
                     imageCapture = imageCapture,
                     outputDirectory = outputDirectory,
                     executor = executor,
-                    onImageCaptured = onImageCaptured,
+                    photoUri = photoUri,
+                    //onImageCaptured = onImageCaptured,
                     onError = onError
                 )
             },
@@ -107,8 +114,9 @@ private fun takePhoto(
     imageCapture: ImageCapture,
     outputDirectory: File,
     executor: Executor,
-    onImageCaptured: (Uri) -> Unit,
-    onError: (ImageCaptureException) -> Unit
+    //onImageCaptured: (Uri) -> Unit,
+    onError: (ImageCaptureException) -> Unit,
+    photoUri: MutableState<Uri>
 ) {
 
     val photoFile = File(
@@ -120,13 +128,13 @@ private fun takePhoto(
 
     imageCapture.takePicture(outputOptions, executor, object: ImageCapture.OnImageSavedCallback {
         override fun onError(exception: ImageCaptureException) {
-            Log.e("kilo", "Take photo error:", exception)
             onError(exception)
         }
 
         override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
             val savedUri = Uri.fromFile(photoFile)
-            onImageCaptured(savedUri)
+            photoUri.value = savedUri
+            //onImageCaptured(savedUri)
         }
     })
 }

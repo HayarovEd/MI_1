@@ -21,6 +21,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.bettigres.mi_1.R
 import com.bettigres.mi_1.ui.theme.black
@@ -46,11 +49,12 @@ fun SelfieScreen(
     setScreen: MutableState<ScreenState>,
     outputDirectory: File,
     executor: ExecutorService,
-    onImageCaptured: (Uri) -> Unit,
-    photoUri: Uri,
-    shouldShowPhoto: MutableState<Boolean>,
-    isShowCamera: MutableState<Boolean>,
 ) {
+    val isShowCamera: MutableState<Boolean> = remember{ mutableStateOf(false) }
+
+    val photoUri: MutableState<Uri> = remember { mutableStateOf(Uri.EMPTY) }
+    val shouldShowPhoto: MutableState<Boolean> =  remember{ mutableStateOf(false) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -98,14 +102,16 @@ fun SelfieScreen(
                 CameraView(
                     outputDirectory = outputDirectory,
                     executor = executor,
-                    onImageCaptured = onImageCaptured,
-                    onError = {  }
+                    isShowCamera = isShowCamera,
+                    shouldShowPhoto = shouldShowPhoto,
+                    photoUri = photoUri,
+                    onError = {}
                 )
             }
 
             if (shouldShowPhoto.value) {
-                Image(
-                    painter = rememberImagePainter(photoUri),
+                AsyncImage(
+                    model = photoUri.value,
                     contentDescription = null,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -146,6 +152,12 @@ fun SelfieScreen(
             }
         }
     }
+}
+
+private fun handleImageCapture(
+    uri: Uri
+) {
+
 }
 
 @Composable
