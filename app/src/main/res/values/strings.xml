@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">MI_1</string>
+    <string name="formalization">Оформление</string>
+    <string name="choice_card">Выберите карту</string>
+    <string name="checkout">Оформить</string>
+    <string name="fill_fields">Заполните поля</string>
+    <string name="fio">ФИО</string>
+    <string name="city">Ваш город</string>
+    <string name="birthday">Дата рождения</string>
+    <string name="gender">Выберите пол</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="next">Далее</string>
+    <string name="choice_time">Укажите удобное время получение карты курьером</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="phone">Телефон</string>
+    <string name="check_phone">Проверить номер телефона</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="make_selfie">Сделайте селфи</string>
+    <string name="from_camera">Сделать фото</string>
+    <string name="from_gallery">Выбрать из галереи</string>
+    <string name="meet">Вам назначена встреча</string>
+    <string name="access_camera">Вы согласны предоставить доступ к камере?</string>
+    <string name="access_gallery">Вы согласны предоставить доступ к вашей галереи?</string>
+    <string name="access_phone">Вы согласны предоставить доступ к вашему номеру телефона?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+</resources>
