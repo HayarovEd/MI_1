@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,15 +36,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 import com.bettigres.mi_1.R
 import com.bettigres.mi_1.ui.theme.black
 import com.bettigres.mi_1.ui.theme.green
 import com.bettigres.mi_1.ui.theme.white
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import java.io.File
 import java.util.concurrent.ExecutorService
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SelfieScreen(
     modifier: Modifier = Modifier,
@@ -53,16 +57,29 @@ fun SelfieScreen(
     outputDirectory: File,
     executor: ExecutorService,
 ) {
-    val isShowCamera: MutableState<Boolean> = remember{ mutableStateOf(false) }
-
+    val isShowCamera: MutableState<Boolean> = remember { mutableStateOf(false) }
+    //val expandedCameraDialog: MutableState<Boolean> = remember{ mutableStateOf(false) }
     val photoUri: MutableState<Uri?> = remember { mutableStateOf((null)) }
-    val shouldShowPhoto: MutableState<Boolean> =  remember{ mutableStateOf(false) }
+    val shouldShowPhoto: MutableState<Boolean> = remember { mutableStateOf(false) }
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri -> photoUri.value = uri }
     )
-
+    val cameraPermissionState = rememberPermissionState(
+        android.Manifest.permission.CAMERA
+    )
+    if (cameraPermissionState.status is PermissionStatus.Denied) {
+        Dialog(onDismissRequest = { cameraPermissionState.launchPermissionRequest() }) {
+            DialogAccess(question = stringResource(id = R.string.access_camera),
+                onYesClick = {
+                    cameraPermissionState.status.isGranted
+                },
+                onNoClick = {
+                    cameraPermissionState.launchPermissionRequest()
+                })
+        }
+    }
     Box(
         modifier = modifier
             .fillMaxSize()

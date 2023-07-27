@@ -35,13 +35,16 @@ class MainActivity : ComponentActivity() {
         //photoUri = Uri.EMPTY
         setContent {
             MI_1Theme {
-                if (grantAccessCamera.value) {
+                /*if (grantAccessCamera.value) {
                     BaseScreen(
                         outputDirectory = outputDirectory,
                         executor = cameraExecutor,
                     )
-                }
-
+                }*/
+                BaseScreen(
+                    outputDirectory = outputDirectory,
+                    executor = cameraExecutor,
+                )
             }
         }
         requestCameraPermission()
