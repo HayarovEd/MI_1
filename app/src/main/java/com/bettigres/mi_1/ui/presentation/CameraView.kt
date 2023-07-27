@@ -42,11 +42,10 @@ import kotlin.coroutines.suspendCoroutine
 fun CameraView(
     outputDirectory: File,
     executor: Executor,
-    //onImageCaptured: (Uri) -> Unit,
     onError: (ImageCaptureException) -> Unit,
     isShowCamera: MutableState<Boolean>,
     shouldShowPhoto: MutableState<Boolean>,
-    photoUri: MutableState<Uri>
+    photoUri: MutableState<Uri?>
 ) {
 
     val lensFacing = CameraSelector.LENS_FACING_BACK
@@ -90,7 +89,6 @@ fun CameraView(
                     outputDirectory = outputDirectory,
                     executor = executor,
                     photoUri = photoUri,
-                    //onImageCaptured = onImageCaptured,
                     onError = onError
                 )
             },
@@ -114,9 +112,8 @@ private fun takePhoto(
     imageCapture: ImageCapture,
     outputDirectory: File,
     executor: Executor,
-    //onImageCaptured: (Uri) -> Unit,
     onError: (ImageCaptureException) -> Unit,
-    photoUri: MutableState<Uri>
+    photoUri: MutableState<Uri?>
 ) {
 
     val photoFile = File(
@@ -134,7 +131,6 @@ private fun takePhoto(
         override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
             val savedUri = Uri.fromFile(photoFile)
             photoUri.value = savedUri
-            //onImageCaptured(savedUri)
         }
     })
 }

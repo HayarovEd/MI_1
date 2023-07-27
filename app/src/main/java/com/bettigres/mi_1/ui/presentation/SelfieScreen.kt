@@ -1,6 +1,9 @@
 package com.bettigres.mi_1.ui.presentation
 
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -52,8 +55,13 @@ fun SelfieScreen(
 ) {
     val isShowCamera: MutableState<Boolean> = remember{ mutableStateOf(false) }
 
-    val photoUri: MutableState<Uri> = remember { mutableStateOf(Uri.EMPTY) }
+    val photoUri: MutableState<Uri?> = remember { mutableStateOf((null)) }
     val shouldShowPhoto: MutableState<Boolean> =  remember{ mutableStateOf(false) }
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> photoUri.value = uri }
+    )
 
     Box(
         modifier = modifier
@@ -95,7 +103,11 @@ fun SelfieScreen(
                     modifier = modifier.weight(1f),
                     icon = ImageVector.vectorResource(id = R.drawable.ic24_photo_add),
                     content = stringResource(id = R.string.from_gallery),
-                    onClick = {}
+                    onClick = {
+                        singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
                 )
             }
             if (isShowCamera.value) {
@@ -154,11 +166,6 @@ fun SelfieScreen(
     }
 }
 
-private fun handleImageCapture(
-    uri: Uri
-) {
-
-}
 
 @Composable
 fun ButtonImage(

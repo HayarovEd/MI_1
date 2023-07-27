@@ -1,7 +1,6 @@
 package com.bettigres.mi_1
 
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,13 +19,13 @@ class MainActivity : ComponentActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
-    private var shouldShowCamera: MutableState<Boolean> = mutableStateOf(false)
+    private var grantAccessCamera: MutableState<Boolean> = mutableStateOf(false)
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            shouldShowCamera.value = true
+            grantAccessCamera.value = true
         } else {
 
         }
@@ -36,7 +35,7 @@ class MainActivity : ComponentActivity() {
         //photoUri = Uri.EMPTY
         setContent {
             MI_1Theme {
-                if (shouldShowCamera.value) {
+                if (grantAccessCamera.value) {
                     BaseScreen(
                         outputDirectory = outputDirectory,
                         executor = cameraExecutor,
@@ -57,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 this,
                 android.Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED -> {
-                shouldShowCamera.value = true
+                grantAccessCamera.value = true
             }
 
             ActivityCompat.shouldShowRequestPermissionRationale(
