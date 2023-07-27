@@ -1,6 +1,9 @@
 package com.bettigres.mi_1.ui.presentation
 
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,15 +32,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.bettigres.mi_1.R
 import com.bettigres.mi_1.ui.theme.black
 import com.bettigres.mi_1.ui.theme.green
 import com.bettigres.mi_1.ui.theme.white
+import java.io.File
+import java.util.concurrent.ExecutorService
 
 @Composable
 fun SelfieScreen(
     modifier: Modifier = Modifier,
     setScreen: MutableState<ScreenState>,
+    outputDirectory: File,
+    executor: ExecutorService,
+    onImageCaptured: (Uri) -> Unit,
+    photoUri: Uri,
+    shouldShowPhoto: MutableState<Boolean>,
+    isShowCamera: MutableState<Boolean>,
 ) {
     Box(
         modifier = modifier
@@ -71,13 +83,31 @@ fun SelfieScreen(
                 ButtonImage(
                     modifier = modifier.weight(1f),
                     icon = ImageVector.vectorResource(id = R.drawable.outline_camera_alt_40),
-                    content = stringResource(id = R.string.from_camera)
+                    content = stringResource(id = R.string.from_camera),
+                    onClick = {isShowCamera.value=true}
                 )
                 Spacer(modifier = modifier.width(8.dp))
                 ButtonImage(
                     modifier = modifier.weight(1f),
                     icon = ImageVector.vectorResource(id = R.drawable.ic24_photo_add),
-                    content = stringResource(id = R.string.from_gallery)
+                    content = stringResource(id = R.string.from_gallery),
+                    onClick = {}
+                )
+            }
+            if (isShowCamera.value) {
+                CameraView(
+                    outputDirectory = outputDirectory,
+                    executor = executor,
+                    onImageCaptured = onImageCaptured,
+                    onError = {  }
+                )
+            }
+
+            if (shouldShowPhoto.value) {
+                Image(
+                    painter = rememberImagePainter(photoUri),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
@@ -122,7 +152,8 @@ fun SelfieScreen(
 fun ButtonImage(
     modifier: Modifier = Modifier,
     icon: ImageVector,
-    content: String
+    content: String,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -131,7 +162,8 @@ fun ButtonImage(
             .padding(
                 top = 32.dp,
                 bottom = 25.dp
-            ),
+            )
+            .clickable { onClick.invoke() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(

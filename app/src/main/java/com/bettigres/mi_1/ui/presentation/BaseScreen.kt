@@ -1,12 +1,21 @@
 package com.bettigres.mi_1.ui.presentation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import java.io.File
+import java.util.concurrent.ExecutorService
 
 @Composable
-fun  BaseScreen (
+fun  BaseScreen(
+    outputDirectory: File,
+    executor: ExecutorService,
+    onImageCaptured: (Uri) -> Unit,
+    photoUri: Uri,
+    shouldShowPhoto: MutableState<Boolean>,
+    isShowCamera: MutableState<Boolean>
 ) {
     val setScreen: MutableState<ScreenState> = remember {
         mutableStateOf(ScreenState.Card)
@@ -43,7 +52,13 @@ fun  BaseScreen (
         }
         ScreenState.Selfie -> {
             SelfieScreen(
-                setScreen = setScreen
+                setScreen = setScreen,
+                outputDirectory = outputDirectory,
+                executor = executor,
+                onImageCaptured = onImageCaptured,
+                photoUri = photoUri,
+                shouldShowPhoto = shouldShowPhoto,
+                isShowCamera = isShowCamera
             )
         }
     }
