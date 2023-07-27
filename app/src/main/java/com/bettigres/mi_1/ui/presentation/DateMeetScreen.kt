@@ -61,7 +61,7 @@ fun  DateMeetScreen (
         ) {
             Title(
                 onClick = {
-                    setScreen.value = ScreenState.Card
+                    setScreen.value = ScreenState.BaseData
                 }
             )
             Spacer(modifier = modifier.height(47.dp))
@@ -129,7 +129,7 @@ fun  DateMeetScreen (
                         && timeMeet.value != ""
                         && phone.value != "",
                 onClick = {
-                    setScreen.value = ScreenState.DateTime
+                    setScreen.value = ScreenState.Selfie
                 }
             ) {
                 Row(

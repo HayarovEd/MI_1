@@ -18,8 +18,8 @@
     <string name="check_phone">Проверить номер телефона</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="make_selfie">Сделайте селфи</string>
-    <string name="from_camera">Сделать фото</string>
-    <string name="from_gallery">Выбрать из галереи</string>
+    <string name="from_camera">Сделать\nфото</string>
+    <string name="from_gallery">Выбрать\nиз галереи</string>
     <string name="meet">Вам назначена встреча</string>
     <string name="access_camera">Вы согласны предоставить доступ к камере?</string>
     <string name="access_gallery">Вы согласны предоставить доступ к вашей галереи?</string>

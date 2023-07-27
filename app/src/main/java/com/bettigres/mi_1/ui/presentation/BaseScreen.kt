@@ -22,12 +22,18 @@ fun  BaseScreen (
                 setScreen = setScreen
             )
         }
-        ScreenState.Confirm -> TODO()
+        ScreenState.Confirm -> {
+            TODO()
+        }
         ScreenState.DateTime -> {
             DateMeetScreen(
                 setScreen = setScreen
             )
         }
-        ScreenState.Selfie -> TODO()
+        ScreenState.Selfie -> {
+            SelfieScreen(
+                setScreen = setScreen
+            )
+        }
     }
 }
