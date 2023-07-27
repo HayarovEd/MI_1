@@ -1,0 +1,25 @@
+package com.bettigres.mi_1.ui.presentation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+
+@Composable
+fun  BaseScreen (
+) {
+    val setScreen: MutableState<ScreenState> = remember {
+        mutableStateOf(ScreenState.Card)
+    }
+    when (setScreen.value) {
+        ScreenState.BaseData -> TODO()
+        ScreenState.Card -> {
+            CardScreen(
+                setScreen = setScreen
+            )
+        }
+        ScreenState.Confirm -> TODO()
+        ScreenState.DateTime -> TODO()
+        ScreenState.Selfie -> TODO()
+    }
+}

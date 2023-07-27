@@ -15,6 +15,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,19 +26,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bettigres.mi_1.R
 import com.bettigres.mi_1.ui.theme.black
 import com.bettigres.mi_1.ui.theme.green
 import com.bettigres.mi_1.ui.theme.white
-@Preview
 @Composable
 fun CardScreen(
     modifier: Modifier = Modifier,
-    enabledButton: Boolean = true
+    setScreen: MutableState<ScreenState>
 ) {
+    val choiceCard: MutableState<ChoiceCard> = remember {
+        mutableStateOf(ChoiceCard.NotChoice)
+    }
     Box(modifier = modifier
         .fillMaxSize()
         .background(color = green)
@@ -44,7 +48,9 @@ fun CardScreen(
             modifier = modifier
                 .fillMaxWidth()
         ) {
-            Title()
+            Title(
+                onClick = {}
+            )
             Spacer(modifier = modifier.height(47.dp))
             Text(
                 text = stringResource(id = R.string.choice_card),
@@ -57,7 +63,7 @@ fun CardScreen(
             Image(
                 modifier = modifier
                     .fillMaxWidth()
-                    .clickable { },
+                    .clickable { choiceCard.value = ChoiceCard.ChoiceVisa},
                 contentScale = ContentScale.FillWidth,
                 painter = painterResource(id = R.drawable.card_visa),
                 contentDescription = "visa")
@@ -65,7 +71,7 @@ fun CardScreen(
             Image(
                 modifier = modifier
                     .fillMaxWidth()
-                    .clickable { },
+                    .clickable { choiceCard.value = ChoiceCard.ChoiceMaestro },
                 contentScale = ContentScale.FillWidth,
                 painter = painterResource(id = R.drawable.card_maestro),
                 contentDescription = "visa")
@@ -79,8 +85,10 @@ fun CardScreen(
                 containerColor = black,
                 contentColor = white
             ),
-            enabled = enabledButton,
-            onClick = {  }) {
+            enabled = choiceCard.value !is ChoiceCard.NotChoice,
+            onClick = {
+                setScreen.value = ScreenState.BaseData
+            }) {
             Text(
                 text = stringResource(id = R.string.checkout),
                 fontSize = 18.sp,

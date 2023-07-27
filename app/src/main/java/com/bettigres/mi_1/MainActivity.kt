@@ -3,6 +3,7 @@ package com.bettigres.mi_1
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.bettigres.mi_1.ui.presentation.UserDataScreen
 import com.bettigres.mi_1.ui.theme.MI_1Theme
 
 class MainActivity : ComponentActivity() {
@@ -10,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MI_1Theme {
-
+                UserDataScreen()
             }
         }
     }

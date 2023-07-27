@@ -22,14 +22,15 @@ import com.bettigres.mi_1.ui.theme.black
 
 @Composable
 fun Title(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { },
+            onClick =  onClick ,
             colors = IconButtonDefaults.iconButtonColors(
                 contentColor = black
             )
