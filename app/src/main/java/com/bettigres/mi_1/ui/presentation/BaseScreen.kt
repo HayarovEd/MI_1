@@ -11,6 +11,12 @@ fun  BaseScreen (
     val setScreen: MutableState<ScreenState> = remember {
         mutableStateOf(ScreenState.Card)
     }
+    val dateMeet: MutableState<String> = remember {
+        mutableStateOf("")
+    }
+    val timeMeet: MutableState<String> = remember {
+        mutableStateOf("")
+    }
     when (setScreen.value) {
         ScreenState.BaseData -> {
             UserDataScreen(
@@ -23,11 +29,16 @@ fun  BaseScreen (
             )
         }
         ScreenState.Confirm -> {
-            TODO()
+            ConfirmScreen(
+                dateMeet = dateMeet.value,
+                timeMeet = timeMeet.value
+            )
         }
         ScreenState.DateTime -> {
             DateMeetScreen(
-                setScreen = setScreen
+                setScreen = setScreen,
+                dateMeet = dateMeet,
+                timeMeet = timeMeet
             )
         }
         ScreenState.Selfie -> {

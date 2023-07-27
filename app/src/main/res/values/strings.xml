@@ -20,7 +20,8 @@
     <string name="make_selfie">Сделайте селфи</string>
     <string name="from_camera">Сделать\nфото</string>
     <string name="from_gallery">Выбрать\nиз галереи</string>
-    <string name="meet">Вам назначена встреча</string>
+    <string name="ok">Отлично!</string>
+    <string name="meet">Вам назначена\n встреча</string>
     <string name="access_camera">Вы согласны предоставить доступ к камере?</string>
     <string name="access_gallery">Вы согласны предоставить доступ к вашей галереи?</string>
     <string name="access_phone">Вы согласны предоставить доступ к вашему номеру телефона?</string>

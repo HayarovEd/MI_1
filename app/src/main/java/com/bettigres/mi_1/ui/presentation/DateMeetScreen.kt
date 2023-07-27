@@ -28,7 +28,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bettigres.mi_1.R
@@ -39,13 +38,9 @@ import com.bettigres.mi_1.ui.theme.white
 fun  DateMeetScreen (
     modifier: Modifier = Modifier,
     setScreen: MutableState<ScreenState>,
+    dateMeet: MutableState<String>,
+    timeMeet: MutableState<String>,
 ) {
-    val dateMeet: MutableState<String> = remember {
-        mutableStateOf("")
-    }
-    val timeMeet: MutableState<String> = remember {
-        mutableStateOf("")
-    }
     val phone: MutableState<String> = remember {
         mutableStateOf("")
     }
