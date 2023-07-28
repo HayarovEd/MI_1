@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bettigres.mi_1.R
@@ -108,7 +110,8 @@ fun UserDataScreen(
             )
             Spacer(modifier = modifier.height(7.dp))
             CalendarInput(
-                placeHolder = stringResource(id = R.string.birthday)
+                placeHolder = stringResource(id = R.string.birthday),
+                content = birthday
             )
             Spacer(modifier = modifier.height(7.dp))
             TextField(
@@ -116,6 +119,7 @@ fun UserDataScreen(
                 onValueChange = { },
                 modifier = Modifier
                     .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 placeholder = {
                     Text(
                         color = gray,
@@ -151,6 +155,7 @@ fun UserDataScreen(
             ) {
                 listItems.forEach { label ->
                     DropdownMenuItem(
+                        modifier =Modifier.height(100.dp),
                         text = {
                             Text(
                                 text = label,

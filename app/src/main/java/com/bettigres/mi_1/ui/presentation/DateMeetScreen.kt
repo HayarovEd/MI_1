@@ -91,7 +91,8 @@ fun DateMeetScreen(
             )
             Spacer(modifier = modifier.height(16.dp))
             CalendarInput(
-                placeHolder = stringResource(id = string.date)
+                placeHolder = stringResource(id = string.date),
+                content = dateMeet
             )
             Spacer(modifier = modifier.height(7.dp))
             StandardTextField(

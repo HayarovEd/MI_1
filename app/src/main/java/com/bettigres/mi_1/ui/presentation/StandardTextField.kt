@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +30,8 @@ fun StandardTextField(
     onSetContent: (String) -> Unit,
     placeHolder: String,
     icon: ImageVector,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction:ImeAction = ImeAction.Default
 ) {
     TextField(
         modifier = modifier
@@ -59,6 +61,8 @@ fun StandardTextField(
             )
         },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType=keyboardType),
+        keyboardOptions = KeyboardOptions(
+            keyboardType=keyboardType,
+            imeAction = imeAction),
     )
 }
