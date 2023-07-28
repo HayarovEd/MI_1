@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,11 +34,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bettigres.mi_1.R
@@ -71,6 +74,7 @@ fun UserDataScreen(
     var gender by remember {
         mutableStateOf("")
     }
+    val focusManager = LocalFocusManager.current
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -111,7 +115,9 @@ fun UserDataScreen(
             Spacer(modifier = modifier.height(7.dp))
             CalendarInput(
                 placeHolder = stringResource(id = R.string.birthday),
-                content = birthday
+                content = birthday,
+                enabled = false,
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             )
             Spacer(modifier = modifier.height(7.dp))
             TextField(
@@ -119,7 +125,10 @@ fun UserDataScreen(
                 onValueChange = { },
                 modifier = Modifier
                     .fillMaxWidth(),
+                readOnly = true,
+                enabled = false,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 placeholder = {
                     Text(
                         color = gray,

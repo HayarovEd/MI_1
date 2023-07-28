@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -14,6 +15,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,7 +31,9 @@ import java.util.Date
 fun CalendarInput (
     modifier: Modifier = Modifier,
     placeHolder: String,
-    content: MutableState<String>
+    content: MutableState<String>,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    enabled: Boolean = true
 ) {
     val mContext = LocalContext.current
 
@@ -37,6 +41,7 @@ fun CalendarInput (
     val year = mCalendar.get(Calendar.YEAR)
     val month = mCalendar.get(Calendar.MONTH)
     val day = mCalendar.get(Calendar.DAY_OF_MONTH)
+
 
     mCalendar.time = Date()
 
@@ -51,6 +56,7 @@ fun CalendarInput (
         value = content.value,
         onValueChange = { },
         readOnly = true,
+        enabled = enabled,
         modifier = Modifier
             .fillMaxWidth(),
         placeholder = {
@@ -76,7 +82,8 @@ fun CalendarInput (
                 tint = black,
                 contentDescription = "",
             )
-        }
+        },
+        keyboardActions = keyboardActions,
     )
 
 }

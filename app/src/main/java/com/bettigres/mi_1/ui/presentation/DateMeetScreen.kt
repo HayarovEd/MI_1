@@ -1,6 +1,8 @@
 package com.bettigres.mi_1.ui.presentation
 
 import android.Manifest.permission
+import android.annotation.SuppressLint
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,18 +14,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
@@ -40,7 +47,14 @@ import com.bettigres.mi_1.ui.theme.white
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
+
+@SuppressLint("NewApi")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DateMeetScreen(
@@ -66,12 +80,44 @@ fun DateMeetScreen(
                 })
         }
     }
+
+    var pickedTime by remember {
+        mutableStateOf(LocalTime.NOON)
+    }
+
+    val formattedTime by remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("hh:mm")
+                .format(pickedTime)
+        }
+    }
+    val timeDialogState = rememberMaterialDialogState()
+    val focusManager = LocalFocusManager.current
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(color = green)
             .padding(24.dp)
     ) {
+        MaterialDialog(
+            dialogState = timeDialogState,
+            buttons = {
+                positiveButton(text = "Ok") {
+                    timeMeet.value = formattedTime
+                }
+                negativeButton(text = "Cancel")
+            }
+        ) {
+            timepicker(
+                initialTime = LocalTime.NOON,
+                title = "Pick a time",
+                timeRange = LocalTime.MIDNIGHT..LocalTime.NOON
+            ) {
+                pickedTime = it
+            }
+        }
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -92,14 +138,21 @@ fun DateMeetScreen(
             Spacer(modifier = modifier.height(16.dp))
             CalendarInput(
                 placeHolder = stringResource(id = string.date),
-                content = dateMeet
+                content = dateMeet,
+                enabled = false,
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             )
             Spacer(modifier = modifier.height(7.dp))
             StandardTextField(
                 content = timeMeet.value,
                 onSetContent = { timeMeet.value = it },
                 placeHolder = stringResource(id = string.time),
-                icon = ImageVector.vectorResource(id = R.drawable.baseline_access_alarm_24)
+                keyboardType = KeyboardType.Decimal,
+                icon = ImageVector.vectorResource(id = R.drawable.baseline_access_alarm_24),
+                onClickIcon = { timeDialogState.show() },
+                readOnly = true,
+                enabled = false,
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             )
             Spacer(modifier = modifier.height(7.dp))
             StandardTextField(

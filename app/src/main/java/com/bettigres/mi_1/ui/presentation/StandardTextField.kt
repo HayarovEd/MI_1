@@ -1,7 +1,9 @@
 package com.bettigres.mi_1.ui.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,7 +33,11 @@ fun StandardTextField(
     placeHolder: String,
     icon: ImageVector,
     keyboardType: KeyboardType = KeyboardType.Text,
-    imeAction:ImeAction = ImeAction.Default
+    imeAction:ImeAction = ImeAction.Default,
+    onClickIcon: () -> Unit = {},
+    readOnly: Boolean = false,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    enabled: Boolean = true
 ) {
     TextField(
         modifier = modifier
@@ -39,6 +45,8 @@ fun StandardTextField(
             .clip(shape = RoundedCornerShape(10.dp)),
         value = content,
         onValueChange = onSetContent,
+        enabled = enabled,
+        readOnly = readOnly,
         textStyle = LocalTextStyle.current.copy(
             color = black,
             fontStyle = FontStyle(R.font.onest_400),
@@ -56,6 +64,7 @@ fun StandardTextField(
         },
         trailingIcon = {
             Icon(
+                modifier = Modifier.clickable { onClickIcon.invoke() },
                 imageVector = icon,
                 contentDescription = ""
             )
@@ -64,5 +73,6 @@ fun StandardTextField(
         keyboardOptions = KeyboardOptions(
             keyboardType=keyboardType,
             imeAction = imeAction),
+        keyboardActions = keyboardActions,
     )
 }
