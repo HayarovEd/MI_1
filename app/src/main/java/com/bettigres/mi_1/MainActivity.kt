@@ -1,5 +1,7 @@
 package com.bettigres.mi_1
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,9 +32,11 @@ class MainActivity : ComponentActivity() {
 
         }
     }
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //photoUri = Uri.EMPTY
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContent {
             BaseScreen(
                 outputDirectory = outputDirectory,

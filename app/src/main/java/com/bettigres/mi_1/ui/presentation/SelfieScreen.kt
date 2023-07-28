@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -66,7 +67,8 @@ fun SelfieScreen(
     val shouldShowPhoto: MutableState<Boolean> = remember { mutableStateOf(false) }
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
+        contract = ActivityResultContracts.PickVisualMedia(
+        ),
         onResult = { uri -> photoUri.value = uri }
     )
     val cameraPermissionState = rememberPermissionState(
@@ -86,16 +88,17 @@ fun SelfieScreen(
                     cameraPermissionState.launchPermissionRequest()
                 })
         }
-    } else if (galleryPermissionState.status is PermissionStatus.Denied) {
-        Dialog(onDismissRequest = { galleryPermissionState.launchPermissionRequest() }) {
-            DialogAccess(question = stringResource(id = R.string.access_gallery),
-                onYesClick = {
-                    galleryPermissionState.launchPermissionRequest()
-                },
-                onNoClick = {
-                    galleryPermissionState.launchPermissionRequest()
-                })
-        }
+    }
+    if (galleryPermissionState.status is PermissionStatus.Denied) {
+        /*Dialog(onDismissRequest = { galleryPermissionState.launchPermissionRequest() }) {
+             DialogAccess(question = stringResource(id = R.string.access_gallery),
+                 onYesClick = {
+                     galleryPermissionState.launchPermissionRequest()
+                 },
+                 onNoClick = {
+                     galleryPermissionState.launchPermissionRequest()
+                 })
+         }*/
     }
 
     Box(
@@ -108,46 +111,49 @@ fun SelfieScreen(
             modifier = modifier
                 .fillMaxWidth()
         ) {
-            Title(
-                onClick = {
-                    setScreen.value = ScreenState.DateTime
-                }
-            )
-            Spacer(modifier = modifier.height(47.dp))
-            Text(
-                text = stringResource(id = R.string.make_selfie),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
-                color = black
-            )
-            Spacer(modifier = modifier.height(16.dp))
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(160.dp)
-            ) {
-                ButtonImage(
-                    modifier = modifier.weight(1f),
-                    icon = ImageVector.vectorResource(id = R.drawable.outline_camera_alt_40),
-                    content = stringResource(id = R.string.from_camera),
-                    onClick = {isShowCamera.value=true}
-                )
-                Spacer(modifier = modifier.width(8.dp))
-                ButtonImage(
-                    modifier = modifier.weight(1f),
-                    icon = ImageVector.vectorResource(id = R.drawable.ic24_photo_add),
-                    content = stringResource(id = R.string.from_gallery),
+            if (!isShowCamera.value) {
+                Title(
                     onClick = {
-                        singlePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
-                        shouldShowPhoto.value = true
+                        setScreen.value = ScreenState.DateTime
                     }
                 )
+                Spacer(modifier = modifier.height(47.dp))
+                Text(
+                    text = stringResource(id = R.string.make_selfie),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
+                    color = black
+                )
+                Spacer(modifier = modifier.height(16.dp))
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
+                ) {
+                    ButtonImage(
+                        modifier = modifier.weight(1f),
+                        icon = ImageVector.vectorResource(id = R.drawable.outline_camera_alt_40),
+                        content = stringResource(id = R.string.from_camera),
+                        onClick = { isShowCamera.value = true }
+                    )
+                    Spacer(modifier = modifier.width(8.dp))
+                    ButtonImage(
+                        modifier = modifier.weight(1f),
+                        icon = ImageVector.vectorResource(id = R.drawable.ic24_photo_add),
+                        content = stringResource(id = R.string.from_gallery),
+                        onClick = {
+                            singlePhotoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                            shouldShowPhoto.value = true
+                        }
+                    )
+                }
             }
             if (isShowCamera.value) {
                 CameraView(
+                    modifier = modifier.fillMaxSize(),
                     outputDirectory = outputDirectory,
                     executor = executor,
                     isShowCamera = isShowCamera,
@@ -156,47 +162,50 @@ fun SelfieScreen(
                     onError = {}
                 )
             }
-            Log.d ("AAAAAA", "uri ${photoUri.value}")
             if (shouldShowPhoto.value) {
+                Spacer(modifier = modifier.height(16.dp))
                 AsyncImage(
+                    modifier = Modifier
+                        .size(200.dp),
                     model = photoUri.value,
                     contentDescription = null,
-                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
-        Button(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(shape = RoundedCornerShape(10.dp))
-                .align(alignment = Alignment.BottomCenter),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = black,
-                contentColor = white
-            ),
-            enabled = true,
-            onClick = {
-                setScreen.value = ScreenState.Confirm
-            }
-        ) {
-            Row(
+        if (!isShowCamera.value){
+            Button(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .align(alignment = Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = black,
+                    contentColor = white
+                ),
+                enabled = true,
+                onClick = {
+                    setScreen.value = ScreenState.Confirm
+                }
             ) {
-                Text(
-                    text = stringResource(id = R.string.next),
-                    fontSize = 18.sp,
-                    color = white,
-                    fontStyle = FontStyle(R.font.soyuz_grotesk_bold)
-                )
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic24_redo),
-                    tint = white,
-                    contentDescription = "back"
-                )
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.next),
+                        fontSize = 18.sp,
+                        color = white,
+                        fontStyle = FontStyle(R.font.soyuz_grotesk_bold)
+                    )
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic24_redo),
+                        tint = white,
+                        contentDescription = "back"
+                    )
+                }
             }
         }
     }

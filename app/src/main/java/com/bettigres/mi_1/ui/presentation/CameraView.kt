@@ -40,6 +40,7 @@ import kotlin.coroutines.suspendCoroutine
 
 @Composable
 fun CameraView(
+    modifier: Modifier =Modifier,
     outputDirectory: File,
     executor: Executor,
     onError: (ImageCaptureException) -> Unit,
@@ -74,8 +75,8 @@ fun CameraView(
     }
 
 
-    Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
-        AndroidView({ previewView }, modifier = Modifier.fillMaxSize())
+    Box(contentAlignment = Alignment.BottomCenter, modifier = modifier.fillMaxSize()) {
+        AndroidView({ previewView }, modifier = modifier.fillMaxSize())
 
         IconButton(
             modifier = Modifier.padding(bottom = 40.dp),
