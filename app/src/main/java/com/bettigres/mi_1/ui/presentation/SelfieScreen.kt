@@ -71,6 +71,11 @@ fun SelfieScreen(
         ),
         onResult = { uri -> photoUri.value = uri }
     )
+
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+            photoUri.value = uri
+        }
     val cameraPermissionState = rememberPermissionState(
         android.Manifest.permission.CAMERA
     )
@@ -143,9 +148,12 @@ fun SelfieScreen(
                         icon = ImageVector.vectorResource(id = R.drawable.ic24_photo_add),
                         content = stringResource(id = R.string.from_gallery),
                         onClick = {
-                            singlePhotoPickerLauncher.launch(
-                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            launcher.launch (
+                                "image/*"
                             )
+                           /* singlePhotoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )*/
                             shouldShowPhoto.value = true
                         }
                     )
@@ -164,12 +172,15 @@ fun SelfieScreen(
             }
             if (shouldShowPhoto.value) {
                 Spacer(modifier = modifier.height(16.dp))
-                AsyncImage(
-                    modifier = Modifier
-                        .size(200.dp),
-                    model = photoUri.value,
-                    contentDescription = null,
-                )
+                Row (modifier=modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(200.dp),
+                        model = photoUri.value,
+                        contentDescription = null,
+                    )
+                }
             }
         }
         if (!isShowCamera.value){

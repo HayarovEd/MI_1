@@ -50,6 +50,7 @@ fun CalendarInput (
     TextField(
         value = content.value,
         onValueChange = { },
+        readOnly = true,
         modifier = Modifier
             .fillMaxWidth(),
         placeholder = {
