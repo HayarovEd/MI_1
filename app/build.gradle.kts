@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.bettigres.mi_1"
+    namespace = "lo.zaemtoperson.gola"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.bettigres.mi_1"
+        applicationId = "lo.zaemtoperson.gola"
         minSdk = 21
         targetSdk = 33
         versionCode = 1

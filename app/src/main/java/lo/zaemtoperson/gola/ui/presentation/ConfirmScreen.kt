@@ -1,4 +1,4 @@
-package com.bettigres.mi_1.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,10 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bettigres.mi_1.R
-import com.bettigres.mi_1.ui.theme.black
-import com.bettigres.mi_1.ui.theme.green
-import com.bettigres.mi_1.ui.theme.white
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.ui.theme.black
+import lo.zaemtoperson.gola.ui.theme.green
+import lo.zaemtoperson.gola.ui.theme.white
 
 @Composable
 fun ConfirmScreen (

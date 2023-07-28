@@ -1,4 +1,4 @@
-package com.bettigres.mi_1
+package lo.zaemtoperson.gola
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
@@ -11,8 +11,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.bettigres.mi_1.ui.presentation.BaseScreen
-import com.bettigres.mi_1.ui.theme.MI_1Theme
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.ui.presentation.BaseScreen
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

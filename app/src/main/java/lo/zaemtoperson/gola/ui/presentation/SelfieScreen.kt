@@ -1,10 +1,7 @@
-package com.bettigres.mi_1.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation
 
 import android.net.Uri
-import android.os.Build.VERSION_CODES
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,13 +38,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
-import com.bettigres.mi_1.R
-import com.bettigres.mi_1.ui.theme.black
-import com.bettigres.mi_1.ui.theme.green
-import com.bettigres.mi_1.ui.theme.white
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.ui.theme.black
+import lo.zaemtoperson.gola.ui.theme.green
+import lo.zaemtoperson.gola.ui.theme.white
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import java.io.File
 import java.util.concurrent.ExecutorService

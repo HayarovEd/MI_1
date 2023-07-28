@@ -1,4 +1,4 @@
-package com.bettigres.mi_1.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
@@ -15,14 +15,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.bettigres.mi_1.R
-import com.bettigres.mi_1.ui.theme.black
-import com.bettigres.mi_1.ui.theme.gray
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.ui.theme.black
+import lo.zaemtoperson.gola.ui.theme.gray
 import java.util.Calendar
 import java.util.Date
 

@@ -1,8 +1,7 @@
-package com.bettigres.mi_1.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException

@@ -1,4 +1,4 @@
-package com.bettigres.mi_1.ui.theme
+package lo.zaemtoperson.gola.ui.theme
 
 import android.app.Activity
 import android.os.Build

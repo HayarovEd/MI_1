@@ -1,6 +1,5 @@
-package com.bettigres.mi_1.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation
 
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

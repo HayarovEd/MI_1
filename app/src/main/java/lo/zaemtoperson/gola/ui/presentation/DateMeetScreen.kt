@@ -1,8 +1,7 @@
-package com.bettigres.mi_1.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation
 
 import android.Manifest.permission
 import android.annotation.SuppressLint
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,11 +38,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.bettigres.mi_1.R
-import com.bettigres.mi_1.R.string
-import com.bettigres.mi_1.ui.theme.black
-import com.bettigres.mi_1.ui.theme.green
-import com.bettigres.mi_1.ui.theme.white
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.R.string
+import lo.zaemtoperson.gola.ui.theme.black
+import lo.zaemtoperson.gola.ui.theme.green
+import lo.zaemtoperson.gola.ui.theme.white
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
