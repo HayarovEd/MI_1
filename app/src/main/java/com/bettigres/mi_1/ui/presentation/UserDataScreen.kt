@@ -107,11 +107,8 @@ fun UserDataScreen(
                 icon = ImageVector.vectorResource(id = R.drawable.baseline_business_24)
             )
             Spacer(modifier = modifier.height(7.dp))
-            StandardTextField(
-                content = birthday.value,
-                onSetContent = { birthday.value = it },
-                placeHolder = stringResource(id = R.string.birthday),
-                icon = ImageVector.vectorResource(id = R.drawable.baseline_calendar_month_24)
+            CalendarInput(
+                placeHolder = stringResource(id = R.string.birthday)
             )
             Spacer(modifier = modifier.height(7.dp))
             TextField(

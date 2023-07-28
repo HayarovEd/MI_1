@@ -34,18 +34,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //photoUri = Uri.EMPTY
         setContent {
-            MI_1Theme {
-                /*if (grantAccessCamera.value) {
-                    BaseScreen(
-                        outputDirectory = outputDirectory,
-                        executor = cameraExecutor,
-                    )
-                }*/
-                BaseScreen(
-                    outputDirectory = outputDirectory,
-                    executor = cameraExecutor,
-                )
-            }
+            BaseScreen(
+                outputDirectory = outputDirectory,
+                executor = cameraExecutor,
+            )
         }
         //requestCameraPermission()
 

@@ -83,37 +83,34 @@ fun DateMeetScreen(
             )
             Spacer(modifier = modifier.height(47.dp))
             Text(
-                text = stringResource(id = R.string.choice_time),
+                text = stringResource(id = string.choice_time),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
                 color = black
             )
             Spacer(modifier = modifier.height(16.dp))
-            StandardTextField(
-                content = dateMeet.value,
-                onSetContent = { dateMeet.value = it },
-                placeHolder = stringResource(id = R.string.date),
-                icon = ImageVector.vectorResource(id = R.drawable.baseline_calendar_month_24)
+            CalendarInput(
+                placeHolder = stringResource(id = string.date)
             )
             Spacer(modifier = modifier.height(7.dp))
             StandardTextField(
                 content = timeMeet.value,
                 onSetContent = { timeMeet.value = it },
-                placeHolder = stringResource(id = R.string.time),
+                placeHolder = stringResource(id = string.time),
                 icon = ImageVector.vectorResource(id = R.drawable.baseline_access_alarm_24)
             )
             Spacer(modifier = modifier.height(7.dp))
             StandardTextField(
                 content = phone.value,
                 onSetContent = { phone.value = it },
-                placeHolder = stringResource(id = R.string.phone),
+                placeHolder = stringResource(id = string.phone),
                 icon = ImageVector.vectorResource(id = R.drawable.ic24_phone_talk),
                 keyboardType = KeyboardType.Phone
             )
             Spacer(modifier = modifier.height(16.dp))
             Text(
-                text = stringResource(id = R.string.check_phone),
+                text = stringResource(id = string.check_phone),
                 fontSize = 16.sp,
                 color = black,
                 fontWeight = FontWeight.Normal,
@@ -127,7 +124,7 @@ fun DateMeetScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
             Text(
-                text = stringResource(id = R.string.privacy_policy),
+                text = stringResource(id = string.privacy_policy),
                 fontSize = 16.sp,
                 color = black,
                 fontWeight = FontWeight.Bold,
@@ -157,7 +154,7 @@ fun DateMeetScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(id = R.string.next),
+                        text = stringResource(id = string.next),
                         fontSize = 18.sp,
                         color = white,
                         fontStyle = FontStyle(R.font.soyuz_grotesk_bold)
