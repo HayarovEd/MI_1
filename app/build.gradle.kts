@@ -76,7 +76,7 @@ dependencies {
     implementation ("androidx.compose.material:material-icons-extended:1.4.3")
 
     // Coil
-    implementation ("io.coil-kt:coil-compose:2.2.2")
+    implementation ("io.coil-kt:coil-compose:2.4.0")
 
     //Permissions
     implementation ("com.google.accompanist:accompanist-permissions:0.31.5-beta")
