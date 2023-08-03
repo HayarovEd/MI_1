@@ -1,4 +1,4 @@
-package lo.zaemtoperson.gola.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation_v1
 
 import android.Manifest.permission
 import android.annotation.SuppressLint

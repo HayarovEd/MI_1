@@ -11,8 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.ui.presentation.BaseScreen
+import lo.zaemtoperson.gola.ui.presentation_v1.BaseScreen
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

@@ -1,4 +1,4 @@
-package lo.zaemtoperson.gola.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation_v1
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -1,4 +1,4 @@
-package lo.zaemtoperson.gola.ui.presentation
+package lo.zaemtoperson.gola.ui.presentation_v1
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
