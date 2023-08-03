@@ -118,7 +118,7 @@ dependencies {
     implementation ("com.appsflyer:af-android-sdk:6.12.2")
 
     //UserX
-    implementation ("pro.userx:UserX:4.2.1@aar")
+    //implementation ("pro.userx:UserX:4.2.1@aar")
 }
 
 kapt{
