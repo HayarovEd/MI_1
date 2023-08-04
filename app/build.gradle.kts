@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation(files("E:\\downloads\\UserX-4.2.1.aar"))
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -118,7 +119,6 @@ dependencies {
     implementation ("com.appsflyer:af-android-sdk:6.12.2")
 
     //UserX
-    //implementation ("pro.userx:UserX:4.2.1")
 }
 
 
