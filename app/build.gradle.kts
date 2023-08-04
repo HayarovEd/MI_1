@@ -17,7 +17,7 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled =  true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -118,8 +118,9 @@ dependencies {
     implementation ("com.appsflyer:af-android-sdk:6.12.2")
 
     //UserX
-    //implementation ("pro.userx:UserX:4.2.1@aar")
+    implementation ("pro.userx:UserX:4.2.1")
 }
+
 
 kapt{
     correctErrorTypes = true
