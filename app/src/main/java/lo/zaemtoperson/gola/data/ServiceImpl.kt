@@ -9,6 +9,8 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import com.appsflyer.AppsFlyerConversionListener
+import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
@@ -21,13 +23,14 @@ import java.io.IOException
 import java.util.Locale
 import javax.inject.Inject
 
-class ServiceImpl @Inject constructor(val application: Application): Service {
+class ServiceImpl @Inject constructor(private val application: Application) : Service {
     //P1
     override fun getSimCountryIso(): String? {
         val telephonyManager =
             application.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return telephonyManager.simCountryIso
     }
+
     //P3
     override fun isRootedOne(): Boolean {
         val locations = arrayOf(
@@ -52,7 +55,7 @@ class ServiceImpl @Inject constructor(val application: Application): Service {
     //P3
     override fun isRootedTwo(): Boolean {
         return try {
-            val buildTags = android.os.Build.TAGS
+            val buildTags = Build.TAGS
             buildTags != null && buildTags.contains("test-keys")
         } catch (e: Exception) {
             false
@@ -82,8 +85,8 @@ class ServiceImpl @Inject constructor(val application: Application): Service {
 
     //P6
     @SuppressLint("HardwareIds")
-    override fun getDeviceAndroidId(context: Context): String? {
-        return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+    override fun getDeviceAndroidId(): String? {
+        return Settings.Secure.getString(application.contentResolver, Settings.Secure.ANDROID_ID)
     }
 
     //P7
@@ -100,9 +103,9 @@ class ServiceImpl @Inject constructor(val application: Application): Service {
     }
 
     //P8
-    override fun getGAID(context: Context): String? {
+    override fun getGAID(): String? {
         return try {
-            val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context)
+            val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(application)
 
             return adInfo.id
         } catch (e: IOException) {
@@ -158,5 +161,38 @@ class ServiceImpl @Inject constructor(val application: Application): Service {
         }
 
         return result
+    }
+
+
+    override fun getMyTrackerDeeplink(callback: (String?) -> Unit) {
+        MyTracker.initTracker(MY_TRACKER, application)
+        MyTracker.setAttributionListener { attribution ->
+            val deeplink = attribution.deeplink
+            callback (deeplink)
+        }
+    }
+
+    override fun getAppsFlyerDeeplink(callback: (String?) -> Unit) {
+        AppsFlyerLib.getInstance().init(APPS_FLYER, null, application)
+        object : AppsFlyerConversionListener {
+            override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
+                val conversionId = conversionData["af_adset_id"] as? String
+                callback(conversionId)
+            }
+
+            override fun onConversionDataFail(p0: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAppOpenAttribution(p0: MutableMap<String, String>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onAttributionFailure(p0: String?) {
+                TODO("Not yet implemented")
+            }
+
+            // ...
+        }
     }
 }

@@ -1,4 +1,4 @@
-package lo.zaemtoperson.gola
+package lo.zaemtoperson.gola.presentation
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
@@ -11,11 +11,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import dagger.hilt.android.AndroidEntryPoint
+import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.ui.presentation_v1.BaseScreen
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
@@ -37,10 +39,11 @@ class MainActivity : ComponentActivity() {
         //photoUri = Uri.EMPTY
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContent {
-            BaseScreen(
+            Sample()
+           /* BaseScreen(
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,
-            )
+            )*/
         }
         //requestCameraPermission()
 

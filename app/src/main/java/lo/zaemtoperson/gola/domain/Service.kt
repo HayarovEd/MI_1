@@ -10,11 +10,12 @@ interface Service {
     fun isRootedTwo(): Boolean
     fun isRootedThree(): Boolean
     fun getCurrentLocale(): String
-    fun getDeviceAndroidId(context: Context): String?
+    fun getDeviceAndroidId(): String?
     fun getFirebaseMessagingToken(callback: (String?) -> Unit)
-    fun getGAID(context: Context): String?
+    fun getGAID(): String?
     fun getApplicationVersion(): String?
     fun checkedInternetConnection(): Boolean
-
+    fun getMyTrackerDeeplink(callback: (String?) -> Unit)
+    fun getAppsFlyerDeeplink(callback: (String?) -> Unit)
 
 }
