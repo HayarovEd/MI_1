@@ -103,7 +103,7 @@ class ServiceImpl @Inject constructor(private val application: Application) : Se
     }
 
     //P8
-    override fun getGAID(): String? {
+    override suspend fun getGAID(): String? {
         return try {
             val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(application)
 

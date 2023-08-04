@@ -12,7 +12,7 @@ interface Service {
     fun getCurrentLocale(): String
     fun getDeviceAndroidId(): String?
     fun getFirebaseMessagingToken(callback: (String?) -> Unit)
-    fun getGAID(): String?
+    suspend fun getGAID(): String?
     fun getApplicationVersion(): String?
     fun checkedInternetConnection(): Boolean
     fun getMyTrackerDeeplink(callback: (String?) -> Unit)
