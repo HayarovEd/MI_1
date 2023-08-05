@@ -120,6 +120,7 @@ class ServiceImpl @Inject constructor(private val application: Application) : Se
     //P9
     override val instanceId = MyTracker.getInstanceId(application)
 
+
     //P10
     override fun getApplicationVersion(): String? {
         return try {
@@ -173,8 +174,8 @@ class ServiceImpl @Inject constructor(private val application: Application) : Se
     }
 
     override fun getAppsFlyerDeeplink(callback: (String?) -> Unit) {
-        AppsFlyerLib.getInstance().init(APPS_FLYER, null, application)
-        object : AppsFlyerConversionListener {
+
+        val conversionDataListener = object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
                 val conversionId = conversionData["af_adset_id"] as? String
                 callback(conversionId)
@@ -194,5 +195,7 @@ class ServiceImpl @Inject constructor(private val application: Application) : Se
 
             // ...
         }
+        AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, application)
+        AppsFlyerLib.getInstance().start(application)
     }
 }

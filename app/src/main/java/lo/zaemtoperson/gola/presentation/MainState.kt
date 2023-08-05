@@ -1,15 +1,18 @@
 package lo.zaemtoperson.gola.presentation
 
 data class MainState(
-    val appMetrica: String = "n",
-    val sim: String? = "n",
-    val instanceId: String = "n",
+    val appMetrica: String = "",
+    val colorFb: String = "",
+    val sim: String? = null,
+    val instanceId: String? = null,
     val isRoot: Boolean = false,
-    val locale: String = "n",
-    val deviceId: String? = "n",
-    val fireBaseToken: String? = "n",
-    val gaid: String? = "n",
-    val versionApplication: String? = "n",
-    val trackerDeeplink: String? = "n",
-    val appsFlyerDeeplink: String? = "n",
+    val locale: String = "",
+    val deviceId: String? = null,
+    val fireBaseToken: String? = null,
+    val gaid: String? = null,
+    val versionApplication: String? = null,
+    val trackerDeeplink: String? = null,
+    val appsFlyerDeeplink: String? = null,
+    val isConnectInternet:Boolean = false,
+    val message: String = ""
 )

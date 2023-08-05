@@ -6,3 +6,7 @@ const val APY_KEY = "sArGZfZ1PBhejfQQLFyXFLmszPqZ/gtyAI5LS9VLv/BVjJglcNQBlVoZ3J/
 const val USER_X = "91884d86-03d6-4e14-8b55-478f91732822"
 const val APPS_FLYER = "jLNYzxQAqxAFeturo6YEAD"
 const val BASE_URL = "https://analyticsharks.xyz"
+
+const val SHARED_DATA = "shared_data"
+const val SHARED_FIREBASE_TOKEN = "firebase_token"
+const val SHARED_MY_TRACKER_INSTANCE_ID = "my_tracker_id"

@@ -12,6 +12,7 @@ fun Sample (
     println("AAAA appMetrica ${state.value.appMetrica}")
     println("AAAA sim ${state.value.sim}")
     println("AAAA instanceId ${state.value.instanceId}")
+    println("AAAA colorFb ${state.value.colorFb}")
     println("AAAA isRoot ${state.value.isRoot}")
     println("AAAA locale ${state.value.locale}")
     println("AAAA gaid ${state.value.gaid}")

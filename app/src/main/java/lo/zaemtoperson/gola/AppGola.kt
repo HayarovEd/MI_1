@@ -14,8 +14,6 @@ import pro.userx.UserX
 class AppGola: Application() {
     override fun onCreate() {
         super.onCreate()
-        //val trackerParams = MyTracker.getTrackerParams()
-        //val trackerConfig = MyTracker.getTrackerConfig()
         MyTracker.initTracker(MY_TRACKER, this)
         AppsFlyerLib.getInstance().init(APPS_FLYER, null, this)
         UserX.init(USER_X)
