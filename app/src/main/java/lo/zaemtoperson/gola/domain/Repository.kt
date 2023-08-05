@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.domain
 
 import lo.zaemtoperson.gola.data.Resource
+import lo.zaemtoperson.gola.domain.model.Sub1
 
 interface Repository {
     suspend fun getSub1 (
@@ -10,5 +11,5 @@ interface Repository {
         appMetricaId: String,
         appsflyer: String,
         firebaseToken: String
-    ): Resource<String>
+    ): Resource<Sub1>
 }

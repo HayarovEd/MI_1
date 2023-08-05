@@ -1,8 +1,11 @@
 package lo.zaemtoperson.gola.data
 
 import javax.inject.Inject
+import com.google.gson.Gson
 import lo.zaemtoperson.gola.domain.Repository
 import lo.zaemtoperson.gola.domain.model.AffSub1
+import lo.zaemtoperson.gola.domain.model.Sub1
+
 
 class RepositoryImpl @Inject constructor(
     private val apiService: ApiService
@@ -15,21 +18,23 @@ class RepositoryImpl @Inject constructor(
         appMetricaId: String,
         appsflyer: String,
         firebaseToken: String
-    ): Resource<String> {
+    ): Resource<Sub1> {
         return try {
-            Resource.Success(
-                data = apiService.getSub1(
-                    AffSub1(
-                        applicationToken = applicationToken,
-                        userId = userId,
-                        payloadAffsub = createPayloadAffsub1(
-                            myTrackerId = myTrackerId,
-                            appMetricaId = appMetricaId,
-                            appsflyer = appsflyer,
-                            firebaseToken = firebaseToken
-                        )
+            val jsonData = apiService.getSub1(
+                AffSub1(
+                    applicationToken = applicationToken,
+                    userId = userId,
+                    payloadAffsub = createPayloadAffsub1(
+                        myTrackerId = myTrackerId,
+                        appMetricaId = appMetricaId,
+                        appsflyer = appsflyer,
+                        firebaseToken = firebaseToken
                     )
                 )
+            )
+            val gson = Gson()
+            Resource.Success(
+                data = gson.fromJson(jsonData, Sub1::class.java)
             )
         } catch (e: Exception) {
             e.printStackTrace()

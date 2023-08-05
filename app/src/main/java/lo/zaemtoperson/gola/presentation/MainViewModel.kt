@@ -158,7 +158,7 @@ class MainViewModel @Inject constructor(
                 }
                 is Success -> {
                     _state.value.copy(
-                        affsub1Unswer = result.data?: ""
+                        affsub1Unswer = result.data?.affsub1?:""
                     )
                         .updateStateUI()
                 }
