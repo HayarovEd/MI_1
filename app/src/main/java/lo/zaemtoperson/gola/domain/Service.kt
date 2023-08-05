@@ -1,10 +1,8 @@
 package lo.zaemtoperson.gola.domain
 
-import android.content.Context
-
 interface Service {
     val appMetrika: String
-    val instanceId:String
+    val instanceIdMyTrcaker:String
     fun getSimCountryIso(): String?
     fun isRootedOne(): Boolean
     fun isRootedTwo(): Boolean

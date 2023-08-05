@@ -1,10 +1,12 @@
 package lo.zaemtoperson.gola.data
 
-import javax.inject.Inject
 import com.google.gson.Gson
+import javax.inject.Inject
 import lo.zaemtoperson.gola.domain.Repository
 import lo.zaemtoperson.gola.domain.model.AffSub1
+import lo.zaemtoperson.gola.domain.model.AffSub3
 import lo.zaemtoperson.gola.domain.model.Sub1
+import lo.zaemtoperson.gola.domain.model.Sub3
 
 
 class RepositoryImpl @Inject constructor(
@@ -42,10 +44,57 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    private fun createPayloadAffsub1 (
+    override suspend fun getSub3(
+        applicationToken: String,
+        userId: String,
         myTrackerId: String,
         appMetricaId: String,
         appsflyer: String,
         firebaseToken: String
-    ): String = "{\"AppMetricaDeviceID\":\"$appMetricaId\",\"Appsflyer\":\"$appsflyer\",\"FireBase\":\"${firebaseToken.substring(0,30)}\",\"MyTracker\":\"$myTrackerId\"}"
+    ): Resource<Sub3> {
+        return try {
+            val jsonData = apiService.getSub3(
+                AffSub3(
+                    applicationToken = applicationToken,
+                    userId = userId,
+                    payloadAffsub = createPayloadAffsub3(
+                        myTrackerId = myTrackerId,
+                        appMetricaId = appMetricaId,
+                        appsflyer = appsflyer,
+                        firebaseToken = firebaseToken
+                    )
+                )
+            )
+            val gson = Gson()
+            Resource.Success(
+                data = gson.fromJson(jsonData, Sub3::class.java)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message ?: "An unknown error")
+        }
+    }
+
+    private fun createPayloadAffsub1(
+        myTrackerId: String,
+        appMetricaId: String,
+        appsflyer: String,
+        firebaseToken: String
+    ): String =
+        "{\"AppMetricaDeviceID\":\"$appMetricaId\",\"Appsflyer\":\"$appsflyer\",\"FireBase\":\"${
+            firebaseToken.substring(
+                0,
+                30
+            )
+        }\",\"MyTracker\":\"$myTrackerId\"}"
+
+    private fun createPayloadAffsub3(
+        myTrackerId: String,
+        appMetricaId: String,
+        appsflyer: String,
+        firebaseToken: String
+    ): String =
+        "{\"AppMetricaDeviceID\":\"$appMetricaId\",\"Appsflyer\":\"$appsflyer\",\"FireBaseToken\":\"${firebaseToken}\",\"MyTracker\":\"$myTrackerId\"}"
+
+
 }

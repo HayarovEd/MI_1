@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -11,14 +12,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.appsflyer.AppsFlyerLib
 import dagger.hilt.android.AndroidEntryPoint
 import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.ui.presentation_v1.BaseScreen
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_INSTANCE_ID
+import lo.zaemtoperson.gola.data.SHARED_DATA
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
@@ -36,10 +41,20 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
+        val fromSharedAppsFlyer = sharedPref.getString(SHARED_APPSFLYER_INSTANCE_ID, "")
+        val instanceIdAppsFlyer =  if (fromSharedAppsFlyer.isNullOrBlank()) {
+            val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
+            sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
+            instance
+        } else {
+            fromSharedAppsFlyer
+        }
         //photoUri = Uri.EMPTY
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         setContent {
-            Sample()
+            Sample(instanceIdAppsFlyer = instanceIdAppsFlyer)
            /* BaseScreen(
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,

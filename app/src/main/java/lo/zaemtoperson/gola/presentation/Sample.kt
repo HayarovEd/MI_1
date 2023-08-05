@@ -6,8 +6,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun Sample (
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    instanceIdAppsFlyer: String?
 ) {
+    viewModel.loadData(instanceIdAppsFlyer=instanceIdAppsFlyer)
     val state = viewModel.state.collectAsState()
     /*println("AAAA appMetrica ${state.value.appMetrica}")
     println("AAAA sim ${state.value.sim}")
@@ -21,6 +23,7 @@ fun Sample (
     println("AAAA versionApplication ${state.value.versionApplication}")
     println("AAAA trackerDeeplink ${state.value.trackerDeeplink}")
     println("AAAA appsFlyerDeeplink ${state.value.appsFlyerDeeplink}")*/
-    println("AAAA sub1 ${state.value.affsub1Unswer}")
+
+    println("AAAA sub1 ${state.value.affsub3Unswer}")
     println("AAAA message ${state.value.message}")
 }

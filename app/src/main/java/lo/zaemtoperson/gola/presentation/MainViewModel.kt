@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import lo.zaemtoperson.gola.data.APPS_FLYER
 import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.APY_KEY
 import lo.zaemtoperson.gola.data.Resource.Error
@@ -30,16 +29,13 @@ class MainViewModel @Inject constructor(
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
-    init {
-        loadData()
-    }
 
-    private fun loadData() {
+    fun loadData(instanceIdAppsFlyer: String?) {
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
                 val appMetrika = service.appMetrika
-                val instanceId = if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
-                    val instance = service.instanceId
+                val instanceIdMyTracker = if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
+                    val instance = service.instanceIdMyTrcaker
                     sharedKeeper.setMyTrackerInstanceId(instance)
                     instance
                 } else {
@@ -68,7 +64,8 @@ class MainViewModel @Inject constructor(
                 _state.value.copy(
                     appMetrica = appMetrika,
                     sim = sim,
-                    instanceId = instanceId,
+                    instanceIdMyTracker = instanceIdMyTracker,
+                    instanceIdAppsFlyer = instanceIdAppsFlyer,
                     isRoot = isRoot,
                     locale = locale,
                     deviceId = deviceId,
@@ -102,6 +99,7 @@ class MainViewModel @Inject constructor(
             }
             getRemoteConfig()
             getSub1()
+            getSub2()
         } else {
             _state.value.copy(
                 isConnectInternet = false,
@@ -141,12 +139,13 @@ class MainViewModel @Inject constructor(
             delay(2000)
             val currentFireBaseToken = _state.value.fireBaseToken
             val currentGaid = _state.value.gaid
-            val currentMyTrackerId = _state.value.instanceId
+            val currentMyTrackerId = _state.value.instanceIdMyTracker
+            val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
             when (val result = repository.getSub1(
                 applicationToken = APY_KEY,
                 userId = currentGaid?:"",
                 appMetricaId = APP_METRICA,
-                appsflyer = APPS_FLYER,
+                appsflyer = currentAppsFlyerId?:"",
                 firebaseToken = currentFireBaseToken?:"",
                 myTrackerId = currentMyTrackerId?:""
             )) {
@@ -159,6 +158,37 @@ class MainViewModel @Inject constructor(
                 is Success -> {
                     _state.value.copy(
                         affsub1Unswer = result.data?.affsub1?:""
+                    )
+                        .updateStateUI()
+                }
+            }
+        }
+    }
+
+    private fun getSub2() {
+        viewModelScope.launch {
+            delay(2000)
+            val currentFireBaseToken = _state.value.fireBaseToken
+            val currentGaid = _state.value.gaid
+            val currentMyTrackerId = _state.value.instanceIdMyTracker
+            val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
+            when (val result = repository.getSub3(
+                applicationToken = APY_KEY,
+                userId = currentGaid?:"",
+                appMetricaId = APP_METRICA,
+                appsflyer = currentAppsFlyerId?:"",
+                firebaseToken = currentFireBaseToken?:"",
+                myTrackerId = currentMyTrackerId?:""
+            )) {
+                is Error -> {
+                    _state.value.copy(
+                        message = result.message?: "unknown error"
+                    )
+                        .updateStateUI()
+                }
+                is Success -> {
+                    _state.value.copy(
+                        affsub3Unswer = result.data?.affsub3?:""
                     )
                         .updateStateUI()
                 }

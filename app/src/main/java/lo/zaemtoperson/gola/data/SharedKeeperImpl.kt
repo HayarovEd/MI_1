@@ -19,4 +19,9 @@ class SharedKeeperImpl @Inject constructor(
 
     override fun setMyTrackerInstanceId(date: String) =
         sharedPref.edit().putString(SHARED_MY_TRACKER_INSTANCE_ID, date).apply()
+
+    override fun getAppsFlyerInstanceId(): String? = sharedPref.getString(SHARED_APPSFLYER_INSTANCE_ID, "")
+
+    override fun setAppsFlyerInstanceId(date: String) =
+        sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, date).apply()
 }

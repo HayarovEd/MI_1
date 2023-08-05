@@ -4,7 +4,8 @@ data class MainState(
     val appMetrica: String = "",
     val colorFb: String = "",
     val sim: String? = null,
-    val instanceId: String? = null,
+    val instanceIdMyTracker: String? = null,
+    val instanceIdAppsFlyer: String? = null,
     val isRoot: Boolean = false,
     val locale: String = "",
     val deviceId: String? = null,
@@ -16,4 +17,7 @@ data class MainState(
     val isConnectInternet:Boolean = false,
     val message: String = "",
     val affsub1Unswer: String = "",
+    val affsub2Unswer: String = "",
+    val affsub3Unswer: String = "",
+    val affsub5Unswer: String = "",
 )

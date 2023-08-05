@@ -15,7 +15,9 @@ class AppGola: Application() {
     override fun onCreate() {
         super.onCreate()
         MyTracker.initTracker(MY_TRACKER, this)
+
         AppsFlyerLib.getInstance().init(APPS_FLYER, null, this)
+        AppsFlyerLib.getInstance().start(this)
         UserX.init(USER_X)
     }
 }

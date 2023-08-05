@@ -9,4 +9,8 @@ interface SharedKepper {
     fun getMyTrackerInstanceId(): String?
 
     fun setMyTrackerInstanceId(date: String)
+
+    fun getAppsFlyerInstanceId(): String?
+
+    fun setAppsFlyerInstanceId(date: String)
 }
