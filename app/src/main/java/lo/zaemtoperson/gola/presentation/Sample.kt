@@ -23,7 +23,7 @@ fun Sample (
     println("AAAA versionApplication ${state.value.versionApplication}")
     println("AAAA trackerDeeplink ${state.value.trackerDeeplink}")
     println("AAAA appsFlyerDeeplink ${state.value.appsFlyerDeeplink}")*/
-
+    println("AAAA colorFb ${state.value.colorFb}")
     println("AAAA sub2 ${state.value.affsub2Unswer}")
     println("AAAA message ${state.value.message}")
 }

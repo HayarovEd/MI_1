@@ -7,7 +7,7 @@ import lo.zaemtoperson.gola.domain.model.AffSub5
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface ApiService {
+interface ApiAnalytic {
     @POST("subs/aff_sub1")
     suspend fun getSub1(@Body affSub1: AffSub1): String
 

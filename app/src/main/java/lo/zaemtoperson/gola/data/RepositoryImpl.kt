@@ -14,7 +14,7 @@ import lo.zaemtoperson.gola.domain.model.Sub5
 
 
 class RepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiAnalytic: ApiAnalytic
 ): Repository {
 
     override suspend fun getSub1(
@@ -26,7 +26,7 @@ class RepositoryImpl @Inject constructor(
         firebaseToken: String
     ): Resource<Sub1> {
         return try {
-            val jsonData = apiService.getSub1(
+            val jsonData = apiAnalytic.getSub1(
                 AffSub1(
                     applicationToken = applicationToken,
                     userId = userId,
@@ -55,7 +55,7 @@ class RepositoryImpl @Inject constructor(
         myTracker: String
     ): Resource<Sub2> {
         return try {
-            val jsonData = apiService.getSub2(
+            val jsonData = apiAnalytic.getSub2(
                 AffSub2(
                     applicationToken = applicationToken,
                     userId = userId,
@@ -82,7 +82,7 @@ class RepositoryImpl @Inject constructor(
         firebaseToken: String
     ): Resource<Sub3> {
         return try {
-            val jsonData = apiService.getSub3(
+            val jsonData = apiAnalytic.getSub3(
                 AffSub3(
                     applicationToken = applicationToken,
                     userId = userId,
@@ -110,7 +110,7 @@ class RepositoryImpl @Inject constructor(
         gaid: String
     ): Resource<Sub5> {
         return try {
-            val jsonData = apiService.getSub5(
+            val jsonData = apiAnalytic.getSub5(
                 AffSub5(
                     applicationToken = applicationToken,
                     userId = userId,

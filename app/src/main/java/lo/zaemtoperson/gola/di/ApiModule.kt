@@ -5,8 +5,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import lo.zaemtoperson.gola.data.ApiService
-import lo.zaemtoperson.gola.data.BASE_URL
+import lo.zaemtoperson.gola.data.ApiAnalytic
+import lo.zaemtoperson.gola.data.ApiServer
+import lo.zaemtoperson.gola.data.URL_ANALYTICS
+import lo.zaemtoperson.gola.data.URL_SERVER
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -15,11 +17,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiModule {
     @Provides
     @Singleton
-    fun provideApi(): ApiService {
+    fun provideApiAnalytic(): ApiAnalytic {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(URL_ANALYTICS)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ApiService::class.java)
+            .create(ApiAnalytic::class.java)
+    }
+    fun provideApiServer(): ApiServer {
+        return Retrofit.Builder()
+            .baseUrl(URL_SERVER)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiServer::class.java)
     }
 }
