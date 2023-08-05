@@ -99,7 +99,8 @@ class MainViewModel @Inject constructor(
             }
             getRemoteConfig()
             getSub1()
-            getSub2()
+            getSub3()
+            getSub5()
         } else {
             _state.value.copy(
                 isConnectInternet = false,
@@ -165,7 +166,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getSub2() {
+    private fun getSub3() {
         viewModelScope.launch {
             delay(2000)
             val currentFireBaseToken = _state.value.fireBaseToken
@@ -174,7 +175,7 @@ class MainViewModel @Inject constructor(
             val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
             when (val result = repository.getSub3(
                 applicationToken = APY_KEY,
-                userId = currentGaid?:"",
+                userId = currentGaid ?: "",
                 appMetricaId = APP_METRICA,
                 appsflyer = currentAppsFlyerId?:"",
                 firebaseToken = currentFireBaseToken?:"",
@@ -186,9 +187,36 @@ class MainViewModel @Inject constructor(
                     )
                         .updateStateUI()
                 }
+
                 is Success -> {
                     _state.value.copy(
-                        affsub3Unswer = result.data?.affsub3?:""
+                        affsub3Unswer = result.data?.affsub3 ?: ""
+                    )
+                        .updateStateUI()
+                }
+            }
+        }
+    }
+
+    private fun getSub5() {
+        viewModelScope.launch {
+            delay(2000)
+            val currentGaid = _state.value.gaid
+            when (val result = repository.getSub5(
+                applicationToken = APY_KEY,
+                userId = currentGaid ?: "",
+                gaid = currentGaid ?: ""
+            )) {
+                is Error -> {
+                    _state.value.copy(
+                        message = result.message ?: "unknown error"
+                    )
+                        .updateStateUI()
+                }
+
+                is Success -> {
+                    _state.value.copy(
+                        affsub5Unswer = result.data?.affsub5 ?: ""
                     )
                         .updateStateUI()
                 }

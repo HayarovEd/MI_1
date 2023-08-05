@@ -2,6 +2,7 @@ package lo.zaemtoperson.gola.data
 
 import lo.zaemtoperson.gola.domain.model.AffSub1
 import lo.zaemtoperson.gola.domain.model.AffSub3
+import lo.zaemtoperson.gola.domain.model.AffSub5
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -11,4 +12,7 @@ interface ApiService {
 
     @POST("subs/aff_sub3")
     suspend fun getSub3(@Body affSub3: AffSub3): String
+
+    @POST("subs/aff_sub5")
+    suspend fun getSub5(@Body affSub5: AffSub5): String
 }
