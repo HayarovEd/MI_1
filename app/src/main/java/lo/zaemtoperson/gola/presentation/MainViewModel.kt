@@ -7,17 +7,25 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import lo.zaemtoperson.gola.data.APPS_FLYER
+import lo.zaemtoperson.gola.data.APP_METRICA
+import lo.zaemtoperson.gola.data.APY_KEY
+import lo.zaemtoperson.gola.data.Resource.Error
+import lo.zaemtoperson.gola.data.Resource.Success
+import lo.zaemtoperson.gola.domain.Repository
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val service: Service,
-    private val sharedKeeper: SharedKepper
+    private val sharedKeeper: SharedKepper,
+    private val repository: Repository
 ) : ViewModel() {
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -93,6 +101,7 @@ class MainViewModel @Inject constructor(
                 }
             }
             getRemoteConfig()
+            getSub1()
         } else {
             _state.value.copy(
                 isConnectInternet = false,
@@ -125,5 +134,35 @@ class MainViewModel @Inject constructor(
                         .updateStateUI()
                 }
             }
+    }
+
+    private fun getSub1() {
+        viewModelScope.launch {
+            delay(2000)
+            val currentFireBaseToken = _state.value.fireBaseToken
+            val currentGaid = _state.value.gaid
+            val currentMyTrackerId = _state.value.instanceId
+            when (val result = repository.getSub1(
+                applicationToken = APY_KEY,
+                userId = currentGaid?:"",
+                appMetricaId = APP_METRICA,
+                appsflyer = APPS_FLYER,
+                firebaseToken = currentFireBaseToken?:"",
+                myTrackerId = currentMyTrackerId?:""
+            )) {
+                is Error -> {
+                    _state.value.copy(
+                        message = result.message?: "unknown error"
+                    )
+                        .updateStateUI()
+                }
+                is Success -> {
+                    _state.value.copy(
+                        affsub1Unswer = result.data?: ""
+                    )
+                        .updateStateUI()
+                }
+            }
+        }
     }
 }

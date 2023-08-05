@@ -14,5 +14,6 @@ data class MainState(
     val trackerDeeplink: String? = null,
     val appsFlyerDeeplink: String? = null,
     val isConnectInternet:Boolean = false,
-    val message: String = ""
+    val message: String = "",
+    val affsub1Unswer: String = "",
 )
