@@ -4,9 +4,11 @@ import com.google.gson.Gson
 import javax.inject.Inject
 import lo.zaemtoperson.gola.domain.Repository
 import lo.zaemtoperson.gola.domain.model.AffSub1
+import lo.zaemtoperson.gola.domain.model.AffSub2
 import lo.zaemtoperson.gola.domain.model.AffSub3
 import lo.zaemtoperson.gola.domain.model.AffSub5
 import lo.zaemtoperson.gola.domain.model.Sub1
+import lo.zaemtoperson.gola.domain.model.Sub2
 import lo.zaemtoperson.gola.domain.model.Sub3
 import lo.zaemtoperson.gola.domain.model.Sub5
 
@@ -39,6 +41,31 @@ class RepositoryImpl @Inject constructor(
             val gson = Gson()
             Resource.Success(
                 data = gson.fromJson(jsonData, Sub1::class.java)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message ?: "An unknown error")
+        }
+    }
+
+    override suspend fun getSub2(
+        applicationToken: String,
+        userId: String,
+        appsflyer: String,
+        myTracker: String
+    ): Resource<Sub2> {
+        return try {
+            val jsonData = apiService.getSub2(
+                AffSub2(
+                    applicationToken = applicationToken,
+                    userId = userId,
+                    appsflyer = appsflyer,
+                    myTracker = myTracker
+                )
+            )
+            val gson = Gson()
+            Resource.Success(
+                data = gson.fromJson(jsonData, Sub2::class.java)
             )
         } catch (e: Exception) {
             e.printStackTrace()

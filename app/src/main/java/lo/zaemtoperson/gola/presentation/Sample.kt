@@ -24,6 +24,6 @@ fun Sample (
     println("AAAA trackerDeeplink ${state.value.trackerDeeplink}")
     println("AAAA appsFlyerDeeplink ${state.value.appsFlyerDeeplink}")*/
 
-    println("AAAA sub1 ${state.value.affsub5Unswer}")
+    println("AAAA sub2 ${state.value.affsub2Unswer}")
     println("AAAA message ${state.value.message}")
 }

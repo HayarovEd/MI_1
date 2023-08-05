@@ -99,6 +99,7 @@ class MainViewModel @Inject constructor(
             }
             getRemoteConfig()
             getSub1()
+            getFirstSub2()
             getSub3()
             getSub5()
         } else {
@@ -219,6 +220,106 @@ class MainViewModel @Inject constructor(
                         affsub5Unswer = result.data?.affsub5 ?: ""
                     )
                         .updateStateUI()
+                }
+            }
+        }
+    }
+
+    private fun getFirstSub2() {
+        viewModelScope.launch {
+            delay(2000)
+            val currentGaid = _state.value.gaid
+            when (val result = repository.getSub2(
+                applicationToken = APY_KEY,
+                userId = currentGaid ?: "",
+                appsflyer = "",
+                myTracker = ""
+            )) {
+                is Error -> {
+                    _state.value.copy(
+                        message = result.message ?: "unknown error"
+                    )
+                        .updateStateUI()
+                }
+
+                is Success -> {
+                    _state.value.copy(
+                        affsub2Unswer = result.data?.affsub2 ?: ""
+                    )
+                        .updateStateUI()
+                }
+            }
+        }
+    }
+
+    private fun getSub2() {
+        viewModelScope.launch {
+            delay(2000)
+            val currentGaid = _state.value.gaid
+            val currentMyTracker = _state.value.trackerDeeplink
+            val currentAppsFlyer = _state.value.appsFlyerDeeplink
+            if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isNullOrBlank()) {
+                when (val result = repository.getSub2(
+                    applicationToken = APY_KEY,
+                    userId = currentGaid ?: "",
+                    appsflyer = "",
+                    myTracker = ""
+                )) {
+                    is Error -> {
+                        _state.value.copy(
+                            message = result.message ?: "unknown error"
+                        )
+                            .updateStateUI()
+                    }
+
+                    is Success -> {
+                        _state.value.copy(
+                            affsub2Unswer = result.data?.affsub2 ?: ""
+                        )
+                            .updateStateUI()
+                    }
+                }
+            } else if (currentMyTracker != null) {
+                when (val result = repository.getSub2(
+                    applicationToken = APY_KEY,
+                    userId = currentGaid ?: "",
+                    appsflyer = "",
+                    myTracker = currentMyTracker
+                )) {
+                    is Error -> {
+                        _state.value.copy(
+                            message = result.message ?: "unknown error"
+                        )
+                            .updateStateUI()
+                    }
+
+                    is Success -> {
+                        _state.value.copy(
+                            affsub2Unswer = result.data?.affsub2 ?: ""
+                        )
+                            .updateStateUI()
+                    }
+                }
+            } else if (currentAppsFlyer != null) {
+                when (val result = repository.getSub2(
+                    applicationToken = APY_KEY,
+                    userId = currentGaid ?: "",
+                    appsflyer = currentAppsFlyer,
+                    myTracker = ""
+                )) {
+                    is Error -> {
+                        _state.value.copy(
+                            message = result.message ?: "unknown error"
+                        )
+                            .updateStateUI()
+                    }
+
+                    is Success -> {
+                        _state.value.copy(
+                            affsub2Unswer = result.data?.affsub2 ?: ""
+                        )
+                            .updateStateUI()
+                    }
                 }
             }
         }
