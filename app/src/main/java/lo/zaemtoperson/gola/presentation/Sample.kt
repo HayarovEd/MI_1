@@ -11,5 +11,6 @@ fun Sample (
 ) {
     //viewModel.loadData(instanceIdAppsFlyer=instanceIdAppsFlyer)
     val state = viewModel.state.collectAsState()
-    Log.d("AAAAAA", "db ${state.value.dbData}")
+    Log.d("AAAAAA", "db ${state.value.dbData?.appConfig?.privacyPolicyHtml}")
+    state.value.dbData?.appConfig?.let { ConnectScreen(text = it.userTermHtml) }
 }

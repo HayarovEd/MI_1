@@ -1,10 +1,8 @@
 package lo.zaemtoperson.gola
 
 import android.app.Application
-import androidx.core.content.PackageManagerCompat.LOG_TAG
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
-import com.appsflyer.deeplink.DeepLink
 import com.my.tracker.MyTracker
 import dagger.hilt.android.HiltAndroidApp
 import lo.zaemtoperson.gola.data.APPS_FLYER

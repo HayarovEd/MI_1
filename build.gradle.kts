@@ -10,6 +10,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven ( url = "https://github.com/userxpro/userx/raw/maven/" )
+        maven ( url  = "https://jitpack.io" )
     }
 
 }

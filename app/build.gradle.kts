@@ -119,6 +119,9 @@ dependencies {
     implementation ("com.appsflyer:af-android-sdk:6.12.2")
 
     //UserX
+
+    //dataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }
 
 
