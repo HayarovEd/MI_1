@@ -24,6 +24,9 @@ object ApiModule {
             .build()
             .create(ApiAnalytic::class.java)
     }
+
+    @Provides
+    @Singleton
     fun provideApiServer(): ApiServer {
         return Retrofit.Builder()
             .baseUrl(URL_SERVER)

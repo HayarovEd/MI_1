@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -22,6 +23,8 @@ import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
 import lo.zaemtoperson.gola.domain.model.StatusApplication
+import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
+import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -33,8 +36,10 @@ class MainViewModel @Inject constructor(
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
-
-    fun loadData(instanceIdAppsFlyer: String?) {
+    init {
+        loadData()
+    }
+    private fun loadData() {
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
                 val appMetrika = service.appMetrika
@@ -65,6 +70,7 @@ class MainViewModel @Inject constructor(
                         .updateStateUI()
                 }
                 val version = service.getApplicationVersion()
+                val instanceIdAppsFlyer = sharedKeeper.getAppsFlyerInstanceId()
                 _state.value.copy(
                     appMetrica = appMetrika,
                     sim = sim,
@@ -75,7 +81,7 @@ class MainViewModel @Inject constructor(
                     deviceId = deviceId,
                     versionApplication = version,
                     isConnectInternet = true,
-                    statusApplication = StatusApplication.Connect()
+                    statusApplication = Connect()
                 )
                     .updateStateUI()
             }
@@ -107,10 +113,11 @@ class MainViewModel @Inject constructor(
             getFirstSub2()
             getSub3()
             getSub5()
+            loadDbData()
         } else {
             _state.value.copy(
                 isConnectInternet = false,
-                statusApplication = StatusApplication.Mock(),
+                statusApplication = Mock(),
                 message = "Need to connect internet"
             )
                 .updateStateUI()
@@ -349,7 +356,7 @@ class MainViewModel @Inject constructor(
                 is Error -> {
                     _state.value.copy(
                         message = folder.message ?: "unknown error",
-                        statusApplication = StatusApplication.Mock(),
+                        statusApplication = Mock(),
                     )
                         .updateStateUI()
                 }
@@ -357,11 +364,34 @@ class MainViewModel @Inject constructor(
                 is Success -> {
                     if (folder.data?.folder.isNullOrBlank() || folder.data?.folder == "null") {
                         _state.value.copy(
-                            statusApplication = StatusApplication.Mock(),
+                            statusApplication = Mock(),
                         )
                             .updateStateUI()
                     } else {
-                        when (val currentDate =
+                        when (val db = folder.data?.folder?.let { repositoryServer.getDataDb(it) }) {
+                            is Error -> {
+                                _state.value.copy(
+                                    statusApplication = Mock(),
+                                )
+                                    .updateStateUI()
+                            }
+
+                            is Success -> {
+                                _state.value.copy(
+                                    statusApplication = Connect(),
+                                    dbData = db.data
+                                )
+                                    .updateStateUI()
+                            }
+
+                            null -> {
+                                _state.value.copy(
+                                    statusApplication = Mock(),
+                                )
+                                    .updateStateUI()
+                            }
+                        }
+                        /*when (val currentDate =
                             folder.data?.let { repositoryServer.getCurrentDate(it.folder) }) {
                             is Error -> {
                                 _state.value.copy(
@@ -374,6 +404,8 @@ class MainViewModel @Inject constructor(
                             is Success -> {
                                 val newDate = currentDate.data?.date
                                 val savedDate = sharedKeeper.getCurrentDate()
+                                Log.d("AAAAAA", "new date $newDate")
+                                Log.d("AAAAAA", "saved date $savedDate")
                                 if (savedDate.isNullOrBlank() || savedDate != newDate) {
                                     sharedKeeper.setCurrentDate(newDate ?: "")
                                     when (val db = repositoryServer.getDataDb(folder.data.folder)) {
@@ -401,7 +433,7 @@ class MainViewModel @Inject constructor(
                                 )
                                     .updateStateUI()
                             }
-                        }
+                        }*/
                     }
                 }
             }

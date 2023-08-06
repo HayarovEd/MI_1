@@ -42,19 +42,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
-        val fromSharedAppsFlyer = sharedPref.getString(SHARED_APPSFLYER_INSTANCE_ID, "")
-        val instanceIdAppsFlyer =  if (fromSharedAppsFlyer.isNullOrBlank()) {
-            val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
-            sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
-            instance
-        } else {
-            fromSharedAppsFlyer
-        }
+        val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
+        sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
         //photoUri = Uri.EMPTY
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
-            Sample(instanceIdAppsFlyer = instanceIdAppsFlyer)
+            Sample()
            /* BaseScreen(
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,
