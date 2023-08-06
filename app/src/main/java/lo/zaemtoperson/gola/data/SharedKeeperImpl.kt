@@ -24,4 +24,10 @@ class SharedKeeperImpl @Inject constructor(
 
     override fun setAppsFlyerInstanceId(date: String) =
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, date).apply()
+
+    override fun getCurrentDate(): String? = sharedPref.getString(SHARED_DATE, "")
+
+    override fun setCurrentDate(date: String) =
+        sharedPref.edit().putString(SHARED_DATE, date).apply()
+
 }

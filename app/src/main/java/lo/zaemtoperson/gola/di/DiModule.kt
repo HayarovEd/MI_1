@@ -5,11 +5,13 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import lo.zaemtoperson.gola.data.RepositoryImpl
+import lo.zaemtoperson.gola.data.RepositoryAnalyticImpl
+import lo.zaemtoperson.gola.data.RepositoryServerImpl
 
 import lo.zaemtoperson.gola.data.ServiceImpl
 import lo.zaemtoperson.gola.data.SharedKeeperImpl
-import lo.zaemtoperson.gola.domain.Repository
+import lo.zaemtoperson.gola.domain.RepositoryAnalytic
+import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
 
@@ -28,5 +30,10 @@ abstract class DiModule {
 
     @Binds
     @Singleton
-    abstract fun bindRepository(repository: RepositoryImpl): Repository
+    abstract fun bindRepositoryAnalytic(repository: RepositoryAnalyticImpl): RepositoryAnalytic
+
+    @Binds
+    @Singleton
+    abstract fun bindRepositoryServer(repository: RepositoryServerImpl): RepositoryServer
+
 }

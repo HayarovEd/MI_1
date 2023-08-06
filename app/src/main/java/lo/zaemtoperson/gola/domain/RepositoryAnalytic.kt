@@ -6,7 +6,7 @@ import lo.zaemtoperson.gola.domain.model.Sub2
 import lo.zaemtoperson.gola.domain.model.Sub3
 import lo.zaemtoperson.gola.domain.model.Sub5
 
-interface Repository {
+interface RepositoryAnalytic {
     suspend fun getSub1 (
         applicationToken: String,
         userId: String,

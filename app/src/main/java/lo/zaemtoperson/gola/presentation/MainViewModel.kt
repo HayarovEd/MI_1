@@ -1,5 +1,6 @@
 package lo.zaemtoperson.gola.presentation
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -16,15 +17,18 @@ import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.APY_KEY
 import lo.zaemtoperson.gola.data.Resource.Error
 import lo.zaemtoperson.gola.data.Resource.Success
-import lo.zaemtoperson.gola.domain.Repository
+import lo.zaemtoperson.gola.domain.RepositoryAnalytic
+import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
+import lo.zaemtoperson.gola.domain.model.StatusApplication
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val service: Service,
     private val sharedKeeper: SharedKepper,
-    private val repository: Repository
+    private val repositoryAnalytic: RepositoryAnalytic,
+    private val repositoryServer: RepositoryServer
 ) : ViewModel() {
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -35,7 +39,7 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch {
                 val appMetrika = service.appMetrika
                 val instanceIdMyTracker = if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
-                    val instance = service.instanceIdMyTrcaker
+                    val instance = service.instanceIdMyTracker
                     sharedKeeper.setMyTrackerInstanceId(instance)
                     instance
                 } else {
@@ -70,7 +74,8 @@ class MainViewModel @Inject constructor(
                     locale = locale,
                     deviceId = deviceId,
                     versionApplication = version,
-                    isConnectInternet = true
+                    isConnectInternet = true,
+                    statusApplication = StatusApplication.Connect()
                 )
                     .updateStateUI()
             }
@@ -105,6 +110,7 @@ class MainViewModel @Inject constructor(
         } else {
             _state.value.copy(
                 isConnectInternet = false,
+                statusApplication = StatusApplication.Mock(),
                 message = "Need to connect internet"
             )
                 .updateStateUI()
@@ -143,17 +149,17 @@ class MainViewModel @Inject constructor(
             val currentGaid = _state.value.gaid
             val currentMyTrackerId = _state.value.instanceIdMyTracker
             val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
-            when (val result = repository.getSub1(
+            when (val result = repositoryAnalytic.getSub1(
                 applicationToken = APY_KEY,
-                userId = currentGaid?:"",
+                userId = currentGaid ?: "",
                 appMetricaId = APP_METRICA,
-                appsflyer = currentAppsFlyerId?:"",
-                firebaseToken = currentFireBaseToken?:"",
-                myTrackerId = currentMyTrackerId?:""
+                appsflyer = currentAppsFlyerId ?: "",
+                firebaseToken = currentFireBaseToken ?: "",
+                myTrackerId = currentMyTrackerId ?: ""
             )) {
                 is Error -> {
                     _state.value.copy(
-                        message = result.message?: "unknown error"
+                        message = result.message ?: "unknown error"
                     )
                         .updateStateUI()
                 }
@@ -174,17 +180,17 @@ class MainViewModel @Inject constructor(
             val currentGaid = _state.value.gaid
             val currentMyTrackerId = _state.value.instanceIdMyTracker
             val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
-            when (val result = repository.getSub3(
+            when (val result = repositoryAnalytic.getSub3(
                 applicationToken = APY_KEY,
                 userId = currentGaid ?: "",
                 appMetricaId = APP_METRICA,
-                appsflyer = currentAppsFlyerId?:"",
-                firebaseToken = currentFireBaseToken?:"",
-                myTrackerId = currentMyTrackerId?:""
+                appsflyer = currentAppsFlyerId ?: "",
+                firebaseToken = currentFireBaseToken ?: "",
+                myTrackerId = currentMyTrackerId ?: ""
             )) {
                 is Error -> {
                     _state.value.copy(
-                        message = result.message?: "unknown error"
+                        message = result.message ?: "unknown error"
                     )
                         .updateStateUI()
                 }
@@ -203,7 +209,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             delay(2000)
             val currentGaid = _state.value.gaid
-            when (val result = repository.getSub5(
+            when (val result = repositoryAnalytic.getSub5(
                 applicationToken = APY_KEY,
                 userId = currentGaid ?: "",
                 gaid = currentGaid ?: ""
@@ -229,7 +235,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             delay(2000)
             val currentGaid = _state.value.gaid
-            when (val result = repository.getSub2(
+            when (val result = repositoryAnalytic.getSub2(
                 applicationToken = APY_KEY,
                 userId = currentGaid ?: "",
                 appsflyer = "",
@@ -259,7 +265,7 @@ class MainViewModel @Inject constructor(
             val currentMyTracker = _state.value.trackerDeeplink
             val currentAppsFlyer = _state.value.appsFlyerDeeplink
             if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isNullOrBlank()) {
-                when (val result = repository.getSub2(
+                when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
                     appsflyer = "",
@@ -280,7 +286,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
             } else if (currentMyTracker != null) {
-                when (val result = repository.getSub2(
+                when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
                     appsflyer = "",
@@ -301,7 +307,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
             } else if (currentAppsFlyer != null) {
-                when (val result = repository.getSub2(
+                when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
                     appsflyer = currentAppsFlyer,
@@ -319,6 +325,83 @@ class MainViewModel @Inject constructor(
                             affsub2Unswer = result.data?.affsub2 ?: ""
                         )
                             .updateStateUI()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadDbData() {
+        viewModelScope.launch {
+            delay(2000)
+            when (val folder = repositoryServer.getFolder(
+                sim = _state.value.sim ?: "",
+                colorFb = _state.value.colorFb,
+                deviceId = _state.value.deviceId ?: "",
+                fbKey = _state.value.fireBaseToken ?: "",
+                gaid = _state.value.gaid ?: "",
+                instanceMyTracker = _state.value.instanceIdMyTracker ?: "",
+                local = _state.value.locale,
+                metrikaKey = _state.value.appMetrica,
+                root = if (_state.value.isRoot) "granted" else "null",
+                version = _state.value.versionApplication ?: ""
+            )) {
+                is Error -> {
+                    _state.value.copy(
+                        message = folder.message ?: "unknown error",
+                        statusApplication = StatusApplication.Mock(),
+                    )
+                        .updateStateUI()
+                }
+
+                is Success -> {
+                    if (folder.data?.folder.isNullOrBlank() || folder.data?.folder == "null") {
+                        _state.value.copy(
+                            statusApplication = StatusApplication.Mock(),
+                        )
+                            .updateStateUI()
+                    } else {
+                        when (val currentDate =
+                            folder.data?.let { repositoryServer.getCurrentDate(it.folder) }) {
+                            is Error -> {
+                                _state.value.copy(
+                                    message = currentDate.message ?: "unknown error",
+                                    statusApplication = StatusApplication.Mock(),
+                                )
+                                    .updateStateUI()
+                            }
+
+                            is Success -> {
+                                val newDate = currentDate.data?.date
+                                val savedDate = sharedKeeper.getCurrentDate()
+                                if (savedDate.isNullOrBlank() || savedDate != newDate) {
+                                    sharedKeeper.setCurrentDate(newDate ?: "")
+                                    when (val db = repositoryServer.getDataDb(folder.data.folder)) {
+                                        is Error -> {
+                                            _state.value.copy(
+                                                statusApplication = StatusApplication.Mock(),
+                                            )
+                                                .updateStateUI()
+                                        }
+
+                                        is Success -> {
+                                            _state.value.copy(
+                                                statusApplication = StatusApplication.Connect(),
+                                                dbData = db.data
+                                            )
+                                                .updateStateUI()
+                                        }
+                                    }
+                                }
+                            }
+
+                            null -> {
+                                _state.value.copy(
+                                    statusApplication = StatusApplication.Mock(),
+                                )
+                                    .updateStateUI()
+                            }
+                        }
                     }
                 }
             }

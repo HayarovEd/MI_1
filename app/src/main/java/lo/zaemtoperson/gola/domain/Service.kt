@@ -2,7 +2,7 @@ package lo.zaemtoperson.gola.domain
 
 interface Service {
     val appMetrika: String
-    val instanceIdMyTrcaker:String
+    val instanceIdMyTracker:String
     fun getSimCountryIso(): String?
     fun isRootedOne(): Boolean
     fun isRootedTwo(): Boolean

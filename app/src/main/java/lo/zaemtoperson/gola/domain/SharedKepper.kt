@@ -13,4 +13,8 @@ interface SharedKepper {
     fun getAppsFlyerInstanceId(): String?
 
     fun setAppsFlyerInstanceId(date: String)
+
+    fun getCurrentDate(): String?
+
+    fun setCurrentDate(date: String)
 }

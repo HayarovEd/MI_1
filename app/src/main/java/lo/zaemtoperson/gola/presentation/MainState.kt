@@ -1,5 +1,8 @@
 package lo.zaemtoperson.gola.presentation
 
+import lo.zaemtoperson.gola.domain.model.StatusApplication
+import lo.zaemtoperson.gola.domain.model.basedto.BaseDto
+
 data class MainState(
     val appMetrica: String = "",
     val colorFb: String = "",
@@ -20,4 +23,6 @@ data class MainState(
     val affsub2Unswer: String = "",
     val affsub3Unswer: String = "",
     val affsub5Unswer: String = "",
+    val dbData: BaseDto? = null,
+    val statusApplication: StatusApplication = StatusApplication.Mock()
 )

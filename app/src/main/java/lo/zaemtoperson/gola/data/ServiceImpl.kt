@@ -118,7 +118,7 @@ class ServiceImpl @Inject constructor(private val application: Application) : Se
     }
 
     //P9
-    override val instanceIdMyTrcaker = MyTracker.getInstanceId(application)
+    override val instanceIdMyTracker = MyTracker.getInstanceId(application)
 
     //P10
     override fun getApplicationVersion(): String? {

@@ -2,7 +2,7 @@ package lo.zaemtoperson.gola.data
 
 import com.google.gson.Gson
 import javax.inject.Inject
-import lo.zaemtoperson.gola.domain.Repository
+import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.model.AffSub1
 import lo.zaemtoperson.gola.domain.model.AffSub2
 import lo.zaemtoperson.gola.domain.model.AffSub3
@@ -13,9 +13,9 @@ import lo.zaemtoperson.gola.domain.model.Sub3
 import lo.zaemtoperson.gola.domain.model.Sub5
 
 
-class RepositoryImpl @Inject constructor(
+class RepositoryAnalyticImpl @Inject constructor(
     private val apiAnalytic: ApiAnalytic
-): Repository {
+): RepositoryAnalytic {
 
     override suspend fun getSub1(
         applicationToken: String,
