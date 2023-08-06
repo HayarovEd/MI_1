@@ -21,10 +21,12 @@ import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
+import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
+import lo.zaemtoperson.gola.presentation.MainEvent.onChangeBaseState
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -143,6 +145,13 @@ class MainViewModel @Inject constructor(
                     )
                         .updateStateUI()
                 }
+            }
+
+            is onChangeBaseState -> {
+                _state.value.copy(
+                    statusApplication = StatusApplication.Connect(mainEvent.baseState),
+                )
+                    .updateStateUI()
             }
         }
     }

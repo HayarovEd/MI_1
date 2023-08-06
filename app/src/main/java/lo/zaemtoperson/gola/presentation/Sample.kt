@@ -1,16 +1,37 @@
 package lo.zaemtoperson.gola.presentation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
+import lo.zaemtoperson.gola.domain.model.StatusApplication.Loading
+import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 
 @Composable
 fun Sample (
     viewModel: MainViewModel = hiltViewModel(),
 ) {
-    //viewModel.loadData(instanceIdAppsFlyer=instanceIdAppsFlyer)
     val state = viewModel.state.collectAsState()
-    Log.d("AAAAAA", "db ${state.value.dbData?.appConfig?.privacyPolicyHtml}")
-    state.value.dbData?.appConfig?.let { ConnectScreen(text = it.userTermHtml) }
+    val onEvent = viewModel::onEvent
+    when (val currentState = state.value.statusApplication) {
+        is Connect -> {
+            ConnectScreen(
+                baseState = currentState.baseState,
+                db = state.value.dbData!!,
+                onClickCards = { onEvent(MainEvent.onChangeBaseState(BaseState.Cards)) },
+                onClickCredits = { onEvent(MainEvent.onChangeBaseState(BaseState.Credits)) },
+                onClickLoans = { onEvent(MainEvent.onChangeBaseState(BaseState.Loans)) }
+            )
+        }
+
+        Loading -> {
+
+        }
+
+        Mock -> {
+
+        }
+    }
+
 }
