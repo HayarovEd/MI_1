@@ -1,7 +1,6 @@
 package lo.zaemtoperson.gola.presentation
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -22,9 +21,10 @@ import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
-import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
+import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -81,7 +81,6 @@ class MainViewModel @Inject constructor(
                     deviceId = deviceId,
                     versionApplication = version,
                     isConnectInternet = true,
-                    statusApplication = Connect()
                 )
                     .updateStateUI()
             }
@@ -117,7 +116,7 @@ class MainViewModel @Inject constructor(
         } else {
             _state.value.copy(
                 isConnectInternet = false,
-                statusApplication = Mock(),
+                statusApplication = Mock,
                 message = "Need to connect internet"
             )
                 .updateStateUI()
@@ -127,6 +126,24 @@ class MainViewModel @Inject constructor(
     private fun MainState.updateStateUI() {
         _state.update {
             this
+        }
+    }
+
+    fun onEvent(mainEvent: MainEvent) {
+        when (mainEvent) {
+            Reconnect -> {
+                if (service.checkedInternetConnection()) {
+                    _state.value.copy(
+                        isConnectInternet = true,
+                    )
+                        .updateStateUI()
+                } else {
+                    _state.value.copy(
+                        isConnectInternet = false,
+                    )
+                        .updateStateUI()
+                }
+            }
         }
     }
 
@@ -356,7 +373,7 @@ class MainViewModel @Inject constructor(
                 is Error -> {
                     _state.value.copy(
                         message = folder.message ?: "unknown error",
-                        statusApplication = Mock(),
+                        statusApplication = Mock,
                     )
                         .updateStateUI()
                 }
@@ -364,21 +381,28 @@ class MainViewModel @Inject constructor(
                 is Success -> {
                     if (folder.data?.folder.isNullOrBlank() || folder.data?.folder == "null") {
                         _state.value.copy(
-                            statusApplication = Mock(),
+                            statusApplication = Mock,
                         )
                             .updateStateUI()
                     } else {
                         when (val db = folder.data?.folder?.let { repositoryServer.getDataDb(it) }) {
                             is Error -> {
                                 _state.value.copy(
-                                    statusApplication = Mock(),
+                                    statusApplication = Mock,
                                 )
                                     .updateStateUI()
                             }
 
                             is Success -> {
-                                _state.value.copy(
-                                    statusApplication = Connect(),
+                                val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
+                                    Connect(BaseState.Loans)
+                                } else if (!db.data?.credits.isNullOrEmpty()) {
+                                    Connect(BaseState.Credits)
+                                } else {
+                                    Connect(BaseState.Cards)
+                                }
+                                    _state.value.copy(
+                                    statusApplication = statusApplication,
                                     dbData = db.data
                                 )
                                     .updateStateUI()
@@ -386,7 +410,7 @@ class MainViewModel @Inject constructor(
 
                             null -> {
                                 _state.value.copy(
-                                    statusApplication = Mock(),
+                                    statusApplication = Mock,
                                 )
                                     .updateStateUI()
                             }

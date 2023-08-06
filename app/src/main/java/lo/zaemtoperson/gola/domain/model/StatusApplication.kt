@@ -1,6 +1,8 @@
 package lo.zaemtoperson.gola.domain.model
 
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
+
 sealed class StatusApplication {
-    class Mock():StatusApplication()
-    class Connect:StatusApplication()
+    object Mock : StatusApplication()
+    class Connect (val baseState: BaseState):StatusApplication()
 }

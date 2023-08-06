@@ -27,4 +27,16 @@
     <string name="access_phone">Вы согласны предоставить доступ к вашему номеру телефона?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+
+
+    //No Internet
+    <string name="not_connect">Нет соединения</string>
+    <string name="try_internet">Проверьте интернет-соединение\nи попробуйте ещё раз</string>
+    <string name="reconnect">Переподключиться</string>
+
+
+    <string name="loans">Займы</string>
+    <string name="cards">Карты</string>
+    <string name="credits">Кредиты</string>
+
 </resources>

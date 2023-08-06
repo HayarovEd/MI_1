@@ -24,5 +24,5 @@ data class MainState(
     val affsub3Unswer: String = "",
     val affsub5Unswer: String = "",
     val dbData: BaseDto? = null,
-    val statusApplication: StatusApplication = StatusApplication.Mock()
+    val statusApplication: StatusApplication = StatusApplication.Mock
 )

@@ -7,9 +7,9 @@ data class BaseDto(
     @SerializedName("app_config")
     val appConfig: AppConfig,
     @SerializedName("cards")
-    val cards: List<Card>,
+    val cards: List<Card> = emptyList(),
     @SerializedName("credits")
-    val credits: List<Credit>,
+    val credits: List<Credit> = emptyList(),
     @SerializedName("loans")
-    val loans: List<Loan>
+    val loans: List<Loan> = emptyList()
 )
