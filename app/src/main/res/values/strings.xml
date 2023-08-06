@@ -38,5 +38,10 @@
     <string name="loans">Займы</string>
     <string name="cards">Карты</string>
     <string name="credits">Кредиты</string>
+    <string name="amount">Суммы:</string>
+    <string name="bet">Ставка:</string>
+    <string name="term">Срок:</string>
+
+    Суммы:
 
 </resources>

@@ -1,12 +1,14 @@
 package lo.zaemtoperson.gola.presentation
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,17 +25,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.domain.model.basedto.BaseDto
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
+import lo.zaemtoperson.gola.ui.theme.baseBackground
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.green
 import lo.zaemtoperson.gola.ui.theme.lightGray
 
 
-@SuppressLint("UnrememberedMutableState", "UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConnectScreen(
@@ -83,8 +86,26 @@ fun ConnectScreen(
 
             }
         }
-    ) {
-
+    ) { valuePaddings ->
+        Column (
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = baseBackground)
+                .padding(valuePaddings),
+        ) {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(db.loans) { loan ->
+                    ItemLoan(
+                        loan = loan,
+                        onClick = {})
+                }
+            }
+        }
     }
 }
 
