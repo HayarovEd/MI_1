@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +23,15 @@ import lo.zaemtoperson.gola.domain.SharedKepper
 import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
+import lo.zaemtoperson.gola.domain.model.TypeCard
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
+import lo.zaemtoperson.gola.domain.model.basedto.Card
+import lo.zaemtoperson.gola.domain.model.basedto.CardsCredit
+import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
+import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
 import lo.zaemtoperson.gola.presentation.MainEvent.onChangeBaseState
+import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -408,7 +413,13 @@ class MainViewModel @Inject constructor(
                                 } else if (!db.data?.credits.isNullOrEmpty()) {
                                     Connect(BaseState.Credits)
                                 } else {
-                                    Connect(BaseState.Cards)
+                                    collectCards(db.data?.cards)
+                                    val typeCard = if (_state.value.creditCards.isNotEmpty()) {
+                                        TypeCard.CardCredit
+                                    } else if (_state.value.debitCards.isNotEmpty()) {
+                                        TypeCard.CardDebit
+                                    } else TypeCard.CardInstallment
+                                    Connect(BaseState.Cards(typeCard))
                                 }
                                     _state.value.copy(
                                     statusApplication = statusApplication,
@@ -467,9 +478,27 @@ class MainViewModel @Inject constructor(
                                     .updateStateUI()
                             }
                         }*/
+
                     }
                 }
             }
         }
+    }
+
+    private fun collectCards(allCards: List<Card>?) {
+        val creditCards = mutableListOf<CardsCredit>()
+        val debitCards = mutableListOf<CardsDebit>()
+        val installmentCards = mutableListOf<CardsInstallment>()
+        allCards?.forEach { card ->
+            creditCards.addAll(card.cardsCredit)
+            debitCards.addAll(card.cardsDebit)
+            installmentCards.addAll(card.cardsInstallment)
+        }
+        _state.value.copy(
+            creditCards = creditCards,
+            debitCards = debitCards,
+            installmentCards = installmentCards
+        )
+            .updateStateUI()
     }
 }

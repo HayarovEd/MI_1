@@ -2,6 +2,9 @@ package lo.zaemtoperson.gola.presentation
 
 import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.basedto.BaseDto
+import lo.zaemtoperson.gola.domain.model.basedto.CardsCredit
+import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
+import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 
 data class MainState(
     val appMetrica: String = "",
@@ -24,5 +27,8 @@ data class MainState(
     val affsub3Unswer: String = "",
     val affsub5Unswer: String = "",
     val dbData: BaseDto? = null,
-    val statusApplication: StatusApplication = StatusApplication.Loading
+    val statusApplication: StatusApplication = StatusApplication.Loading,
+    val creditCards: List<CardsCredit> = emptyList(),
+    val debitCards: List<CardsDebit> = emptyList(),
+    val installmentCards: List<CardsInstallment> = emptyList()
 )
