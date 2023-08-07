@@ -12,16 +12,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import lo.zaemtoperson.gola.domain.model.basedto.Credit
 import lo.zaemtoperson.gola.domain.model.basedto.Loan
 import lo.zaemtoperson.gola.ui.theme.baseBackground
 
 @Composable
-fun Loans(
+fun Credits(
     modifier: Modifier = Modifier,
     valuePaddings: PaddingValues,
-    loans: List<Loan>,
-    onClickWeb: () -> Unit,
+    credits: List<Credit>,
     onClickOffer: () -> Unit,
+    onClickWeb: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -35,9 +36,9 @@ fun Loans(
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(loans) { loan ->
-                ItemLoan(
-                    loan = loan,
+            items(credits) { credit ->
+                ItemCredit(
+                    credit = credit,
                     onClickWeb = onClickWeb,
                     onClickOffer = onClickOffer
                 )

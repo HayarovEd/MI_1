@@ -4,5 +4,4 @@ sealed class BaseState{
     object Loans:BaseState()
     object Cards:BaseState()
     object Credits:BaseState()
-    object Offer:BaseState()
 }

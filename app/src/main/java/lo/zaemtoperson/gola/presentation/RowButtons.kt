@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +21,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextAlign.Companion
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lo.zaemtoperson.gola.R
@@ -36,7 +34,7 @@ import lo.zaemtoperson.gola.ui.theme.white
 fun RowButtons(
     modifier: Modifier = Modifier,
     titleOffer: String,
-    onClickInfo: () -> Unit,
+    onClickWeb: () -> Unit,
     onClickOffer: () -> Unit,
 ) {
     Row(
@@ -49,7 +47,7 @@ fun RowButtons(
                 .weight(1f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(color = baseBackground)
-                .clickable(onClick = onClickInfo)
+                .clickable(onClick = onClickOffer)
                 .padding(vertical = 14.dp)
         ) {
             Icon(
@@ -65,7 +63,7 @@ fun RowButtons(
                 .weight(3f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(color = black)
-                .clickable(onClick = onClickOffer)
+                .clickable(onClick = onClickWeb)
                 .padding(vertical = 16.dp)
         ) {
             Text(

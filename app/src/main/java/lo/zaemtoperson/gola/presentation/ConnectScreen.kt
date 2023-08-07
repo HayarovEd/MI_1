@@ -32,7 +32,6 @@ import lo.zaemtoperson.gola.domain.model.basedto.BaseDto
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Cards
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Credits
-import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Offer
 import lo.zaemtoperson.gola.ui.theme.baseBackground
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.green
@@ -48,17 +47,14 @@ fun ConnectScreen(
     onClickLoans: () -> Unit,
     onClickCards: () -> Unit,
     onClickCredits: () -> Unit,
-    onClickInfo: () -> Unit,
     onClickOffer: () -> Unit,
     onClickRules: () -> Unit,
+    onClickWeb: () -> Unit,
 ) {
     val title = when (baseState) {
         Cards -> stringResource(id = R.string.cards)
         Credits -> stringResource(id = R.string.credits)
         BaseState.Loans -> stringResource(id = R.string.loans)
-        Offer -> {
-            ""
-        }
     }
     Scaffold(
         modifier = modifier
@@ -137,19 +133,22 @@ fun ConnectScreen(
             }
 
             Credits -> {
-
+                Credits(
+                    valuePaddings = valuePaddings,
+                    credits = db.credits,
+                    onClickWeb = onClickWeb,
+                    onClickOffer = onClickOffer
+                )
             }
 
             BaseState.Loans -> {
                 Loans(
                     valuePaddings = valuePaddings,
                     loans = db.loans,
-                    onClickInfo = onClickInfo,
+                    onClickWeb = onClickWeb,
                     onClickOffer = onClickOffer
                 )
             }
-
-            Offer -> {}
         }
     }
 }

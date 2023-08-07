@@ -24,16 +24,16 @@ import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.data.VALUE_ONE
-import lo.zaemtoperson.gola.domain.model.basedto.Loan
+import lo.zaemtoperson.gola.domain.model.basedto.Credit
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.white
 
 @Composable
-fun ItemLoan(
+fun ItemCredit(
     modifier: Modifier = Modifier,
-    loan: Loan,
-    onClickWeb: () -> Unit,
+    credit: Credit,
     onClickOffer: () -> Unit,
+    onClickWeb: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -44,7 +44,7 @@ fun ItemLoan(
     ) {
         AsyncImage(
             modifier = modifier.fillMaxWidth(),
-            model = loan.screen,
+            model = credit.screen,
             contentScale = ContentScale.FillWidth,
             contentDescription = ""
         )
@@ -59,43 +59,43 @@ fun ItemLoan(
                 fontStyle = FontStyle(font.soyuz_grotesk_bold),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Normal,
-                text = loan.name
+                text = credit.name
             )
             Rang(
-                rang = loan.score
+                rang = credit.score
             )
         }
         Spacer(modifier = modifier.height(13.dp))
         RowData(
             title = stringResource(id = R.string.amount),
-            content = loan.summPrefix +" " + loan.summMin +" " + loan.summMid +" " + loan.summMax +" " + loan.summPostfix
+            content = credit.summPrefix +" " + credit.summMin +" " + credit.summMid +" " + credit.summMax +" " + credit.summPostfix
         )
-        if (loan.hidePercentFields == VALUE_ONE) {
+        if (credit.hidePercentFields == VALUE_ONE) {
             Spacer(modifier = modifier.height(8.dp))
             RowData(
                 title = stringResource(id = R.string.bet),
-                content = loan.percentPrefix +" " + loan.percent +" " + loan.percentPostfix
+                content = credit.percentPrefix +" " + credit.percent +" " + credit.percentPostfix
             )
         }
-        if (loan.hideTermFields == VALUE_ONE) {
+        if (credit.hideTermFields == VALUE_ONE) {
             Spacer(modifier = modifier.height(8.dp))
             RowData(
                 title = stringResource(id = R.string.term),
-                content = loan.termPrefix +" "+ loan.termMin +" " + loan.termMid +" " + loan.termMax +" " + loan.termPostfix
+                content = credit.termPrefix +" "+ credit.termMin +" " + credit.termMid +" " + credit.termMax +" " + credit.termPostfix
             )
         }
         Spacer(modifier = modifier.height(13.dp))
         RowCard(
-            showVisa = loan.showVisa,
-            showMaster = loan.showMastercard,
-            showYandex = loan.showYandex,
-            showMir = loan.showMir,
-            showQivi = loan.showQiwi,
-            showCache = loan.showCash
+            showVisa = credit.showVisa,
+            showMaster = credit.showMastercard,
+            showYandex = credit.showYandex,
+            showMir = credit.showMir,
+            showQivi = credit.showQiwi,
+            showCache = credit.showCash
         )
         Spacer(modifier = modifier.height(13.dp))
         RowButtons(
-            titleOffer = loan.orderButtonText,
+            titleOffer = credit.orderButtonText,
             onClickWeb = onClickWeb,
             onClickOffer = onClickOffer
         )
