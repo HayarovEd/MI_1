@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.ContentScale.Companion
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +31,8 @@ import lo.zaemtoperson.gola.ui.theme.white
 fun ItemLoan(
     modifier: Modifier = Modifier,
     loan: Loan,
-    onClick: () -> Unit,
+    onClickInfo: () -> Unit,
+    onClickOffer: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -92,6 +92,11 @@ fun ItemLoan(
             showQivi = loan.showQiwi,
             showCache = loan.showCash
         )
-
+        Spacer(modifier = modifier.height(13.dp))
+        RowButtons(
+            titleOffer = loan.orderButtonText,
+            onClickInfo = onClickInfo,
+            onClickOffer = onClickOffer
+        )
     }
 }

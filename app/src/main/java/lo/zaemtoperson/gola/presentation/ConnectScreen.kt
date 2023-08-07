@@ -102,7 +102,8 @@ fun ConnectScreen(
                 items(db.loans) { loan ->
                     ItemLoan(
                         loan = loan,
-                        onClick = {})
+                        onClickInfo = {},
+                        onClickOffer = {})
                 }
             }
         }
