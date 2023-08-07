@@ -9,10 +9,15 @@ import lo.zaemtoperson.gola.domain.model.StatusApplication.Loading
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
 import lo.zaemtoperson.gola.domain.model.TypeCard
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
+import lo.zaemtoperson.gola.ui.presentation_v1.BaseScreen
+import java.io.File
+import java.util.concurrent.ExecutorService
 
 @Composable
-fun Sample (
+fun Sample(
     viewModel: MainViewModel = hiltViewModel(),
+    outputDirectory: File,
+    executor: ExecutorService,
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
@@ -25,7 +30,16 @@ fun Sample (
                 onClickCredits = { onEvent(MainEvent.OnChangeBaseState(BaseState.Credits)) },
                 onClickLoans = { onEvent(MainEvent.OnChangeBaseState(BaseState.Loans)) },
                 onClickOffer = {},
-                onClickRules = {},
+                onClickRules = {
+                    onEvent(
+                        MainEvent.OnChangeStatusApplication(
+                            StatusApplication.Info(
+                                currentBaseState = currentState.baseState,
+                                content = state.value.dbData!!.appConfig.privacyPolicyHtml
+                            )
+                        )
+                    )
+                },
                 onClickWeb = {},
                 creditCards = state.value.creditCards,
                 debitCards = state.value.debitCards,
@@ -35,16 +49,35 @@ fun Sample (
         }
 
         Loading -> {
-
+            LoadingScreen()
         }
 
-        Mock -> {
-
+        is Mock -> {
+            BaseScreen(
+                outputDirectory = outputDirectory,
+                executor = executor,
+            )
         }
 
-        is StatusApplication.Info -> TODO()
-        is StatusApplication.Offer -> TODO()
-        is StatusApplication.Web -> TODO()
+        is StatusApplication.Info -> {
+            PrivacyScreen(
+                content = state.value.dbData?.appConfig?.privacyPolicyHtml?:"",
+                baseState = (state.value.statusApplication as StatusApplication.Info).currentBaseState,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        is StatusApplication.Offer -> {
+            TODO()
+        }
+
+        is StatusApplication.Web -> {
+            TODO()
+        }
+
+        StatusApplication.NoConnect -> {
+            NoInternetScreen(onEvent = viewModel::onEvent)
+        }
     }
 
 }

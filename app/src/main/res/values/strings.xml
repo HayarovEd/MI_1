@@ -45,5 +45,7 @@
     <string name="credit">Кредитные</string>
     <string name="debit">Дебетовые</string>
     <string name="installment">Рассрочка</string>
+    <string name="rules">Пользовательское соглашение</string>
+    <string name="back">Назад</string>
 
 </resources>

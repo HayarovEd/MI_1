@@ -33,4 +33,6 @@ sealed class StatusApplication {
     class Web (
         val url: String
     ):StatusApplication()
+
+    object NoConnect:StatusApplication()
 }

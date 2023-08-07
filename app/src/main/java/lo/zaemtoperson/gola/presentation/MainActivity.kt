@@ -48,7 +48,9 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
-            Sample()
+            Sample(
+                outputDirectory = outputDirectory,
+                executor = cameraExecutor,)
            /* BaseScreen(
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,
