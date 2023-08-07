@@ -32,6 +32,9 @@ import lo.zaemtoperson.gola.domain.model.basedto.BaseDto
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Cards
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Credits
+import lo.zaemtoperson.gola.domain.model.basedto.CardsCredit
+import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
+import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 import lo.zaemtoperson.gola.ui.theme.baseBackground
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.green
@@ -44,6 +47,10 @@ fun ConnectScreen(
     modifier: Modifier = Modifier,
     db: BaseDto,
     baseState: BaseState,
+    creditCards: List<CardsCredit>,
+    debitCards: List<CardsDebit>,
+    installmentCards: List<CardsInstallment>,
+    onEvent:(MainEvent) -> Unit,
     onClickLoans: () -> Unit,
     onClickCards: () -> Unit,
     onClickCredits: () -> Unit,
@@ -52,7 +59,7 @@ fun ConnectScreen(
     onClickWeb: () -> Unit,
 ) {
     val title = when (baseState) {
-        Cards -> stringResource(id = R.string.cards)
+        is Cards -> stringResource(id = R.string.cards)
         Credits -> stringResource(id = R.string.credits)
         BaseState.Loans -> stringResource(id = R.string.loans)
     }
@@ -127,9 +134,18 @@ fun ConnectScreen(
             }
         }
     ) { valuePaddings ->
-        when (baseState) {
-            Cards -> {
-
+        when (val type = baseState) {
+            is Cards -> {
+                Cards(
+                    valuePaddings = valuePaddings,
+                    creditCards = creditCards,
+                    debitCards = debitCards,
+                    installmentCards = installmentCards,
+                    typeCard = type.typeCard,
+                    onClickWeb = onClickWeb,
+                    onClickOffer = onClickOffer,
+                    onEvent = onEvent
+                )
             }
 
             Credits -> {

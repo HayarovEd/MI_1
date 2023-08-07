@@ -20,7 +20,6 @@ import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
-import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
 import lo.zaemtoperson.gola.domain.model.TypeCard
@@ -30,7 +29,7 @@ import lo.zaemtoperson.gola.domain.model.basedto.CardsCredit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
-import lo.zaemtoperson.gola.presentation.MainEvent.onChangeBaseState
+import lo.zaemtoperson.gola.presentation.MainEvent.OnChangeBaseState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -152,9 +151,16 @@ class MainViewModel @Inject constructor(
                 }
             }
 
-            is onChangeBaseState -> {
+            is OnChangeBaseState -> {
                 _state.value.copy(
-                    statusApplication = StatusApplication.Connect(mainEvent.baseState),
+                    statusApplication = Connect(mainEvent.baseState),
+                )
+                    .updateStateUI()
+            }
+
+            is MainEvent.OnChangeTypeCard -> {
+                _state.value.copy(
+                    statusApplication = Connect(BaseState.Cards(mainEvent.typeCard)),
                 )
                     .updateStateUI()
             }
@@ -408,12 +414,12 @@ class MainViewModel @Inject constructor(
                             }
 
                             is Success -> {
+                                collectCards(db.data?.cards)
                                 val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
                                     Connect(BaseState.Loans)
                                 } else if (!db.data?.credits.isNullOrEmpty()) {
                                     Connect(BaseState.Credits)
                                 } else {
-                                    collectCards(db.data?.cards)
                                     val typeCard = if (_state.value.creditCards.isNotEmpty()) {
                                         TypeCard.CardCredit
                                     } else if (_state.value.debitCards.isNotEmpty()) {

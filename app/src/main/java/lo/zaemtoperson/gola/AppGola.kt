@@ -7,8 +7,8 @@ import com.my.tracker.MyTracker
 import dagger.hilt.android.HiltAndroidApp
 import lo.zaemtoperson.gola.data.APPS_FLYER
 import lo.zaemtoperson.gola.data.MY_TRACKER
-import lo.zaemtoperson.gola.data.USER_X
-import pro.userx.UserX
+
+//import pro.userx.UserX
 
 
 @HiltAndroidApp
@@ -39,7 +39,7 @@ class AppGola: Application() {
         }
         AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, this)
         AppsFlyerLib.getInstance().start(this)
-        UserX.init(USER_X)
+        //UserX.init(USER_X)
     }
 
 

@@ -42,6 +42,8 @@
     <string name="bet">Ставка:</string>
     <string name="term">Срок:</string>
 
-    Суммы:
+    <string name="credit">Кредитные</string>
+    <string name="debit">Дебетовые</string>
+    <string name="installment">Рассрочка</string>
 
 </resources>
