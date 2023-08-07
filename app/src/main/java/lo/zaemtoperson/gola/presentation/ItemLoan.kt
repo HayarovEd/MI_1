@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
+import lo.zaemtoperson.gola.data.VALUE_ONE
 import lo.zaemtoperson.gola.domain.model.basedto.Loan
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.white
@@ -69,14 +70,14 @@ fun ItemLoan(
             title = stringResource(id = R.string.amount),
             content = loan.summPrefix +" " + loan.summMin +" " + loan.summMid +" " + loan.summMax +" " + loan.summPostfix
         )
-        if (loan.hidePercentFields == "1") {
+        if (loan.hidePercentFields == VALUE_ONE) {
             Spacer(modifier = modifier.height(8.dp))
             RowData(
                 title = stringResource(id = R.string.bet),
                 content = loan.percentPrefix +" " + loan.percent +" " + loan.percentPostfix
             )
         }
-        if (loan.hideTermFields == "1") {
+        if (loan.hideTermFields == VALUE_ONE) {
             Spacer(modifier = modifier.height(8.dp))
             RowData(
                 title = stringResource(id = R.string.term),

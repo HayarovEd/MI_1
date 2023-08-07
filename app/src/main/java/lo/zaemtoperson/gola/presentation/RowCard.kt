@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.data.VALUE_ONE
 
 @Composable
 fun RowCard(
@@ -26,32 +27,32 @@ fun RowCard(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if(showVisa=="0") {
+        if(showVisa==VALUE_ONE) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.visa),
                 contentDescription = "")
         }
-        if(showMaster=="0") {
+        if(showMaster==VALUE_ONE) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.master),
                 contentDescription = "")
         }
-        if(showYandex=="0") {
+        if(showYandex==VALUE_ONE) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.y_money),
                 contentDescription = "")
         }
-        if(showMir=="0") {
+        if(showMir==VALUE_ONE) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.mir),
                 contentDescription = "")
         }
-        if(showQivi=="0") {
+        if(showQivi==VALUE_ONE) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.qivi),
                 contentDescription = "")
         }
-        if(showCache=="0") {
+        if(showCache==VALUE_ONE) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.money),
                 contentDescription = "")
