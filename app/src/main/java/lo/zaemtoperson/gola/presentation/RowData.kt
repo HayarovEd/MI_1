@@ -1,5 +1,6 @@
 package lo.zaemtoperson.gola.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.ui.theme.absoluteDark
 import lo.zaemtoperson.gola.ui.theme.baseBackground
+import lo.zaemtoperson.gola.ui.theme.white
 
 @Composable
 fun RowData(
@@ -30,6 +32,7 @@ fun RowData(
         modifier = modifier
             .border(width = 1.dp, color = baseBackground)
             .fillMaxWidth()
+            .background(color = white)
             .clip(shape = RoundedCornerShape(4.dp))
             .padding(horizontal = 8.dp, vertical = 7.dp),
         horizontalArrangement = Arrangement.SpaceBetween,

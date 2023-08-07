@@ -68,7 +68,11 @@ fun Sample(
         }
 
         is StatusApplication.Offer -> {
-            TODO()
+            OfferScreen(
+                elementOffer = (state.value.statusApplication as StatusApplication.Offer).elementOffer,
+                baseState = (state.value.statusApplication as StatusApplication.Offer).currentBaseState,
+                onEvent = viewModel::onEvent
+            )
         }
 
         is StatusApplication.Web -> {
