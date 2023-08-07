@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,8 @@ import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.data.VALUE_ONE
+import lo.zaemtoperson.gola.domain.model.ElementOffer
+import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.Credit
 import lo.zaemtoperson.gola.ui.theme.black
@@ -44,7 +47,35 @@ fun ItemCredit(
             .padding(16.dp)
     ) {
         AsyncImage(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable {
+                    onEvent(
+                        MainEvent.OnChangeStatusApplication(
+                            StatusApplication.Offer(
+                                currentBaseState = baseState,
+                                ElementOffer(
+                                    name = credit.name,
+                                    pathImage = credit.screen,
+                                    rang = credit.score,
+                                    description = credit.description,
+                                    amount = credit.summPrefix + " " + credit.summMin + " " + credit.summMid + " " + credit.summMax + " " + credit.summPostfix,
+                                    bet = credit.percentPrefix + " " + credit.percent + " " + credit.percentPostfix,
+                                    term = credit.termPrefix + " " + credit.termMin + " " + credit.termMid + " " + credit.termMax + " " + credit.termPostfix,
+                                    showMir = credit.showMir,
+                                    showVisa = credit.showVisa,
+                                    showMaster = credit.showMastercard,
+                                    showQiwi = credit.showQiwi,
+                                    showYandex = credit.showYandex,
+                                    showCache = credit.showCash,
+                                    showPercent = credit.hidePercentFields,
+                                    showTerm = credit.hideTermFields,
+                                    nameButton = credit.orderButtonText
+                                )
+                            )
+                        )
+                    )
+                },
             model = credit.screen,
             contentScale = ContentScale.FillWidth,
             contentDescription = ""

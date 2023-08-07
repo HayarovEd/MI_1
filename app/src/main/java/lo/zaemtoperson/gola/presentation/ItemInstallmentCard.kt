@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,8 @@ import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.data.VALUE_ONE
+import lo.zaemtoperson.gola.domain.model.ElementOffer
+import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 import lo.zaemtoperson.gola.ui.theme.black
@@ -44,7 +47,35 @@ fun ItemInstallmentCard(
             .padding(16.dp)
     ) {
         AsyncImage(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable {
+                    onEvent(
+                        MainEvent.OnChangeStatusApplication(
+                            StatusApplication.Offer(
+                                currentBaseState = baseState,
+                                ElementOffer(
+                                    nameButton = card.orderButtonText,
+                                    name = card.name,
+                                    pathImage = card.screen,
+                                    rang = card.score,
+                                    description = card.description,
+                                    amount = card.summPrefix + " " + card.summMin + " " + card.summMid + " " + card.summMax + " " + card.summPostfix,
+                                    bet = card.percentPrefix + " " + card.percent + " " + card.percentPostfix,
+                                    term = card.termPrefix + " " + card.termMin + " " + card.termMid + " " + card.termMax + " " + card.termPostfix,
+                                    showMir = card.showMir,
+                                    showVisa = card.showVisa,
+                                    showMaster = card.showMastercard,
+                                    showQiwi = card.showQiwi,
+                                    showYandex = card.showYandex,
+                                    showCache = card.showCash,
+                                    showPercent = card.hidePercentFields,
+                                    showTerm = card.hideTermFields
+                                )
+                            )
+                        )
+                    )
+                },
             model = card.screen,
             contentScale = ContentScale.FillWidth,
             contentDescription = ""

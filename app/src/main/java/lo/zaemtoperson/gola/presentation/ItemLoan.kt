@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,8 @@ import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.data.VALUE_ONE
+import lo.zaemtoperson.gola.domain.model.ElementOffer
+import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.Loan
 import lo.zaemtoperson.gola.ui.theme.black
@@ -44,7 +47,35 @@ fun ItemLoan(
             .padding(16.dp)
     ) {
         AsyncImage(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable {
+                    onEvent(
+                        MainEvent.OnChangeStatusApplication(
+                            StatusApplication.Offer(
+                                currentBaseState = baseState,
+                                ElementOffer(
+                                    nameButton = loan.orderButtonText,
+                                    name = loan.name,
+                                    pathImage = loan.screen,
+                                    rang = loan.score,
+                                    description = loan.description,
+                                    amount = loan.summPrefix +" " + loan.summMin +" " + loan.summMid +" " + loan.summMax +" " + loan.summPostfix,
+                                    bet  = loan.percentPrefix +" " + loan.percent +" " + loan.percentPostfix,
+                                    term = loan.termPrefix +" "+ loan.termMin +" " + loan.termMid +" " + loan.termMax +" " + loan.termPostfix,
+                                    showMir = loan.showMir,
+                                    showVisa = loan.showVisa,
+                                    showMaster = loan.showMastercard,
+                                    showQiwi = loan.showQiwi,
+                                    showYandex = loan.showYandex,
+                                    showCache = loan.showCash,
+                                    showPercent = loan.hidePercentFields,
+                                    showTerm = loan.hideTermFields
+                                )
+                            )
+                        )
+                    )
+                },
             model = loan.screen,
             contentScale = ContentScale.FillWidth,
             contentDescription = ""
