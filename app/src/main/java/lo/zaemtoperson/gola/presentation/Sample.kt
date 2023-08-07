@@ -21,7 +21,10 @@ fun Sample (
                 db = state.value.dbData!!,
                 onClickCards = { onEvent(MainEvent.onChangeBaseState(BaseState.Cards)) },
                 onClickCredits = { onEvent(MainEvent.onChangeBaseState(BaseState.Credits)) },
-                onClickLoans = { onEvent(MainEvent.onChangeBaseState(BaseState.Loans)) }
+                onClickLoans = { onEvent(MainEvent.onChangeBaseState(BaseState.Loans)) },
+                onClickInfo = {},
+                onClickOffer = {},
+                onClickRules = {}
             )
         }
 

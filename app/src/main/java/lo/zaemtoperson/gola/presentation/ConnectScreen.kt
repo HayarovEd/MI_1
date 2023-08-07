@@ -1,14 +1,11 @@
 package lo.zaemtoperson.gola.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -16,6 +13,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +30,9 @@ import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.domain.model.basedto.BaseDto
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Cards
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Credits
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState.Offer
 import lo.zaemtoperson.gola.ui.theme.baseBackground
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.green
@@ -46,18 +48,60 @@ fun ConnectScreen(
     onClickLoans: () -> Unit,
     onClickCards: () -> Unit,
     onClickCredits: () -> Unit,
+    onClickInfo: () -> Unit,
+    onClickOffer: () -> Unit,
+    onClickRules: () -> Unit,
 ) {
+    val title = when (baseState) {
+        Cards -> stringResource(id = R.string.cards)
+        Credits -> stringResource(id = R.string.credits)
+        BaseState.Loans -> stringResource(id = R.string.loans)
+        Offer -> {
+            ""
+        }
+    }
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            color = black,
+                            fontStyle = FontStyle(font.soyuz_grotesk_bold),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Normal,
+                            text = title
+                        )
+                        IconButton(onClick = onClickRules) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.info),
+                                tint = black,
+                                contentDescription = "")
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = baseBackground
+                )
+            )
+        },
         bottomBar = {
-            BottomAppBar (
+            BottomAppBar(
                 containerColor = black
-            )  {
+            ) {
                 Row(
                     modifier = modifier
                         .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround) {
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
                     if (db.loans.isNotEmpty()) {
                         ItemBottomBar(
                             color = if (baseState is BaseState.Loans) green else lightGray,
@@ -68,7 +112,7 @@ fun ConnectScreen(
                     }
                     if (db.cards.isNotEmpty()) {
                         ItemBottomBar(
-                            color = if (baseState is BaseState.Cards) green else lightGray,
+                            color = if (baseState is Cards) green else lightGray,
                             content = stringResource(id = R.string.cards),
                             icon = ImageVector.vectorResource(id = R.drawable.ic_card),
                             onClick = onClickCards
@@ -76,7 +120,7 @@ fun ConnectScreen(
                     }
                     if (db.credits.isNotEmpty()) {
                         ItemBottomBar(
-                            color = if (baseState is BaseState.Credits) green else lightGray,
+                            color = if (baseState is Credits) green else lightGray,
                             content = stringResource(id = R.string.credits),
                             icon = ImageVector.vectorResource(id = R.drawable.ic_credit),
                             onClick = onClickCredits
@@ -87,25 +131,25 @@ fun ConnectScreen(
             }
         }
     ) { valuePaddings ->
-        Column (
-            modifier = modifier
-                .fillMaxSize()
-                .background(color = baseBackground)
-                .padding(valuePaddings),
-        ) {
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(db.loans) { loan ->
-                    ItemLoan(
-                        loan = loan,
-                        onClickInfo = {},
-                        onClickOffer = {})
-                }
+        when (baseState) {
+            Cards -> {
+
             }
+
+            Credits -> {
+
+            }
+
+            BaseState.Loans -> {
+                Loans(
+                    valuePaddings = valuePaddings,
+                    loans = db.loans,
+                    onClickInfo = onClickInfo,
+                    onClickOffer = onClickOffer
+                )
+            }
+
+            Offer -> {}
         }
     }
 }
