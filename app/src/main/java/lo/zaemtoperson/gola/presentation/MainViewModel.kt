@@ -87,6 +87,7 @@ class MainViewModel @Inject constructor(
                     deviceId = deviceId,
                     versionApplication = version,
                     isConnectInternet = true,
+                    appsFlyerDeeplink = sharedKeeper.getAppsFlyerConversion()
                 )
                     .updateStateUI()
             }
@@ -97,14 +98,14 @@ class MainViewModel @Inject constructor(
                 )
                     .updateStateUI()
             }
-            viewModelScope.launch {
+            /*viewModelScope.launch {
                 service.getMyTrackerDeeplink { deeplink ->
                     _state.value.copy(
                         trackerDeeplink = deeplink
                     )
                         .updateStateUI()
                 }
-            }
+            }*/
             viewModelScope.launch {
                 service.getAppsFlyerDeeplink { deeplink ->
                     _state.value.copy(

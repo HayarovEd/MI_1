@@ -17,4 +17,6 @@ interface SharedKepper {
     fun getCurrentDate(): String?
 
     fun setCurrentDate(date: String)
+
+    fun getAppsFlyerConversion(): String?
 }
