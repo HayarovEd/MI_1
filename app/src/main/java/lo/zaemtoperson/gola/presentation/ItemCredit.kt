@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.data.VALUE_ONE
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.Credit
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.white
@@ -32,8 +33,8 @@ import lo.zaemtoperson.gola.ui.theme.white
 fun ItemCredit(
     modifier: Modifier = Modifier,
     credit: Credit,
-    onClickOffer: () -> Unit,
-    onClickWeb: () -> Unit,
+    baseState: BaseState,
+    onEvent: (MainEvent) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -96,8 +97,23 @@ fun ItemCredit(
         Spacer(modifier = modifier.height(13.dp))
         RowButtons(
             titleOffer = credit.orderButtonText,
-            onClickWeb = onClickWeb,
-            onClickOffer = onClickOffer
+            onEvent = onEvent,
+            currentBaseState = baseState,
+            name = credit.name,
+            pathImage = credit.screen,
+            rang = credit.score,
+            description = credit.description,
+            amount = credit.summPrefix + " " + credit.summMin + " " + credit.summMid + " " + credit.summMax + " " + credit.summPostfix,
+            bet = credit.percentPrefix + " " + credit.percent + " " + credit.percentPostfix,
+            term = credit.termPrefix + " " + credit.termMin + " " + credit.termMid + " " + credit.termMax + " " + credit.termPostfix,
+            showMir = credit.showMir,
+            showVisa = credit.showVisa,
+            showMaster = credit.showMastercard,
+            showQiwi = credit.showQiwi,
+            showYandex = credit.showYandex,
+            showCache = credit.showCash,
+            showPersent = credit.hidePercentFields,
+            showTerm = credit.hideTermFields
         )
     }
 }

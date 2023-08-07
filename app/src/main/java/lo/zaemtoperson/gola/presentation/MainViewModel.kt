@@ -160,7 +160,8 @@ class MainViewModel @Inject constructor(
 
             is MainEvent.OnChangeTypeCard -> {
                 _state.value.copy(
-                    statusApplication = Connect(BaseState.Cards(mainEvent.typeCard)),
+                    statusApplication = Connect(BaseState.Cards(
+                        mainEvent.typeCard)),
                 )
                     .updateStateUI()
             }

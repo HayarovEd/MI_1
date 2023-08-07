@@ -54,9 +54,7 @@ fun ConnectScreen(
     onClickLoans: () -> Unit,
     onClickCards: () -> Unit,
     onClickCredits: () -> Unit,
-    onClickOffer: () -> Unit,
     onClickRules: () -> Unit,
-    onClickWeb: () -> Unit,
 ) {
     val title = when (baseState) {
         is Cards -> stringResource(id = R.string.cards)
@@ -142,9 +140,8 @@ fun ConnectScreen(
                     debitCards = debitCards,
                     installmentCards = installmentCards,
                     typeCard = type.typeCard,
-                    onClickWeb = onClickWeb,
-                    onClickOffer = onClickOffer,
-                    onEvent = onEvent
+                    onEvent = onEvent,
+                    baseState = baseState
                 )
             }
 
@@ -152,8 +149,8 @@ fun ConnectScreen(
                 Credits(
                     valuePaddings = valuePaddings,
                     credits = db.credits,
-                    onClickWeb = onClickWeb,
-                    onClickOffer = onClickOffer
+                    onEvent = onEvent,
+                    baseState = baseState
                 )
             }
 
@@ -161,8 +158,8 @@ fun ConnectScreen(
                 Loans(
                     valuePaddings = valuePaddings,
                     loans = db.loans,
-                    onClickWeb = onClickWeb,
-                    onClickOffer = onClickOffer
+                    onEvent = onEvent,
+                    baseState = baseState
                 )
             }
         }

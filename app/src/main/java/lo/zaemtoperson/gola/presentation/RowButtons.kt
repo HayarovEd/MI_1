@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
+import lo.zaemtoperson.gola.domain.model.ElementOffer
+import lo.zaemtoperson.gola.domain.model.StatusApplication
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.ui.theme.absoluteDark
 import lo.zaemtoperson.gola.ui.theme.baseBackground
 import lo.zaemtoperson.gola.ui.theme.black
@@ -34,8 +37,23 @@ import lo.zaemtoperson.gola.ui.theme.white
 fun RowButtons(
     modifier: Modifier = Modifier,
     titleOffer: String,
-    onClickWeb: () -> Unit,
-    onClickOffer: () -> Unit,
+    currentBaseState: BaseState,
+    onEvent: (MainEvent) -> Unit,
+    name: String,
+    pathImage: String,
+    rang: String,
+    description: String,
+    amount: String,
+    bet: String,
+    term: String,
+    showMir: String,
+    showVisa: String,
+    showMaster: String,
+    showQiwi: String,
+    showYandex: String,
+    showCache: String,
+    showPersent: String,
+    showTerm: String,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -47,7 +65,33 @@ fun RowButtons(
                 .weight(1f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(color = baseBackground)
-                .clickable(onClick = onClickOffer)
+                .clickable(onClick = {
+                    onEvent(
+                        MainEvent.OnChangeStatusApplication(
+                            StatusApplication.Offer(
+                                currentBaseState = currentBaseState,
+                                ElementOffer(
+                                    name = name,
+                                    pathImage = pathImage,
+                                    rang = rang,
+                                    description = description,
+                                    amount = amount,
+                                    bet = bet,
+                                    term = term,
+                                    showMir = showMir,
+                                    showVisa = showVisa,
+                                    showMaster = showMaster,
+                                    showQiwi = showQiwi,
+                                    showYandex = showYandex,
+                                    showCache = showCache,
+                                    showPercent = showPersent,
+                                    showTerm = showTerm,
+                                    nameButton = titleOffer
+                                )
+                            )
+                        )
+                    )
+                })
                 .padding(vertical = 14.dp)
         ) {
             Icon(
@@ -63,7 +107,7 @@ fun RowButtons(
                 .weight(3f)
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(color = black)
-                .clickable(onClick = onClickWeb)
+                .clickable(onClick = { })
                 .padding(vertical = 16.dp)
         ) {
             Text(

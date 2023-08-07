@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.data.VALUE_ONE
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.white
@@ -32,8 +33,8 @@ import lo.zaemtoperson.gola.ui.theme.white
 fun ItemDebitCard(
     modifier: Modifier = Modifier,
     card: CardsDebit,
-    onClickWeb: () -> Unit,
-    onClickOffer: () -> Unit,
+    onEvent: (MainEvent) -> Unit,
+    baseState: BaseState,
 ) {
     Column(
         modifier = modifier
@@ -96,8 +97,23 @@ fun ItemDebitCard(
         Spacer(modifier = modifier.height(13.dp))
         RowButtons(
             titleOffer = card.orderButtonText,
-            onClickWeb = onClickWeb,
-            onClickOffer = onClickOffer
+            onEvent = onEvent,
+            currentBaseState = baseState,
+            name = card.name,
+            pathImage = card.screen,
+            rang = card.score,
+            description = card.description,
+            amount = card.summPrefix +" " + card.summMin +" " + card.summMid +" " + card.summMax +" " + card.summPostfix,
+            bet  = card.percentPrefix +" " + card.percent +" " + card.percentPostfix,
+            term = card.termPrefix +" "+ card.termMin +" " + card.termMid +" " + card.termMax +" " + card.termPostfix,
+            showMir = card.showMir,
+            showVisa = card.showVisa,
+            showMaster = card.showMastercard,
+            showQiwi = card.showQiwi,
+            showYandex = card.showYandex,
+            showCache = card.showCash,
+            showPersent = card.hidePercentFields,
+            showTerm = card.hideTermFields
         )
     }
 }

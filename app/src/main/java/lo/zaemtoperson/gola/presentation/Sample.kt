@@ -26,10 +26,11 @@ fun Sample(
             ConnectScreen(
                 baseState = currentState.baseState,
                 db = state.value.dbData!!,
-                onClickCards = { onEvent(MainEvent.OnChangeBaseState(BaseState.Cards(TypeCard.CardCredit))) },
+                onClickCards = { onEvent(MainEvent.OnChangeBaseState(BaseState.Cards(
+                    typeCard = TypeCard.CardCredit
+                ))) },
                 onClickCredits = { onEvent(MainEvent.OnChangeBaseState(BaseState.Credits)) },
                 onClickLoans = { onEvent(MainEvent.OnChangeBaseState(BaseState.Loans)) },
-                onClickOffer = {},
                 onClickRules = {
                     onEvent(
                         MainEvent.OnChangeStatusApplication(
@@ -40,7 +41,6 @@ fun Sample(
                         )
                     )
                 },
-                onClickWeb = {},
                 creditCards = state.value.creditCards,
                 debitCards = state.value.debitCards,
                 installmentCards = state.value.installmentCards,

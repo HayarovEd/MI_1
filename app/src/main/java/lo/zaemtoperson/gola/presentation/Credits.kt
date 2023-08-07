@@ -12,8 +12,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.Credit
-import lo.zaemtoperson.gola.domain.model.basedto.Loan
 import lo.zaemtoperson.gola.ui.theme.baseBackground
 
 @Composable
@@ -21,8 +21,8 @@ fun Credits(
     modifier: Modifier = Modifier,
     valuePaddings: PaddingValues,
     credits: List<Credit>,
-    onClickOffer: () -> Unit,
-    onClickWeb: () -> Unit,
+    onEvent: (MainEvent) -> Unit,
+    baseState: BaseState,
 ) {
     Column(
         modifier = modifier
@@ -39,8 +39,8 @@ fun Credits(
             items(credits) { credit ->
                 ItemCredit(
                     credit = credit,
-                    onClickWeb = onClickWeb,
-                    onClickOffer = onClickOffer
+                    onEvent = onEvent,
+                    baseState = baseState
                 )
             }
         }

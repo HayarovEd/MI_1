@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.domain.model.TypeCard
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.CardsCredit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
@@ -41,9 +42,8 @@ fun Cards(
     debitCards: List<CardsDebit>,
     installmentCards: List<CardsInstallment>,
     typeCard: TypeCard,
-    onClickWeb: () -> Unit,
-    onClickOffer: () -> Unit,
     onEvent: (MainEvent) -> Unit,
+    baseState: BaseState,
 ) {
     Column(
         modifier = modifier
@@ -125,8 +125,8 @@ fun Cards(
                     items(creditCards) { card ->
                         ItemCreditCard(
                             card = card,
-                            onClickWeb = onClickWeb,
-                            onClickOffer = onClickOffer
+                            onEvent = onEvent,
+                            baseState = baseState,
                         )
                     }
                 }
@@ -142,8 +142,8 @@ fun Cards(
                     items(debitCards) { card ->
                         ItemDebitCard(
                             card = card,
-                            onClickWeb = onClickWeb,
-                            onClickOffer = onClickOffer
+                            onEvent = onEvent,
+                            baseState = baseState
                         )
                     }
                 }
@@ -159,8 +159,8 @@ fun Cards(
                     items(installmentCards) { card ->
                         ItemInstallmentCard(
                             card = card,
-                            onClickWeb = onClickWeb,
-                            onClickOffer = onClickOffer
+                            baseState = baseState,
+                            onEvent = onEvent
                         )
                     }
                 }

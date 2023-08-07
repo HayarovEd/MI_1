@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
 import lo.zaemtoperson.gola.data.VALUE_ONE
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.Loan
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.white
@@ -32,8 +33,8 @@ import lo.zaemtoperson.gola.ui.theme.white
 fun ItemLoan(
     modifier: Modifier = Modifier,
     loan: Loan,
-    onClickWeb: () -> Unit,
-    onClickOffer: () -> Unit,
+    onEvent: (MainEvent) -> Unit,
+    baseState: BaseState,
 ) {
     Column(
         modifier = modifier
@@ -96,8 +97,23 @@ fun ItemLoan(
         Spacer(modifier = modifier.height(13.dp))
         RowButtons(
             titleOffer = loan.orderButtonText,
-            onClickWeb = onClickWeb,
-            onClickOffer = onClickOffer
+            onEvent = onEvent,
+            currentBaseState = baseState,
+            name = loan.name,
+            pathImage = loan.screen,
+            rang = loan.score,
+            description = loan.description,
+            amount = loan.summPrefix +" " + loan.summMin +" " + loan.summMid +" " + loan.summMax +" " + loan.summPostfix,
+            bet  = loan.percentPrefix +" " + loan.percent +" " + loan.percentPostfix,
+            term = loan.termPrefix +" "+ loan.termMin +" " + loan.termMid +" " + loan.termMax +" " + loan.termPostfix,
+            showMir = loan.showMir,
+            showVisa = loan.showVisa,
+            showMaster = loan.showMastercard,
+            showQiwi = loan.showQiwi,
+            showYandex = loan.showYandex,
+            showCache = loan.showCash,
+            showPersent = loan.hidePercentFields,
+            showTerm = loan.hideTermFields
         )
     }
 }

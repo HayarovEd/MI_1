@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.Loan
 import lo.zaemtoperson.gola.ui.theme.baseBackground
 
@@ -20,8 +21,8 @@ fun Loans(
     modifier: Modifier = Modifier,
     valuePaddings: PaddingValues,
     loans: List<Loan>,
-    onClickWeb: () -> Unit,
-    onClickOffer: () -> Unit,
+    onEvent: (MainEvent) -> Unit,
+    baseState: BaseState,
 ) {
     Column(
         modifier = modifier
@@ -38,8 +39,8 @@ fun Loans(
             items(loans) { loan ->
                 ItemLoan(
                     loan = loan,
-                    onClickWeb = onClickWeb,
-                    onClickOffer = onClickOffer
+                    onEvent = onEvent,
+                    baseState = baseState
                 )
             }
         }

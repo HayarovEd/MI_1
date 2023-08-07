@@ -9,20 +9,7 @@ sealed class StatusApplication {
 
     class Offer (
         val currentBaseState: BaseState,
-        val name: String,
-        val pathImage: String,
-        val rang: String,
-        val description: String,
-        val amount: String,
-        val bet:String,
-        val term: String,
-        val showMir: String,
-        val showVisa: String,
-        val showMaster: String,
-        val showQiwi: String,
-        val showYandex: String,
-        val showCache: String,
-        val nameButton:String
+        val elementOffer: ElementOffer
         ):StatusApplication()
 
     class Info (
