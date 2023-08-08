@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.my.tracker.MyTracker
+import com.yandex.metrica.YandexMetrica
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,8 +15,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import lo.zaemtoperson.gola.data.ACTUAL_BACKEND_NULL
 import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.APY_KEY
+import lo.zaemtoperson.gola.data.BACKEND_UNAVAILABLE
+import lo.zaemtoperson.gola.data.EXTERNAL_LINK
+import lo.zaemtoperson.gola.data.REQUEST_DATE
+import lo.zaemtoperson.gola.data.REQUEST_DB
 import lo.zaemtoperson.gola.data.Resource.Error
 import lo.zaemtoperson.gola.data.Resource.Success
 import lo.zaemtoperson.gola.domain.RepositoryAnalytic
@@ -185,6 +192,12 @@ class MainViewModel @Inject constructor(
                     .updateStateUI()
                 if (service.checkedInternetConnection()) {
                     getSub2()
+                    /*YandexMetrica.reportEvent(EXTERNAL_LINK, currentGaid)
+                    MyTracker.trackEvent(EXTERNAL_LINK, mapOf(ACTUAL_BACKEND_NULL to ""))
+                    service.sendAppsFlyerEvent(
+                        key = EXTERNAL_LINK,
+                        content = currentGaid
+                    )*/
                     val completeUrl =
                         "${mainEvent.urlOffer}&aff_sub1=${_state.value.affsub1Unswer}&aff_sub2=${_state.value.affsub2Unswer}&aff_sub3=${_state.value.affsub3Unswer}&aff_sub5=${_state.value.affsub5Unswer}"
                     Log.d("AAAAAA", "url $completeUrl")
@@ -413,12 +426,13 @@ class MainViewModel @Inject constructor(
     private fun loadDbData() {
         viewModelScope.launch {
             delay(2000)
+            val currentGaid = _state.value.gaid ?: ""
             when (val folder = repositoryServer.getFolder(
                 sim = _state.value.sim ?: "",
                 colorFb = _state.value.colorFb,
                 deviceId = _state.value.deviceId ?: "",
                 fbKey = _state.value.fireBaseToken ?: "",
-                gaid = _state.value.gaid ?: "",
+                gaid = currentGaid,
                 instanceMyTracker = _state.value.instanceIdMyTracker ?: "",
                 local = _state.value.locale,
                 metrikaKey = _state.value.appMetrica,
@@ -435,13 +449,32 @@ class MainViewModel @Inject constructor(
 
                 is Success -> {
                     if (folder.data?.folder.isNullOrBlank() || folder.data?.folder == "null") {
+                        YandexMetrica.reportEvent(ACTUAL_BACKEND_NULL, currentGaid)
+                        MyTracker.trackEvent(ACTUAL_BACKEND_NULL, mapOf(ACTUAL_BACKEND_NULL to currentGaid))
+                        service.sendAppsFlyerEvent(
+                            key = ACTUAL_BACKEND_NULL,
+                            content = currentGaid
+                        )
                         _state.value.copy(
                             statusApplication = Mock,
                         )
                             .updateStateUI()
                     } else {
-                        when (val db = folder.data?.folder?.let { repositoryServer.getDataDb(it) }) {
+                        val db = folder.data?.folder?.let { repositoryServer.getDataDb(it) }
+                        YandexMetrica.reportEvent(REQUEST_DB, currentGaid)
+                        MyTracker.trackEvent(REQUEST_DB, mapOf(REQUEST_DB to currentGaid))
+                        service.sendAppsFlyerEvent(
+                            key = REQUEST_DB,
+                            content = currentGaid
+                        )
+                        when (db) {
                             is Error -> {
+                                YandexMetrica.reportEvent(BACKEND_UNAVAILABLE, currentGaid)
+                                MyTracker.trackEvent(BACKEND_UNAVAILABLE, mapOf(BACKEND_UNAVAILABLE to currentGaid))
+                                service.sendAppsFlyerEvent(
+                                    key = BACKEND_UNAVAILABLE,
+                                    content = currentGaid
+                                )
                                 _state.value.copy(
                                     statusApplication = Mock,
                                 )
@@ -476,6 +509,14 @@ class MainViewModel @Inject constructor(
                                     .updateStateUI()
                             }
                         }
+                        val currentDate =
+                            folder.data?.let { repositoryServer.getCurrentDate(it.folder) }
+                        YandexMetrica.reportEvent(REQUEST_DATE, currentGaid)
+                        MyTracker.trackEvent(REQUEST_DATE, mapOf(REQUEST_DATE to currentGaid))
+                        service.sendAppsFlyerEvent(
+                            key = REQUEST_DATE,
+                            content = currentGaid
+                        )
                         /*when (val currentDate =
                             folder.data?.let { repositoryServer.getCurrentDate(it.folder) }) {
                             is Error -> {

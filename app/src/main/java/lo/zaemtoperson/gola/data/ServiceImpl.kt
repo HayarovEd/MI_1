@@ -197,4 +197,8 @@ class ServiceImpl @Inject constructor(private val application: Application) : Se
         AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, application)
         AppsFlyerLib.getInstance().start(application)
     }
+
+    override fun sendAppsFlyerEvent(key: String, content:String) {
+        AppsFlyerLib.getInstance().logEvent(application, key, mapOf(key to content))
+    }
 }

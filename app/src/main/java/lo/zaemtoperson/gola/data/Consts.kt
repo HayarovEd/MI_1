@@ -23,3 +23,12 @@ const val URL = "url"
 
 const val INPUT_FILE_REQUEST_CODE = 1
 const val FILECHOOSER_RESULTCODE = 1
+
+const val ACTUAL_BACKEND_NULL = "actualbackend_null"
+const val REQUEST_DB = "requestdb"
+const val REQUEST_DATE = "requestdate"
+const val BACKEND_UNAVAILABLE = "backend_unavailable"
+const val EXTERNAL_LINK = "external_link"
+//const val FILECHOOSER_RESULTCODE = 1
+//const val FILECHOOSER_RESULTCODE = 1
+//const val FILECHOOSER_RESULTCODE = 1
