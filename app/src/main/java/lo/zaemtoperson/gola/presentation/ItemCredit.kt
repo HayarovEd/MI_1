@@ -1,5 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
+import android.content.Context
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +40,8 @@ fun ItemCredit(
     credit: Credit,
     baseState: BaseState,
     onEvent: (MainEvent) -> Unit,
+    launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    context: Context
 ) {
     Column(
         modifier = modifier
@@ -143,8 +147,10 @@ fun ItemCredit(
             showQiwi = credit.showQiwi,
             showYandex = credit.showYandex,
             showCache = credit.showCash,
-            showPersent = credit.hidePercentFields,
-            showTerm = credit.hideTermFields
+            showPercent = credit.hidePercentFields,
+            showTerm = credit.hideTermFields,
+            launcherMultiplePermissions = launcherMultiplePermissions,
+            context = context
         )
     }
 }

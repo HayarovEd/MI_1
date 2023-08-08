@@ -1,5 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
+import android.content.Context
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +37,7 @@ import lo.zaemtoperson.gola.ui.theme.baseBackground
 import lo.zaemtoperson.gola.ui.theme.green
 
 @Composable
-fun Cards(
+fun CardsScreen(
     modifier: Modifier = Modifier,
     valuePaddings: PaddingValues,
     creditCards: List<CardsCredit>,
@@ -44,6 +46,8 @@ fun Cards(
     typeCard: TypeCard,
     onEvent: (MainEvent) -> Unit,
     baseState: BaseState,
+    launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    context: Context
 ) {
     Column(
         modifier = modifier
@@ -127,6 +131,8 @@ fun Cards(
                             card = card,
                             onEvent = onEvent,
                             baseState = baseState,
+                            launcherMultiplePermissions = launcherMultiplePermissions,
+                            context = context
                         )
                     }
                 }
@@ -143,7 +149,9 @@ fun Cards(
                         ItemDebitCard(
                             card = card,
                             onEvent = onEvent,
-                            baseState = baseState
+                            baseState = baseState,
+                            launcherMultiplePermissions = launcherMultiplePermissions,
+                            context = context
                         )
                     }
                 }
@@ -160,7 +168,9 @@ fun Cards(
                         ItemInstallmentCard(
                             card = card,
                             baseState = baseState,
-                            onEvent = onEvent
+                            onEvent = onEvent,
+                            launcherMultiplePermissions = launcherMultiplePermissions,
+                            context = context
                         )
                     }
                 }

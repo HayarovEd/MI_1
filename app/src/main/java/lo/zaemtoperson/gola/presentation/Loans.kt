@@ -1,5 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
+import android.content.Context
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +25,8 @@ fun Loans(
     loans: List<Loan>,
     onEvent: (MainEvent) -> Unit,
     baseState: BaseState,
+    launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    context: Context
 ) {
     Column(
         modifier = modifier
@@ -40,7 +44,9 @@ fun Loans(
                 ItemLoan(
                     loan = loan,
                     onEvent = onEvent,
-                    baseState = baseState
+                    baseState = baseState,
+                    launcherMultiplePermissions = launcherMultiplePermissions,
+                    context = context
                 )
             }
         }

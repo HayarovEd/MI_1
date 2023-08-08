@@ -1,5 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
+import android.content.Context
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -50,6 +52,8 @@ fun ConnectScreen(
     creditCards: List<CardsCredit>,
     debitCards: List<CardsDebit>,
     installmentCards: List<CardsInstallment>,
+    launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    context: Context,
     onEvent:(MainEvent) -> Unit,
     onClickLoans: () -> Unit,
     onClickCards: () -> Unit,
@@ -134,14 +138,16 @@ fun ConnectScreen(
     ) { valuePaddings ->
         when (val type = baseState) {
             is Cards -> {
-                Cards(
+                CardsScreen(
                     valuePaddings = valuePaddings,
                     creditCards = creditCards,
                     debitCards = debitCards,
                     installmentCards = installmentCards,
                     typeCard = type.typeCard,
                     onEvent = onEvent,
-                    baseState = baseState
+                    baseState = baseState,
+                    launcherMultiplePermissions = launcherMultiplePermissions,
+                    context = context
                 )
             }
 
@@ -150,7 +156,9 @@ fun ConnectScreen(
                     valuePaddings = valuePaddings,
                     credits = db.credits,
                     onEvent = onEvent,
-                    baseState = baseState
+                    baseState = baseState,
+                    launcherMultiplePermissions = launcherMultiplePermissions,
+                    context = context
                 )
             }
 
@@ -159,7 +167,9 @@ fun ConnectScreen(
                     valuePaddings = valuePaddings,
                     loans = db.loans,
                     onEvent = onEvent,
-                    baseState = baseState
+                    baseState = baseState,
+                    launcherMultiplePermissions = launcherMultiplePermissions,
+                    context = context
                 )
             }
         }

@@ -1,6 +1,9 @@
 package lo.zaemtoperson.gola.presentation
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.widget.TextView
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,10 +41,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.data.VALUE_ONE
+import lo.zaemtoperson.gola.data.permissions
 import lo.zaemtoperson.gola.domain.model.ElementOffer
 import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
@@ -56,7 +61,9 @@ fun OfferScreen(
     modifier: Modifier = Modifier,
     elementOffer: ElementOffer,
     baseState: BaseState,
-    onEvent: (MainEvent) -> Unit
+    onEvent: (MainEvent) -> Unit,
+    launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    context: Context
 ) {
     Scaffold(
         modifier = modifier
@@ -134,7 +141,18 @@ fun OfferScreen(
                             .weight(3f)
                             .clip(shape = RoundedCornerShape(16.dp))
                             .background(color = black)
-                            .clickable(onClick = { })
+                            .clickable(onClick = {
+                                if(permissions.all {
+                                        ContextCompat.checkSelfPermission(
+                                            context,
+                                            it
+                                        ) == PackageManager.PERMISSION_GRANTED
+                                    }) {
+                                    // Get the location
+                                } else {
+                                    launcherMultiplePermissions.launch(permissions)
+                                }
+                            })
                             .padding(vertical = 16.dp)
                     ) {
                         Text(
