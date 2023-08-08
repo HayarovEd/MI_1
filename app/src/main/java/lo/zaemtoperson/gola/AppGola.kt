@@ -5,11 +5,15 @@ import android.content.Context
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.my.tracker.MyTracker
+import com.yandex.metrica.YandexMetrica
+import com.yandex.metrica.YandexMetricaConfig
 import dagger.hilt.android.HiltAndroidApp
 import lo.zaemtoperson.gola.data.APPS_FLYER
+import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.MY_TRACKER
 import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_SUB
 import lo.zaemtoperson.gola.data.SHARED_DATA
+
 
 //import pro.userx.UserX
 
@@ -47,6 +51,10 @@ class AppGola: Application() {
         }
         AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, this)
         AppsFlyerLib.getInstance().start(this)
+        val config = YandexMetricaConfig.newConfigBuilder(APP_METRICA).build()
+
+        YandexMetrica.activate(applicationContext, config)
+        YandexMetrica.enableActivityAutoTracking(this)
         //UserX.init(USER_X)
     }
 
