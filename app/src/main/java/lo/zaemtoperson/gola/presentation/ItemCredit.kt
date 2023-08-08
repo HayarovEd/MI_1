@@ -74,7 +74,8 @@ fun ItemCredit(
                                     showCache = credit.showCash,
                                     showPercent = credit.hidePercentFields,
                                     showTerm = credit.hideTermFields,
-                                    nameButton = credit.orderButtonText
+                                    nameButton = credit.orderButtonText,
+                                    order = credit.order
                                 )
                             )
                         )
@@ -149,6 +150,7 @@ fun ItemCredit(
             showCache = credit.showCash,
             showPercent = credit.hidePercentFields,
             showTerm = credit.hideTermFields,
+            order = credit.order,
             launcherMultiplePermissions = launcherMultiplePermissions,
             context = context
         )

@@ -74,7 +74,8 @@ fun ItemCreditCard(
                                     showYandex = card.showYandex,
                                     showCache = card.showCash,
                                     showPercent = card.hidePercentFields,
-                                    showTerm = card.hideTermFields
+                                    showTerm = card.hideTermFields,
+                                    order = card.order
                                 )
                             )
                         )
@@ -149,6 +150,7 @@ fun ItemCreditCard(
             showCache = card.showCash,
             showPercent = card.hidePercentFields,
             showTerm = card.hideTermFields,
+            order = card.order,
             launcherMultiplePermissions = launcherMultiplePermissions,
             context = context
         )

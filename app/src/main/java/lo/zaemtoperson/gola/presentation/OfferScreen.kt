@@ -148,7 +148,7 @@ fun OfferScreen(
                                             it
                                         ) == PackageManager.PERMISSION_GRANTED
                                     }) {
-                                    // Get the location
+                                    onEvent(MainEvent.OnGoToWeb(elementOffer.order))
                                 } else {
                                     launcherMultiplePermissions.launch(permissions)
                                 }

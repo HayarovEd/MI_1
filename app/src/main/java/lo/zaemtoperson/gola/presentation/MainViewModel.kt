@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -20,6 +21,7 @@ import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
 import lo.zaemtoperson.gola.domain.SharedKepper
+import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
 import lo.zaemtoperson.gola.domain.model.TypeCard
@@ -28,8 +30,8 @@ import lo.zaemtoperson.gola.domain.model.basedto.Card
 import lo.zaemtoperson.gola.domain.model.basedto.CardsCredit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
-import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
 import lo.zaemtoperson.gola.presentation.MainEvent.OnChangeBaseState
+import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,15 +44,19 @@ class MainViewModel @Inject constructor(
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
+    private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
+
     init {
-       // loadData()
+        loadData()
     }
+
     private fun loadData() {
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
                 val appMetrika = service.appMetrika
-                val instanceIdMyTracker = if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
-                    val instance = service.instanceIdMyTracker
+                val instanceIdMyTracker =
+                    if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
+                        val instance = service.instanceIdMyTracker
                     sharedKeeper.setMyTrackerInstanceId(instance)
                     instance
                 } else {
@@ -86,7 +92,6 @@ class MainViewModel @Inject constructor(
                     locale = locale,
                     deviceId = deviceId,
                     versionApplication = version,
-                    isConnectInternet = true,
                     appsFlyerDeeplink = sharedKeeper.getAppsFlyerConversion()
                 )
                     .updateStateUI()
@@ -122,9 +127,7 @@ class MainViewModel @Inject constructor(
             loadDbData()
         } else {
             _state.value.copy(
-                isConnectInternet = false,
-                statusApplication = Mock,
-                message = "Need to connect internet"
+                statusApplication = Mock
             )
                 .updateStateUI()
         }
@@ -141,12 +144,12 @@ class MainViewModel @Inject constructor(
             Reconnect -> {
                 if (service.checkedInternetConnection()) {
                     _state.value.copy(
-                        isConnectInternet = true,
+                        statusApplication = _lastState.value
                     )
                         .updateStateUI()
                 } else {
                     _state.value.copy(
-                        isConnectInternet = false,
+                        statusApplication = StatusApplication.NoConnect,
                     )
                         .updateStateUI()
                 }
@@ -173,6 +176,30 @@ class MainViewModel @Inject constructor(
                 )
                     .updateStateUI()
             }
+
+            is MainEvent.OnGoToWeb -> {
+                _lastState.value = _state.value.statusApplication
+                _state.value.copy(
+                    statusApplication = StatusApplication.Loading,
+                )
+                    .updateStateUI()
+                if (service.checkedInternetConnection()) {
+                    getSub2()
+                    val completeUrl =
+                        "${mainEvent.urlOffer}&aff_sub1=${_state.value.affsub1Unswer}&aff_sub2=${_state.value.affsub2Unswer}&aff_sub3=${_state.value.affsub3Unswer}&aff_sub5=${_state.value.affsub5Unswer}"
+                    Log.d("AAAAAA", "url $completeUrl")
+                    _state.value.copy(
+                        statusApplication = StatusApplication.Web(completeUrl),
+                    )
+                        .updateStateUI()
+                } else {
+                    _state.value.copy(
+                        statusApplication = StatusApplication.NoConnect,
+                    )
+                        .updateStateUI()
+                }
+
+            }
         }
     }
 
@@ -187,7 +214,6 @@ class MainViewModel @Inject constructor(
                 if (resultListener.isSuccessful) {
                     val result = remoteConfig.getString("color")
                     _state.value.copy(
-                        isConnectInternet = false,
                         colorFb = result
                     )
                         .updateStateUI()

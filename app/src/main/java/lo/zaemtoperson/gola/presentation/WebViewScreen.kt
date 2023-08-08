@@ -14,14 +14,13 @@ import lo.zaemtoperson.gola.ui.theme.baseBackground
 fun WebViewScreen(
     modifier: Modifier = Modifier,
     webView: WebView,
-    url: String = "https://ya.ru/"
+    url: String
 ) {
-    val qw = webView
-    qw.loadUrl(url)
+    webView.loadUrl(url)
     AndroidView(
         modifier = modifier
             .fillMaxSize()
             .background(color = baseBackground)
             .padding(5.dp),
-        factory = { qw })
+        factory = { webView })
 }

@@ -2,6 +2,7 @@ package lo.zaemtoperson.gola.domain.model
 
 data class ElementOffer(
     val name: String,
+    val order: String,
     val pathImage: String,
     val rang: String,
     val description: String,

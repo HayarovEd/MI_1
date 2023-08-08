@@ -102,7 +102,10 @@ fun Sample(
         }
 
         is StatusApplication.Web -> {
-            WebViewScreen(webView = webView)
+            WebViewScreen(
+                webView = webView,
+                url = currentState.url
+            )
         }
 
         StatusApplication.NoConnect -> {

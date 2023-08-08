@@ -74,7 +74,8 @@ fun ItemInstallmentCard(
                                     showYandex = card.showYandex,
                                     showCache = card.showCash,
                                     showPercent = card.hidePercentFields,
-                                    showTerm = card.hideTermFields
+                                    showTerm = card.hideTermFields,
+                                    order = card.order
                                 )
                             )
                         )
@@ -149,6 +150,7 @@ fun ItemInstallmentCard(
             showCache = card.showCash,
             showPercent = card.hidePercentFields,
             showTerm = card.hideTermFields,
+            order = card.order,
             launcherMultiplePermissions = launcherMultiplePermissions,
             context = context
         )

@@ -74,7 +74,8 @@ fun ItemLoan(
                                     showYandex = loan.showYandex,
                                     showCache = loan.showCash,
                                     showPercent = loan.hidePercentFields,
-                                    showTerm = loan.hideTermFields
+                                    showTerm = loan.hideTermFields,
+                                    order = loan.order
                                 )
                             )
                         )
@@ -149,6 +150,7 @@ fun ItemLoan(
             showCache = loan.showCash,
             showPercent = loan.hidePercentFields,
             showTerm = loan.hideTermFields,
+            order = loan.order,
             launcherMultiplePermissions = launcherMultiplePermissions,
             context = context
         )

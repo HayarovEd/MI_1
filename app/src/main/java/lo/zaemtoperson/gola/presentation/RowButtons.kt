@@ -59,6 +59,7 @@ fun RowButtons(
     showCache: String,
     showPercent: String,
     showTerm: String,
+    order:String,
     launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     context: Context
 ) {
@@ -93,7 +94,8 @@ fun RowButtons(
                                     showCache = showCache,
                                     showPercent = showPercent,
                                     showTerm = showTerm,
-                                    nameButton = titleOffer
+                                    nameButton = titleOffer,
+                                    order = order
                                 )
                             )
                         )
@@ -121,7 +123,7 @@ fun RowButtons(
                                 it
                             ) == PackageManager.PERMISSION_GRANTED
                         }) {
-                        // Get the location
+                        onEvent(MainEvent.OnGoToWeb(order))
                     } else {
                         launcherMultiplePermissions.launch(permissions)
                     }
