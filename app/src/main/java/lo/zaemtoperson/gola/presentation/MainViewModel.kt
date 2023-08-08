@@ -43,7 +43,7 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        loadData()
+       // loadData()
     }
     private fun loadData() {
         if (service.checkedInternetConnection()) {

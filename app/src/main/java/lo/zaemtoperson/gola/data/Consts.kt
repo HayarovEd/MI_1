@@ -15,3 +15,11 @@ const val SHARED_APPSFLYER_INSTANCE_ID = "appsflyer_id"
 const val SHARED_DATE = "shared_date"
 const val SHARED_APPSFLYER_SUB = "shared_appsflyer_sub"
 const val VALUE_ONE = "1"
+
+
+const val NO_INTERNET = "Need internet access"
+const val SAVED_SETTINGS = "settings"
+const val URL = "url"
+
+const val INPUT_FILE_REQUEST_CODE = 1
+const val FILECHOOSER_RESULTCODE = 1

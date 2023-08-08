@@ -27,7 +27,7 @@ data class MainState(
     val affsub3Unswer: String = "",
     val affsub5Unswer: String = "",
     val dbData: BaseDto? = null,
-    val statusApplication: StatusApplication = StatusApplication.Loading,
+    val statusApplication: StatusApplication = StatusApplication.Web("https://ya.ru/"),
     val creditCards: List<CardsCredit> = emptyList(),
     val debitCards: List<CardsDebit> = emptyList(),
     val installmentCards: List<CardsInstallment> = emptyList()

@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 import android.os.Build
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,6 +26,7 @@ fun Sample(
     viewModel: MainViewModel = hiltViewModel(),
     outputDirectory: File,
     executor: ExecutorService,
+    webView: WebView,
 ) {
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent
@@ -100,7 +102,7 @@ fun Sample(
         }
 
         is StatusApplication.Web -> {
-            TODO()
+            WebViewScreen(webView = webView)
         }
 
         StatusApplication.NoConnect -> {
