@@ -5,8 +5,9 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <uses-feature android:name="android.hardware.camera.any" />
 
-    <uses-feature android:name="android.hardware.camera.any"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,18 +19,21 @@
     <application
         android:name=".AppGola"
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        tools:replace="android:fullBackupContent"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MI_1"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:fullBackupContent"
         tools:targetApi="31">
         <activity
-            android:name="lo.zaemtoperson.gola.presentation.MainActivity"
+            android:name=".presentation.WebActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MI_1">

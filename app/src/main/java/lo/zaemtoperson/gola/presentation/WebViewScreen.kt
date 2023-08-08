@@ -28,7 +28,7 @@ fun WebViewScreen(
         mutableStateOf(true)
     }
     webView.loadUrl(url)
-    webView.webViewClient = WebViewClient(isLoadingUrl = isLoadingUrl)
+    webView.webViewClient = WebViewClientHand(isLoadingUrl = isLoadingUrl)
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -52,7 +52,7 @@ fun WebViewScreen(
     }
 }
 
-class WebViewClient(val isLoadingUrl: MutableState<Boolean>) : android.webkit.WebViewClient() {
+class WebViewClientHand(val isLoadingUrl: MutableState<Boolean>) : android.webkit.WebViewClient() {
 
     // Load the URL
     @Deprecated("Deprecated in Java")
