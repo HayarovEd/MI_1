@@ -1,5 +1,6 @@
 package lo.zaemtoperson.gola.presentation
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -52,10 +53,20 @@ class MainActivity : ComponentActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     private var grantAccessCamera: MutableState<Boolean> = mutableStateOf(false)
-
-    private val permissionCheck = 4203
-    private val valueParametrs = 23343449
-    private var callbackUp: ValueCallback<Array<Uri>>? = null
+    private val requestPermissionLauncherFireBase = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            Toast.makeText(
+                this,
+                "FCM can't post notifications without POST_NOTIFICATIONS permission",
+                Toast.LENGTH_LONG,
+            ).show()
+        }
+    }
 
     private lateinit var webView: WebView
     private var mCameraPhotoPath = ""
@@ -77,6 +88,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        askNotificationPermission()
         webView = WebView(this)
         initWebView(savedInstanceState, webView)
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
@@ -348,6 +360,18 @@ class MainActivity : ComponentActivity() {
             }
         }
         return
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API Level > 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+            } else {
+                requestPermissionLauncherFireBase.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
 }

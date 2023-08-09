@@ -63,7 +63,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation(files("\\\\MI_1\\UserX-4.2.1.aar"))
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -110,7 +109,7 @@ dependencies {
     implementation("com.google.firebase:firebase-config-ktx:21.4.1")
     implementation("com.google.firebase:firebase-crashlytics-ktx:18.4.0")
     implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
-    implementation("com.google.firebase:firebase-messaging-ktx:23.2.0")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.2.1")
 
     //AppMetrica
     implementation ("com.yandex.android:mobmetricalib:5.3.0")

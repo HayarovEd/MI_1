@@ -25,6 +25,7 @@ import lo.zaemtoperson.gola.data.EXTERNAL_LINK
 import lo.zaemtoperson.gola.data.ITEM_ID
 import lo.zaemtoperson.gola.data.LOANS
 import lo.zaemtoperson.gola.data.MORE_DETAILS
+import lo.zaemtoperson.gola.data.MyFirebaseMessagingService
 import lo.zaemtoperson.gola.data.OFFER_WALL
 import lo.zaemtoperson.gola.data.REQUEST_DATE
 import lo.zaemtoperson.gola.data.REQUEST_DB
@@ -59,7 +60,7 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
-
+    private val _notificationLiveData = MyFirebaseMessagingService.NotificationData.notificationLiveData
     init {
         loadData()
     }
@@ -278,6 +279,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             delay(2000)
             val currentFireBaseToken = _state.value.fireBaseToken
+            Log.d("AAAAAA", "currentFireBaseToken $currentFireBaseToken")
             val currentGaid = _state.value.gaid
             val currentMyTrackerId = _state.value.instanceIdMyTracker
             val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
