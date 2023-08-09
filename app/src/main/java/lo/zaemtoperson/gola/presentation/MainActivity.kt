@@ -103,12 +103,7 @@ class MainActivity : ComponentActivity() {
                 executor = cameraExecutor,
                 webView = webView
                 )
-           /* BaseScreen(
-                outputDirectory = outputDirectory,
-                executor = cameraExecutor,
-            )*/
         }
-        //requestCameraPermission()
 
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -118,17 +113,17 @@ class MainActivity : ComponentActivity() {
         when {
             ContextCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.CAMERA
+                Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED -> {
                 grantAccessCamera.value = true
             }
 
             ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
-                android.Manifest.permission.CAMERA
+                Manifest.permission.CAMERA
             ) -> {}
 
-            else -> requestPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+            else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
