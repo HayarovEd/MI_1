@@ -19,11 +19,18 @@ import lo.zaemtoperson.gola.data.ACTUAL_BACKEND_NULL
 import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.APY_KEY
 import lo.zaemtoperson.gola.data.BACKEND_UNAVAILABLE
+import lo.zaemtoperson.gola.data.CARDS
+import lo.zaemtoperson.gola.data.CREDITS
 import lo.zaemtoperson.gola.data.EXTERNAL_LINK
+import lo.zaemtoperson.gola.data.ITEM_ID
+import lo.zaemtoperson.gola.data.LOANS
+import lo.zaemtoperson.gola.data.MORE_DETAILS
+import lo.zaemtoperson.gola.data.OFFER_WALL
 import lo.zaemtoperson.gola.data.REQUEST_DATE
 import lo.zaemtoperson.gola.data.REQUEST_DB
 import lo.zaemtoperson.gola.data.Resource.Error
 import lo.zaemtoperson.gola.data.Resource.Success
+import lo.zaemtoperson.gola.data.URL
 import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
@@ -110,22 +117,22 @@ class MainViewModel @Inject constructor(
                 )
                     .updateStateUI()
             }
-            /*viewModelScope.launch {
+            viewModelScope.launch {
                 service.getMyTrackerDeeplink { deeplink ->
                     _state.value.copy(
                         trackerDeeplink = deeplink
                     )
                         .updateStateUI()
                 }
-            }*/
-            viewModelScope.launch {
+            }
+            /*viewModelScope.launch {
                 service.getAppsFlyerDeeplink { deeplink ->
                     _state.value.copy(
                         appsFlyerDeeplink = deeplink
                     )
                         .updateStateUI()
                 }
-            }
+            }*/
             getRemoteConfig()
             getSub1()
             getFirstSub2()
@@ -192,15 +199,48 @@ class MainViewModel @Inject constructor(
                     .updateStateUI()
                 if (service.checkedInternetConnection()) {
                     getSub2()
-                    /*YandexMetrica.reportEvent(EXTERNAL_LINK, currentGaid)
-                    MyTracker.trackEvent(EXTERNAL_LINK, mapOf(ACTUAL_BACKEND_NULL to ""))
-                    service.sendAppsFlyerEvent(
-                        key = EXTERNAL_LINK,
-                        content = currentGaid
-                    )*/
                     val completeUrl =
                         "${mainEvent.urlOffer}&aff_sub1=${_state.value.affsub1Unswer}&aff_sub2=${_state.value.affsub2Unswer}&aff_sub3=${_state.value.affsub3Unswer}&aff_sub5=${_state.value.affsub5Unswer}"
                     Log.d("AAAAAA", "url $completeUrl")
+                    when (val lastState = _lastState.value) {
+                        is Connect -> {
+                            sendGoToOffer(
+                                url = completeUrl,
+                                parameter = OFFER_WALL
+                            )
+                            when (lastState.baseState) {
+                                is BaseState.Cards -> {
+                                    sendFromListOffers(
+                                        url = completeUrl,
+                                        parameter = CARDS
+                                    )
+                                }
+                                BaseState.Credits -> {
+                                    sendFromListOffers(
+                                        url = completeUrl,
+                                        parameter = CREDITS
+                                    )
+                                }
+                                BaseState.Loans -> {
+                                    sendFromListOffers(
+                                        url = completeUrl,
+                                        parameter = LOANS
+                                    )
+                                }
+                            }
+                        }
+                        is StatusApplication.Info -> {}
+                        StatusApplication.Loading -> {}
+                        Mock -> {}
+                        StatusApplication.NoConnect -> {}
+                        is StatusApplication.Offer -> {
+                            sendGoToOffer(
+                                url = completeUrl,
+                                parameter = MORE_DETAILS
+                            )
+                        }
+                        is StatusApplication.Web -> { }
+                    }
                     _state.value.copy(
                         statusApplication = StatusApplication.Web(completeUrl),
                     )
@@ -453,7 +493,7 @@ class MainViewModel @Inject constructor(
                         MyTracker.trackEvent(ACTUAL_BACKEND_NULL, mapOf(ACTUAL_BACKEND_NULL to currentGaid))
                         service.sendAppsFlyerEvent(
                             key = ACTUAL_BACKEND_NULL,
-                            content = currentGaid
+                            content = mapOf(ACTUAL_BACKEND_NULL to currentGaid)
                         )
                         _state.value.copy(
                             statusApplication = Mock,
@@ -465,7 +505,7 @@ class MainViewModel @Inject constructor(
                         MyTracker.trackEvent(REQUEST_DB, mapOf(REQUEST_DB to currentGaid))
                         service.sendAppsFlyerEvent(
                             key = REQUEST_DB,
-                            content = currentGaid
+                            content = mapOf(REQUEST_DB to currentGaid)
                         )
                         when (db) {
                             is Error -> {
@@ -473,7 +513,7 @@ class MainViewModel @Inject constructor(
                                 MyTracker.trackEvent(BACKEND_UNAVAILABLE, mapOf(BACKEND_UNAVAILABLE to currentGaid))
                                 service.sendAppsFlyerEvent(
                                     key = BACKEND_UNAVAILABLE,
-                                    content = currentGaid
+                                    content = mapOf(BACKEND_UNAVAILABLE to currentGaid)
                                 )
                                 _state.value.copy(
                                     statusApplication = Mock,
@@ -515,7 +555,7 @@ class MainViewModel @Inject constructor(
                         MyTracker.trackEvent(REQUEST_DATE, mapOf(REQUEST_DATE to currentGaid))
                         service.sendAppsFlyerEvent(
                             key = REQUEST_DATE,
-                            content = currentGaid
+                            content = mapOf(REQUEST_DATE to currentGaid)
                         )
                         /*when (val currentDate =
                             folder.data?.let { repositoryServer.getCurrentDate(it.folder) }) {
@@ -582,5 +622,30 @@ class MainViewModel @Inject constructor(
             installmentCards = installmentCards
         )
             .updateStateUI()
+    }
+
+    private fun sendGoToOffer(url: String, parameter:String) {
+        val sendingData = mapOf(
+            ITEM_ID to parameter,
+            URL to url
+        )
+        YandexMetrica.reportEvent(EXTERNAL_LINK, sendingData)
+        MyTracker.trackEvent(EXTERNAL_LINK)
+        service.sendAppsFlyerEvent(
+            key = EXTERNAL_LINK,
+            content = sendingData
+        )
+    }
+
+    private fun sendFromListOffers(url: String, parameter:String) {
+        val sendingData = mapOf(
+            URL to url
+        )
+        YandexMetrica.reportEvent(parameter, sendingData)
+        MyTracker.trackEvent(parameter, sendingData)
+        service.sendAppsFlyerEvent(
+            key = parameter,
+            content = sendingData
+        )
     }
 }

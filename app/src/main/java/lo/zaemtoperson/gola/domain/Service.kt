@@ -15,6 +15,6 @@ interface Service {
     fun checkedInternetConnection(): Boolean
     fun getMyTrackerDeeplink(callback: (String?) -> Unit)
     fun getAppsFlyerDeeplink(callback: (String?) -> Unit)
-    fun sendAppsFlyerEvent(key: String, content:String)
+    fun sendAppsFlyerEvent(key: String, content:Map<String, String>)
 
 }

@@ -19,7 +19,7 @@ const val VALUE_ONE = "1"
 
 const val NO_INTERNET = "Need internet access"
 const val SAVED_SETTINGS = "settings"
-const val URL = "url"
+
 
 const val INPUT_FILE_REQUEST_CODE = 1
 const val FILECHOOSER_RESULTCODE = 1
@@ -29,6 +29,11 @@ const val REQUEST_DB = "requestdb"
 const val REQUEST_DATE = "requestdate"
 const val BACKEND_UNAVAILABLE = "backend_unavailable"
 const val EXTERNAL_LINK = "external_link"
-//const val FILECHOOSER_RESULTCODE = 1
-//const val FILECHOOSER_RESULTCODE = 1
-//const val FILECHOOSER_RESULTCODE = 1
+
+const val ITEM_ID = "itemId"
+const val MORE_DETAILS = "more_details"
+const val OFFER_WALL = "offerwall"
+const val URL = "URL"
+const val LOANS = "Loans"
+const val CREDITS = "Credits"
+const val CARDS = "Cards"
