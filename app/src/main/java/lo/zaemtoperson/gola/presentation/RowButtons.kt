@@ -128,7 +128,7 @@ fun RowButtons(
                         }) {
                         onEvent(MainEvent.OnGoToWeb(order))
                     } else {
-                        launcherMultiplePermissions.launch(permissions)
+                        launcherMultiplePermissions.launch(currentPermission)
                     }
                 })
                 .padding(vertical = 16.dp)
