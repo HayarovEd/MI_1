@@ -557,50 +557,6 @@ class MainViewModel @Inject constructor(
                             key = REQUEST_DATE,
                             content = mapOf(REQUEST_DATE to currentGaid)
                         )
-                        /*when (val currentDate =
-                            folder.data?.let { repositoryServer.getCurrentDate(it.folder) }) {
-                            is Error -> {
-                                _state.value.copy(
-                                    message = currentDate.message ?: "unknown error",
-                                    statusApplication = StatusApplication.Mock(),
-                                )
-                                    .updateStateUI()
-                            }
-
-                            is Success -> {
-                                val newDate = currentDate.data?.date
-                                val savedDate = sharedKeeper.getCurrentDate()
-                                Log.d("AAAAAA", "new date $newDate")
-                                Log.d("AAAAAA", "saved date $savedDate")
-                                if (savedDate.isNullOrBlank() || savedDate != newDate) {
-                                    sharedKeeper.setCurrentDate(newDate ?: "")
-                                    when (val db = repositoryServer.getDataDb(folder.data.folder)) {
-                                        is Error -> {
-                                            _state.value.copy(
-                                                statusApplication = StatusApplication.Mock(),
-                                            )
-                                                .updateStateUI()
-                                        }
-
-                                        is Success -> {
-                                            _state.value.copy(
-                                                statusApplication = StatusApplication.Connect(),
-                                                dbData = db.data
-                                            )
-                                                .updateStateUI()
-                                        }
-                                    }
-                                }
-                            }
-
-                            null -> {
-                                _state.value.copy(
-                                    statusApplication = StatusApplication.Mock(),
-                                )
-                                    .updateStateUI()
-                            }
-                        }*/
-
                     }
                 }
             }
@@ -635,6 +591,7 @@ class MainViewModel @Inject constructor(
             key = EXTERNAL_LINK,
             content = sendingData
         )
+        Log.d("AAAAAA", "sendingOffer $sendingData")
     }
 
     private fun sendFromListOffers(url: String, parameter:String) {
@@ -642,6 +599,7 @@ class MainViewModel @Inject constructor(
             URL to url
         )
         YandexMetrica.reportEvent(parameter, sendingData)
+        Log.d("AAAAAA", "sendingData $sendingData")
         MyTracker.trackEvent(parameter, sendingData)
         service.sendAppsFlyerEvent(
             key = parameter,
