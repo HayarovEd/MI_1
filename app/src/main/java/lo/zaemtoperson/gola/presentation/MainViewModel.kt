@@ -60,12 +60,13 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
-    private val _notificationLiveData = MyFirebaseMessagingService.NotificationData.notificationLiveData
+    val notificationLiveData = MyFirebaseMessagingService.NotificationData.notificationLiveData
     init {
         loadData()
     }
 
     private fun loadData() {
+
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
                 val appMetrika = service.appMetrika

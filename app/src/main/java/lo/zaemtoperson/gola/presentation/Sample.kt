@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 import android.os.Build
+import android.util.Log
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -29,6 +30,8 @@ fun Sample(
     webView: WebView,
 ) {
     val state = viewModel.state.collectAsState()
+    val sd = viewModel.notificationLiveData
+    Log.d("BBBBBB", "sd ${sd.value?.message}")
     val onEvent = viewModel::onEvent
     val context = LocalContext.current
 
