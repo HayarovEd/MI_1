@@ -37,3 +37,8 @@ const val URL = "URL"
 const val LOANS = "Loans"
 const val CREDITS = "Credits"
 const val CARDS = "Cards"
+
+
+//Channels
+const val CHANNEL_ID = "Firebase ID"
+const val CHANNEL_NAME = "Firebase Channel"
