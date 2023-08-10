@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".data.SecondFirebaseMessagingService"
+            android:name=".data.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>

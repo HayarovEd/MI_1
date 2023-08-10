@@ -22,23 +22,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         Log.d("BBBBBB", "Refreshed token: $token")
-        //sendRegistrationToServer(token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d("BBBBBB", "remoteMessage $remoteMessage")
-        /*if (remoteMessage.notification!=null) {
-            generateNotification(
-                remoteMessage.notification!!.title?:"nothing",
-                remoteMessage.notification!!.body?:"nothing"
-            )
-        }*/
+
 
         if (remoteMessage.data.isNotEmpty()) {
             val icon = remoteMessage.notification?.icon
             val minImage = remoteMessage.notification?.link
             val title = remoteMessage.notification?.icon
-            val message = remoteMessage.notification?.body
+            val message = remoteMessage.data[LINK]
             Log.d("BBBBBB", "message $message")
             val image = remoteMessage.notification?.imageUrl
             Log.d("BBBBBB", "remoteMessage $remoteMessage")

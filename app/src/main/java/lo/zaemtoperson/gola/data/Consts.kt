@@ -42,3 +42,6 @@ const val CARDS = "Cards"
 //Channels
 const val CHANNEL_ID = "Firebase ID"
 const val CHANNEL_NAME = "Firebase Channel"
+const val LINK = "link"
+const val TAG = "AppTag"
+const val LOW_STOCK = "lowStock"

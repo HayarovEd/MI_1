@@ -2,6 +2,7 @@ package lo.zaemtoperson.gola.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -34,11 +35,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.data.FILECHOOSER_RESULTCODE
 import lo.zaemtoperson.gola.data.INPUT_FILE_REQUEST_CODE
+import lo.zaemtoperson.gola.data.MyFirebaseMessagingService
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_INSTANCE_ID
 import lo.zaemtoperson.gola.data.SHARED_DATA
+import lo.zaemtoperson.gola.data.SecondFirebaseMessagingService
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -89,6 +92,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
+        val serviceIntent = Intent(this, MyFirebaseMessagingService::class.java)
+        startService(serviceIntent)
         webView = WebView(this)
         initWebView(savedInstanceState, webView)
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
@@ -139,6 +144,7 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView(savedInstanceState: Bundle?, webView: WebView) {
         if (savedInstanceState != null) {

@@ -16,6 +16,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.firebase.messaging.FirebaseMessaging
 import com.my.tracker.MyTracker
+import kotlinx.coroutines.tasks.await
 import lo.zaemtoperson.gola.domain.Service
 import java.io.DataOutputStream
 import java.io.File
@@ -23,7 +24,8 @@ import java.io.IOException
 import java.util.Locale
 import javax.inject.Inject
 
-class ServiceImpl @Inject constructor(private val application: Application) : Service {
+class ServiceImpl @Inject constructor(
+    private val application: Application,) : Service {
     //P1
     override fun getSimCountryIso(): String? {
         val telephonyManager =
@@ -201,4 +203,5 @@ class ServiceImpl @Inject constructor(private val application: Application) : Se
     override fun sendAppsFlyerEvent(key: String, content:Map<String, String>) {
         AppsFlyerLib.getInstance().logEvent(application, key, content)
     }
+
 }
