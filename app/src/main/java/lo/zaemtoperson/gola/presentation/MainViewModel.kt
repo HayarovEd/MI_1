@@ -24,6 +24,11 @@ import lo.zaemtoperson.gola.data.CREDITS
 import lo.zaemtoperson.gola.data.EXTERNAL_LINK
 import lo.zaemtoperson.gola.data.ITEM_ID
 import lo.zaemtoperson.gola.data.LOANS
+import lo.zaemtoperson.gola.data.MESSAGE_CARDS_CREDIT
+import lo.zaemtoperson.gola.data.MESSAGE_CARDS_DEDIT
+import lo.zaemtoperson.gola.data.MESSAGE_CARDS_INSTALLMENT
+import lo.zaemtoperson.gola.data.MESSAGE_CREDITS
+import lo.zaemtoperson.gola.data.MESSAGE_LOANS
 import lo.zaemtoperson.gola.data.MORE_DETAILS
 import lo.zaemtoperson.gola.data.MyFirebaseMessagingService
 import lo.zaemtoperson.gola.data.OFFER_WALL
@@ -65,7 +70,7 @@ class MainViewModel @Inject constructor(
         loadData()
     }
 
-    private fun loadData() {
+    fun loadData() {
 
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
@@ -73,9 +78,9 @@ class MainViewModel @Inject constructor(
                 val instanceIdMyTracker =
                     if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
                         val instance = service.instanceIdMyTracker
-                    sharedKeeper.setMyTrackerInstanceId(instance)
-                    instance
-                } else {
+                        sharedKeeper.setMyTrackerInstanceId(instance)
+                        instance
+                    } else {
                     sharedKeeper.getMyTrackerInstanceId()
                 }
                 val sim = service.getSimCountryIso()
@@ -526,23 +531,52 @@ class MainViewModel @Inject constructor(
 
                             is Success -> {
                                 collectCards(db.data?.cards)
-                                val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
-                                    Connect(BaseState.Loans)
-                                } else if (!db.data?.credits.isNullOrEmpty()) {
-                                    Connect(BaseState.Credits)
-                                } else {
-                                    val typeCard = if (_state.value.creditCards.isNotEmpty()) {
-                                        TypeCard.CardCredit
-                                    } else if (_state.value.debitCards.isNotEmpty()) {
-                                        TypeCard.CardDebit
-                                    } else TypeCard.CardInstallment
-                                    Connect(BaseState.Cards(typeCard))
-                                }
+                                if (notificationLiveData.value?.type==null) {
+                                    val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
+                                        Connect(BaseState.Loans)
+                                    } else if (!db.data?.credits.isNullOrEmpty()) {
+                                        Connect(BaseState.Credits)
+                                    } else {
+                                        val typeCard = if (_state.value.creditCards.isNotEmpty()) {
+                                            TypeCard.CardCredit
+                                        } else if (_state.value.debitCards.isNotEmpty()) {
+                                            TypeCard.CardDebit
+                                        } else TypeCard.CardInstallment
+                                        Connect(BaseState.Cards(typeCard))
+                                    }
                                     _state.value.copy(
-                                    statusApplication = statusApplication,
-                                    dbData = db.data
-                                )
-                                    .updateStateUI()
+                                        statusApplication = statusApplication,
+                                        dbData = db.data,
+                                        position = notificationLiveData.value?.position ?: 0
+                                    )
+                                        .updateStateUI()
+                                } else {
+                                    val statusApplication = when (notificationLiveData.value?.type) {
+                                        MESSAGE_LOANS -> {
+                                            Connect(BaseState.Loans)
+                                        }
+                                        MESSAGE_CREDITS -> {
+                                            Connect(BaseState.Credits)
+                                        }
+                                        MESSAGE_CARDS_CREDIT -> {
+                                            Connect(BaseState.Cards(TypeCard.CardCredit))
+                                        }
+                                        MESSAGE_CARDS_DEDIT -> {
+                                            Connect(BaseState.Cards(TypeCard.CardDebit))
+                                        }
+                                        MESSAGE_CARDS_INSTALLMENT -> {
+                                            Connect(BaseState.Cards(TypeCard.CardInstallment))
+                                        }
+
+                                        else -> {Connect(BaseState.Loans)}
+                                    }
+                                    _state.value.copy(
+                                        statusApplication = statusApplication,
+                                        dbData = db.data,
+                                        position = notificationLiveData.value?.position ?: 0
+                                    )
+                                        .updateStateUI()
+                                }
                             }
 
                             null -> {

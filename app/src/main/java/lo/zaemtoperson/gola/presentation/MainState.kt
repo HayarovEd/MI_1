@@ -30,5 +30,6 @@ data class MainState(
     val statusApplication: StatusApplication = StatusApplication.Loading,
     val creditCards: List<CardsCredit> = emptyList(),
     val debitCards: List<CardsDebit> = emptyList(),
-    val installmentCards: List<CardsInstallment> = emptyList()
+    val installmentCards: List<CardsInstallment> = emptyList(),
+    val position: Int = 0,
 )

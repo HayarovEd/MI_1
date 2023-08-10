@@ -54,11 +54,12 @@ fun ConnectScreen(
     installmentCards: List<CardsInstallment>,
     launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     context: Context,
-    onEvent:(MainEvent) -> Unit,
+    onEvent: (MainEvent) -> Unit,
     onClickLoans: () -> Unit,
     onClickCards: () -> Unit,
     onClickCredits: () -> Unit,
     onClickRules: () -> Unit,
+    position: Int,
 ) {
     val title = when (baseState) {
         is Cards -> stringResource(id = R.string.cards)
@@ -147,7 +148,8 @@ fun ConnectScreen(
                     onEvent = onEvent,
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
-                    context = context
+                    context = context,
+                    position = position
                 )
             }
 
@@ -158,7 +160,8 @@ fun ConnectScreen(
                     onEvent = onEvent,
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
-                    context = context
+                    context = context,
+                    position = position
                 )
             }
 
@@ -169,7 +172,8 @@ fun ConnectScreen(
                     onEvent = onEvent,
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
-                    context = context
+                    context = context,
+                    position = position
                 )
             }
         }

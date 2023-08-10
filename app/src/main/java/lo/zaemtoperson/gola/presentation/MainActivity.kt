@@ -2,12 +2,10 @@ package lo.zaemtoperson.gola.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +16,6 @@ import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -35,17 +32,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.data.FILECHOOSER_RESULTCODE
 import lo.zaemtoperson.gola.data.INPUT_FILE_REQUEST_CODE
+import lo.zaemtoperson.gola.data.KEY1
+import lo.zaemtoperson.gola.data.KEY2
 import lo.zaemtoperson.gola.data.MyFirebaseMessagingService
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_INSTANCE_ID
 import lo.zaemtoperson.gola.data.SHARED_DATA
-import lo.zaemtoperson.gola.data.SecondFirebaseMessagingService
 import java.io.IOException
-import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -94,6 +89,9 @@ class MainActivity : ComponentActivity() {
         askNotificationPermission()
         val serviceIntent = Intent(this, MyFirebaseMessagingService::class.java)
         startService(serviceIntent)
+        val extras = intent.extras
+        val type = extras?.getString(KEY1)
+        val position = extras?.getInt(KEY2)
         webView = WebView(this)
         initWebView(savedInstanceState, webView)
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
@@ -106,7 +104,9 @@ class MainActivity : ComponentActivity() {
             Sample(
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,
-                webView = webView
+                webView = webView,
+                type = type,
+                position = position
                 )
         }
 

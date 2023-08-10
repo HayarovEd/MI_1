@@ -29,20 +29,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
         if (remoteMessage.data.isNotEmpty()) {
-            val icon = remoteMessage.notification?.icon
-            val minImage = remoteMessage.notification?.link
-            val title = remoteMessage.notification?.icon
             val message = remoteMessage.data[LINK]
-            Log.d("BBBBBB", "message $message")
-            val image = remoteMessage.notification?.imageUrl
-            Log.d("BBBBBB", "remoteMessage $remoteMessage")
-                Notification(
-                    icon = icon,
-                    minImage = minImage,
-                    title = title,
-                    message = message,
-                    image = image
-                )
+            val subString = message?.split("/")
+            Notification(
+                type = subString?.first(),
+                position = subString?.last()?.toInt()
+            )
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(KEY1, subString?.first())
+                putExtra(KEY2, subString?.last()?.toInt())
+            }
+            startActivity(intent)
         }
 
     }
