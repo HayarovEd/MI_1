@@ -92,6 +92,8 @@ class MainActivity : ComponentActivity() {
         val extras = intent.extras
         val type = extras?.getString(KEY1)
         val position = extras?.getInt(KEY2)
+        Log.d("SSDFSS", "m type $type")
+        Log.d("SSDFSS", "m position $position")
         webView = WebView(this)
         initWebView(savedInstanceState, webView)
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
