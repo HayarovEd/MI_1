@@ -27,13 +27,7 @@ fun Sample(
     outputDirectory: File,
     executor: ExecutorService,
     webView: WebView,
-    position: Int?,
-    type: String?,
 ) {
-   /* viewModel.loadData(
-        position = position,
-        type = type
-    )*/
 
     val state = viewModel.state.collectAsState()
     val onEvent = viewModel::onEvent

@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -31,15 +32,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             val message = remoteMessage.data[LINK]
             val subString = message?.split("/")
-            Notification(
-                type = subString?.first(),
-                position = subString?.last()?.toInt()
-            )
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra(KEY1, subString?.first())
-                putExtra(KEY2, subString?.last()?.toInt())
+
+            val bundle = Bundle().apply {
+                putString(KEY1, subString?.first())
+                putInt(KEY2, subString?.last()?.toInt()?:0)
             }
-            startActivity(intent)
+            val intent = Intent().apply {
+                action = SAVED_SETTINGS
+                putExtra(BUNDLE, bundle)
+            }
+            sendBroadcast(intent)
         }
 
     }

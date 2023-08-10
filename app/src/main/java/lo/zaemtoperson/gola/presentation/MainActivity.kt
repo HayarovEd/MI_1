@@ -2,8 +2,10 @@ package lo.zaemtoperson.gola.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -29,20 +31,22 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.appsflyer.AppsFlyerLib
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.data.BUNDLE
 import lo.zaemtoperson.gola.data.FILECHOOSER_RESULTCODE
 import lo.zaemtoperson.gola.data.INPUT_FILE_REQUEST_CODE
 import lo.zaemtoperson.gola.data.KEY1
 import lo.zaemtoperson.gola.data.KEY2
-import lo.zaemtoperson.gola.data.MyFirebaseMessagingService
-import java.io.File
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import lo.zaemtoperson.gola.data.SAVED_SETTINGS
 import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_INSTANCE_ID
 import lo.zaemtoperson.gola.data.SHARED_DATA
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -82,24 +86,29 @@ class MainActivity : ComponentActivity() {
 
         }
     }
+
+    private val activityReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val bundle = intent?.getBundleExtra(BUNDLE)
+            val type  = bundle?.getString(KEY1)
+            val position  = bundle?.getInt(KEY2)
+            Log.d("SSDFSS", "bd type $type")
+            Log.d("SSDFSS", "bd position $position")
+        }
+
+    }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
-        val serviceIntent = Intent(this, MyFirebaseMessagingService::class.java)
-        startService(serviceIntent)
-        val extras = intent.extras
-        val type = extras?.getString(KEY1)
-        val position = extras?.getInt(KEY2)
-        Log.d("SSDFSS", "m type $type")
-        Log.d("SSDFSS", "m position $position")
         webView = WebView(this)
         initWebView(savedInstanceState, webView)
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
         val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
-
+        val intentFilter = IntentFilter(SAVED_SETTINGS)
+        registerReceiver(activityReceiver, intentFilter)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
@@ -107,8 +116,6 @@ class MainActivity : ComponentActivity() {
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,
                 webView = webView,
-                type = type,
-                position = position
                 )
         }
 
@@ -145,6 +152,7 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+        unregisterReceiver(activityReceiver)
     }
 
     @SuppressLint("SetJavaScriptEnabled")

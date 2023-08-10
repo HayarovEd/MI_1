@@ -537,8 +537,8 @@ class MainViewModel @Inject constructor(
                                 collectCards(db.data?.cards)
                                 val type = savedStateHandle.get<String>(KEY1)
                                 val position = savedStateHandle.get<Int>(KEY2)
-                                Log.d("SSDFSS", "type $type")
-                                Log.d("SSDFSS", "position $position")
+                                Log.d("BBBBBB", "type $type")
+                                Log.d("BBBBBB", "position $position")
                                 if (type==null) {
                                     val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
                                         Connect(BaseState.Loans)
