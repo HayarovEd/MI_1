@@ -15,7 +15,6 @@ val permissions = arrayOf(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 val permissions34 = arrayOf(
     Manifest.permission.CAMERA,
-    Manifest.permission.READ_MEDIA_IMAGES
 )
 
 fun String.isValidFormat(): Boolean {

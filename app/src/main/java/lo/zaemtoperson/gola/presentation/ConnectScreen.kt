@@ -59,7 +59,6 @@ fun ConnectScreen(
     onClickCards: () -> Unit,
     onClickCredits: () -> Unit,
     onClickRules: () -> Unit,
-    position: Int,
 ) {
     val title = when (baseState) {
         is Cards -> stringResource(id = R.string.cards)
@@ -149,7 +148,6 @@ fun ConnectScreen(
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
                     context = context,
-                    position = position
                 )
             }
 
@@ -161,7 +159,6 @@ fun ConnectScreen(
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
                     context = context,
-                    position = position
                 )
             }
 
@@ -173,7 +170,6 @@ fun ConnectScreen(
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
                     context = context,
-                    position = position
                 )
             }
         }

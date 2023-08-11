@@ -52,6 +52,7 @@ import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 import lo.zaemtoperson.gola.presentation.MainEvent.OnChangeBaseState
 import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
 import javax.inject.Inject
+import lo.zaemtoperson.gola.domain.model.StatusApplication.NoConnect
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -146,7 +147,7 @@ class MainViewModel @Inject constructor(
             loadDbData(link = link)
         } else {
             _state.value.copy(
-                statusApplication = Mock
+                statusApplication = NoConnect
             )
                 .updateStateUI()
         }
@@ -471,9 +472,6 @@ class MainViewModel @Inject constructor(
 
     private fun loadDbData(link: String) {
 
-        val subString = link.split("/")
-        val type = subString.first()
-        val position = subString.last().toInt()
         viewModelScope.launch {
             delay(2000)
             val currentGaid = _state.value.gaid ?: ""
@@ -533,8 +531,9 @@ class MainViewModel @Inject constructor(
 
                             is Success -> {
                                 collectCards(db.data?.cards)
-                                Log.d("BBBBBB", "type $type")
-                                Log.d("BBBBBB", "position $position")
+                                val subString = link.split("/")
+                                val type = subString.first()
+                                val position = subString.last().toInt()
                                 if (type.isBlank()||type==" ") {
                                     val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
                                         Connect(BaseState.Loans)
@@ -551,10 +550,10 @@ class MainViewModel @Inject constructor(
                                     _state.value.copy(
                                         statusApplication = statusApplication,
                                         dbData = db.data,
-                                        position = position ?: 0
                                     )
                                         .updateStateUI()
                                 } else {
+
                                     val statusApplication = when (type) {
                                         MESSAGE_LOANS -> {
                                             Connect(BaseState.Loans)
@@ -577,7 +576,6 @@ class MainViewModel @Inject constructor(
                                     _state.value.copy(
                                         statusApplication = statusApplication,
                                         dbData = db.data,
-                                        position = position ?: 0
                                     )
                                         .updateStateUI()
                                 }

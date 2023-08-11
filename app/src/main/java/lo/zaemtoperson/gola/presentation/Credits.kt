@@ -29,12 +29,8 @@ fun Credits(
     baseState: BaseState,
     launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     context: Context,
-    position: Int
 ) {
     val listState = rememberLazyListState()
-    LaunchedEffect(Unit){
-        listState.scrollToItem(position)
-    }
     Column(
         modifier = modifier
             .fillMaxSize()

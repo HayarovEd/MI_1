@@ -68,7 +68,6 @@ fun Sample(
                 debitCards = state.value.debitCards,
                 installmentCards = state.value.installmentCards,
                 launcherMultiplePermissions = launcherMultiplePermissions,
-                position =  state.value.position,
                 context = context,
                 onEvent = viewModel::onEvent
             )
