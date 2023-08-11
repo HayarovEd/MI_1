@@ -2,10 +2,8 @@ package lo.zaemtoperson.gola.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -29,6 +27,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsflyer.AppsFlyerLib
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -38,12 +37,9 @@ import java.util.Date
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.data.BUNDLE
 import lo.zaemtoperson.gola.data.FILECHOOSER_RESULTCODE
 import lo.zaemtoperson.gola.data.INPUT_FILE_REQUEST_CODE
-import lo.zaemtoperson.gola.data.KEY1
-import lo.zaemtoperson.gola.data.KEY2
-import lo.zaemtoperson.gola.data.SAVED_SETTINGS
+import lo.zaemtoperson.gola.data.LINK
 import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_INSTANCE_ID
 import lo.zaemtoperson.gola.data.SHARED_DATA
 
@@ -86,6 +82,7 @@ class MainActivity : ComponentActivity() {
 
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,17 +94,23 @@ class MainActivity : ComponentActivity() {
         val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        var link = " /0"
         intent.extras?.let {
             for (key in it.keySet()) {
                 val value = intent.extras?.get(key)
-                Log.d("BBBBBB", "Key: $key Value: $value")
+                if (key==LINK) {
+                    link = value.toString()
+                }
             }
         }
         setContent {
+            val viewModel: MainViewModel = hiltViewModel()
+            viewModel.loadData(link = link)
             Sample(
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,
                 webView = webView,
+                viewModel = viewModel
                 )
         }
 

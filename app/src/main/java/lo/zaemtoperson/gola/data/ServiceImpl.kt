@@ -3,12 +3,14 @@ package lo.zaemtoperson.gola.data
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.util.Log
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
@@ -202,6 +204,16 @@ class ServiceImpl @Inject constructor(
 
     override fun sendAppsFlyerEvent(key: String, content:Map<String, String>) {
         AppsFlyerLib.getInstance().logEvent(application, key, content)
+    }
+
+    override fun getFireBasePush () {
+        val intent = Intent()
+        intent.extras?.let {
+            for (key in it.keySet()) {
+                val value = intent.extras?.get(key)
+                Log.d("BBBBBB", "Key: $key Value: $value")
+            }
+        }
     }
 
 }

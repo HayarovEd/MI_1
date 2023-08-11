@@ -2,7 +2,6 @@ package lo.zaemtoperson.gola.presentation
 
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -24,8 +23,6 @@ import lo.zaemtoperson.gola.data.CARDS
 import lo.zaemtoperson.gola.data.CREDITS
 import lo.zaemtoperson.gola.data.EXTERNAL_LINK
 import lo.zaemtoperson.gola.data.ITEM_ID
-import lo.zaemtoperson.gola.data.KEY1
-import lo.zaemtoperson.gola.data.KEY2
 import lo.zaemtoperson.gola.data.LOANS
 import lo.zaemtoperson.gola.data.MESSAGE_CARDS_CREDIT
 import lo.zaemtoperson.gola.data.MESSAGE_CARDS_DEBIT
@@ -33,7 +30,6 @@ import lo.zaemtoperson.gola.data.MESSAGE_CARDS_INSTALLMENT
 import lo.zaemtoperson.gola.data.MESSAGE_CREDITS
 import lo.zaemtoperson.gola.data.MESSAGE_LOANS
 import lo.zaemtoperson.gola.data.MORE_DETAILS
-import lo.zaemtoperson.gola.data.MyFirebaseMessagingService
 import lo.zaemtoperson.gola.data.OFFER_WALL
 import lo.zaemtoperson.gola.data.REQUEST_DATE
 import lo.zaemtoperson.gola.data.REQUEST_DB
@@ -63,7 +59,6 @@ class MainViewModel @Inject constructor(
     private val sharedKeeper: SharedKepper,
     private val repositoryAnalytic: RepositoryAnalytic,
     private val repositoryServer: RepositoryServer,
-    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -71,11 +66,12 @@ class MainViewModel @Inject constructor(
     private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
     //private val notificationLiveData = MyFirebaseMessagingService.NotificationData.notificationLiveData
     init {
-        loadData()
+       // loadData()
     }
 
-    fun loadData() {
+    fun loadData(link: String) {
 
+        service.getFireBasePush()
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
                 val appMetrika = service.appMetrika
@@ -149,7 +145,7 @@ class MainViewModel @Inject constructor(
             getFirstSub2()
             getSub3()
             getSub5()
-            loadDbData()
+            loadDbData(link = link)
         } else {
             _state.value.copy(
                 statusApplication = Mock
@@ -475,7 +471,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun loadDbData() {
+    private fun loadDbData(link: String) {
+        val subString = link.split("/")
+        val type = subString.first()
+        val position = subString.last().toInt()
         viewModelScope.launch {
             delay(2000)
             val currentGaid = _state.value.gaid ?: ""
@@ -535,11 +534,9 @@ class MainViewModel @Inject constructor(
 
                             is Success -> {
                                 collectCards(db.data?.cards)
-                                val type = savedStateHandle.get<String>(KEY1)
-                                val position = savedStateHandle.get<Int>(KEY2)
                                 Log.d("BBBBBB", "type $type")
                                 Log.d("BBBBBB", "position $position")
-                                if (type==null) {
+                                if (type.isBlank()||type==" ") {
                                     val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
                                         Connect(BaseState.Loans)
                                     } else if (!db.data?.credits.isNullOrEmpty()) {
