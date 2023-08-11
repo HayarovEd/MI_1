@@ -2,6 +2,9 @@ package lo.zaemtoperson.gola.data
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationChannelGroup
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,6 +14,8 @@ import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
@@ -19,6 +24,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.firebase.messaging.FirebaseMessaging
 import com.my.tracker.MyTracker
 import kotlinx.coroutines.tasks.await
+import lo.zaemtoperson.gola.data.SecondFirebaseMessagingService.Companion.GROUP_ID
+import lo.zaemtoperson.gola.data.SecondFirebaseMessagingService.Companion.GROUP_NAME
 import lo.zaemtoperson.gola.domain.Service
 import java.io.DataOutputStream
 import java.io.File
@@ -206,14 +213,35 @@ class ServiceImpl @Inject constructor(
         AppsFlyerLib.getInstance().logEvent(application, key, content)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getFireBasePush () {
-        val intent = Intent()
-        intent.extras?.let {
-            for (key in it.keySet()) {
-                val value = intent.extras?.get(key)
-                Log.d("BBBBBB", "Key: $key Value: $value")
-            }
+
+
+        val notificationManager = application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        notificationManager.createNotificationChannelGroup(NotificationChannelGroup(GROUP_ID, GROUP_NAME))
+        val channel = setChannel()
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setChannel(): NotificationChannel {
+
+
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_DEFAULT,
+        )
+        channel.apply {
+            enableLights(true)
+            enableVibration(true)
+            setShowBadge(true)
+            group = GROUP_ID
+            description = "This is a test description message for notification."
         }
+
+        return channel
     }
 
 }
