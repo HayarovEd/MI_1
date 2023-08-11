@@ -9,6 +9,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.my.tracker.MyTracker
 import com.yandex.metrica.YandexMetrica
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,11 +25,6 @@ import lo.zaemtoperson.gola.data.CREDITS
 import lo.zaemtoperson.gola.data.EXTERNAL_LINK
 import lo.zaemtoperson.gola.data.ITEM_ID
 import lo.zaemtoperson.gola.data.LOANS
-import lo.zaemtoperson.gola.data.MESSAGE_CARDS_CREDIT
-import lo.zaemtoperson.gola.data.MESSAGE_CARDS_DEBIT
-import lo.zaemtoperson.gola.data.MESSAGE_CARDS_INSTALLMENT
-import lo.zaemtoperson.gola.data.MESSAGE_CREDITS
-import lo.zaemtoperson.gola.data.MESSAGE_LOANS
 import lo.zaemtoperson.gola.data.MORE_DETAILS
 import lo.zaemtoperson.gola.data.OFFER_WALL
 import lo.zaemtoperson.gola.data.REQUEST_DATE
@@ -36,6 +32,7 @@ import lo.zaemtoperson.gola.data.REQUEST_DB
 import lo.zaemtoperson.gola.data.Resource.Error
 import lo.zaemtoperson.gola.data.Resource.Success
 import lo.zaemtoperson.gola.data.URL
+import lo.zaemtoperson.gola.data.setStatusByPush
 import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
@@ -43,6 +40,7 @@ import lo.zaemtoperson.gola.domain.SharedKepper
 import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Connect
 import lo.zaemtoperson.gola.domain.model.StatusApplication.Mock
+import lo.zaemtoperson.gola.domain.model.StatusApplication.NoConnect
 import lo.zaemtoperson.gola.domain.model.TypeCard
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
 import lo.zaemtoperson.gola.domain.model.basedto.Card
@@ -51,8 +49,6 @@ import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 import lo.zaemtoperson.gola.presentation.MainEvent.OnChangeBaseState
 import lo.zaemtoperson.gola.presentation.MainEvent.Reconnect
-import javax.inject.Inject
-import lo.zaemtoperson.gola.domain.model.StatusApplication.NoConnect
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -531,10 +527,7 @@ class MainViewModel @Inject constructor(
 
                             is Success -> {
                                 collectCards(db.data?.cards)
-                                val subString = link.split("/")
-                                val type = subString.first()
-                                val position = subString.last().toInt()
-                                if (type.isBlank()||type==" ") {
+                                if (link.isBlank()||link==" ") {
                                     val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
                                         Connect(BaseState.Loans)
                                     } else if (!db.data?.credits.isNullOrEmpty()) {
@@ -553,26 +546,14 @@ class MainViewModel @Inject constructor(
                                     )
                                         .updateStateUI()
                                 } else {
-
-                                    val statusApplication = when (type) {
-                                        MESSAGE_LOANS -> {
-                                            Connect(BaseState.Loans)
-                                        }
-                                        MESSAGE_CREDITS -> {
-                                            Connect(BaseState.Credits)
-                                        }
-                                        MESSAGE_CARDS_CREDIT -> {
-                                            Connect(BaseState.Cards(TypeCard.CardCredit))
-                                        }
-                                        MESSAGE_CARDS_DEBIT -> {
-                                            Connect(BaseState.Cards(TypeCard.CardDebit))
-                                        }
-                                        MESSAGE_CARDS_INSTALLMENT -> {
-                                            Connect(BaseState.Cards(TypeCard.CardInstallment))
-                                        }
-
-                                        else -> {Connect(BaseState.Loans)}
-                                    }
+                                    delay(1000)
+                                    val statusApplication = link.setStatusByPush(
+                                        loans = db.data?.loans?: emptyList(),
+                                        credits = db.data?.credits?: emptyList(),
+                                        creditCards = _state.value.creditCards,
+                                        debitCards = _state.value.debitCards,
+                                        installmentCards = _state.value.installmentCards
+                                    )
                                     _state.value.copy(
                                         statusApplication = statusApplication,
                                         dbData = db.data,

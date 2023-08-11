@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
         val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        var link = " /0"
+        var link = ""
         intent.extras?.let {
             for (key in it.keySet()) {
                 val value = intent.extras?.get(key)
