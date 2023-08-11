@@ -43,14 +43,15 @@ fun Sample(
             //Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
     }
-
+    val typeCard = if (!state.value.creditCards.isNullOrEmpty()) TypeCard.CardCredit
+    else if (!state.value.debitCards.isNullOrEmpty()) TypeCard.CardDebit else TypeCard.CardInstallment
     when (val currentState = state.value.statusApplication) {
         is Connect -> {
             ConnectScreen(
                 baseState = currentState.baseState,
                 db = state.value.dbData!!,
                 onClickCards = { onEvent(MainEvent.OnChangeBaseState(BaseState.Cards(
-                    typeCard = TypeCard.CardCredit
+                    typeCard = typeCard
                 ))) },
                 onClickCredits = { onEvent(MainEvent.OnChangeBaseState(BaseState.Credits)) },
                 onClickLoans = { onEvent(MainEvent.OnChangeBaseState(BaseState.Loans)) },
