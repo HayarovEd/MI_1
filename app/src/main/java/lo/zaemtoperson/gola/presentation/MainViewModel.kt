@@ -64,14 +64,12 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
-    //private val notificationLiveData = MyFirebaseMessagingService.NotificationData.notificationLiveData
     init {
        // loadData()
     }
 
     fun loadData(link: String) {
 
-        service.getFireBasePush()
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
                 val appMetrika = service.appMetrika
@@ -472,6 +470,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun loadDbData(link: String) {
+
         val subString = link.split("/")
         val type = subString.first()
         val position = subString.last().toInt()

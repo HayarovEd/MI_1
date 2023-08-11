@@ -18,14 +18,7 @@ val permissions34 = arrayOf(
     Manifest.permission.READ_MEDIA_IMAGES
 )
 
-class Utils {
-    companion object {
-        fun print(e: Exception?) = e?.message?.let {
-            Log.e(TAG, it)
-        }
-
-        fun log(message: String?) = message?.let {
-            Log.e(TAG, it)
-        }
-    }
+fun String.isValidFormat(): Boolean {
+    val regex = Regex("""^[A-Za-z]+/\d+$""")
+    return regex.matches(this)
 }
