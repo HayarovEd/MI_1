@@ -13,13 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -50,8 +49,10 @@ fun CardsScreen(
     baseState: BaseState,
     launcherMultiplePermissions: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     context: Context,
+    creditCardloanLazyState: LazyListState,
+    debitCardLazyState: LazyListState,
+    instalmentCardLazyState: LazyListState,
 ) {
-    val listState = rememberLazyListState()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -128,7 +129,7 @@ fun CardsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    state = listState
+                    state = creditCardloanLazyState
                 ) {
                     items(creditCards) { card ->
                         ItemCreditCard(
@@ -148,7 +149,7 @@ fun CardsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    state = listState
+                    state = debitCardLazyState
                 ) {
                     items(debitCards) { card ->
                         ItemDebitCard(
@@ -168,7 +169,7 @@ fun CardsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    state = listState
+                    state = instalmentCardLazyState
                 ) {
                     items(installmentCards) { card ->
                         ItemInstallmentCard(

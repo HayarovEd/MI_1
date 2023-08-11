@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -59,6 +60,11 @@ fun ConnectScreen(
     onClickCards: () -> Unit,
     onClickCredits: () -> Unit,
     onClickRules: () -> Unit,
+    loanLazyState: LazyListState,
+    creditLazyState: LazyListState,
+    creditCardloanLazyState: LazyListState,
+    debitCardLazyState: LazyListState,
+    instalmentCardLazyState: LazyListState,
 ) {
     val title = when (baseState) {
         is Cards -> stringResource(id = R.string.cards)
@@ -148,6 +154,9 @@ fun ConnectScreen(
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
                     context = context,
+                    creditCardloanLazyState = creditCardloanLazyState,
+                    debitCardLazyState = debitCardLazyState,
+                    instalmentCardLazyState = instalmentCardLazyState,
                 )
             }
 
@@ -159,6 +168,7 @@ fun ConnectScreen(
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
                     context = context,
+                    creditLazyState = creditLazyState
                 )
             }
 
@@ -170,6 +180,7 @@ fun ConnectScreen(
                     baseState = baseState,
                     launcherMultiplePermissions = launcherMultiplePermissions,
                     context = context,
+                    loanLazyState = loanLazyState
                 )
             }
         }
