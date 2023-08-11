@@ -50,7 +50,7 @@ const val TAG = "AppTag"
 const val KEY1 = "key1"
 const val KEY2 = "key2"
 
-const val MESSAGE_CARDS_CREDIT = "cards_cred"
+const val MESSAGE_CARDS_CREDIT = "cards_credit"
 const val MESSAGE_CARDS_DEBIT = "cards_debit"
 const val MESSAGE_CARDS_INSTALLMENT = "cards_installment"
 const val MESSAGE_CREDITS = "credits"

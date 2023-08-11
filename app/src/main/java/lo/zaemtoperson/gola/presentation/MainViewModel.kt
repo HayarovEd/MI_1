@@ -527,6 +527,7 @@ class MainViewModel @Inject constructor(
 
                             is Success -> {
                                 collectCards(db.data?.cards)
+                                Log.d("SDFGT", "sert ${db.data?.loans?.get(3)?.id}")
                                 if (link.isBlank()||link==" ") {
                                     val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
                                         Connect(BaseState.Loans)

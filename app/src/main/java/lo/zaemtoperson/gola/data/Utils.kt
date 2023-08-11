@@ -68,7 +68,7 @@ fun String.setStatusByPush(
         val position = subString.last().toInt()
         return when (subString.first()) {
             MESSAGE_LOANS -> {
-                val loan = loans.find { it.id==position }
+                val loan = loans.firstOrNull { it.id==position }
                 Offer(
                     currentBaseState = Loans,
                     elementOffer = ElementOffer(
@@ -94,7 +94,7 @@ fun String.setStatusByPush(
             }
 
             MESSAGE_CREDITS -> {
-                val loan = credits.find { it.id==position }
+                val loan = credits.firstOrNull { it.id==position }
                 Offer(
                     currentBaseState = Loans,
                     elementOffer = ElementOffer(
@@ -120,7 +120,7 @@ fun String.setStatusByPush(
             }
 
             MESSAGE_CARDS_CREDIT -> {
-                val loan = creditCards.find { it.id==position }
+                val loan = creditCards.firstOrNull { it.id==position }
                 Offer(
                     currentBaseState = Loans,
                     elementOffer = ElementOffer(
@@ -146,7 +146,7 @@ fun String.setStatusByPush(
             }
 
             MESSAGE_CARDS_DEBIT -> {
-                val loan = debitCards.find { it.id==position }
+                val loan = debitCards.firstOrNull { it.id==position }
                 Offer(
                     currentBaseState = Loans,
                     elementOffer = ElementOffer(
@@ -172,7 +172,7 @@ fun String.setStatusByPush(
             }
 
             MESSAGE_CARDS_INSTALLMENT -> {
-                val loan = installmentCards.find { it.id==position }
+                val loan = installmentCards.firstOrNull { it.id==position }
                 Offer(
                     currentBaseState = Loans,
                     elementOffer = ElementOffer(
