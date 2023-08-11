@@ -80,7 +80,7 @@ fun CardsScreen(
                     Text(
                         color = absoluteDark,
                         fontStyle = FontStyle(R.font.onast_500),
-                        fontSize = 13.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Normal,
                         text = stringResource(id = R.string.credit),
                         textAlign = TextAlign.Center
@@ -98,7 +98,7 @@ fun CardsScreen(
                     Text(
                         color = absoluteDark,
                         fontStyle = FontStyle(R.font.onast_500),
-                        fontSize = 13.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Normal,
                         text = stringResource(id = R.string.debit),
                         textAlign = TextAlign.Center
@@ -116,7 +116,7 @@ fun CardsScreen(
                     Text(
                         color = absoluteDark,
                         fontStyle = FontStyle(R.font.onast_500),
-                        fontSize = 13.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Normal,
                         text = stringResource(id = R.string.installment),
                         textAlign = TextAlign.Center
