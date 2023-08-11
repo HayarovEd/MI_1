@@ -86,17 +86,6 @@ class MainActivity : ComponentActivity() {
 
         }
     }
-
-    private val activityReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val bundle = intent?.getBundleExtra(BUNDLE)
-            val type  = bundle?.getString(KEY1)
-            val position  = bundle?.getInt(KEY2)
-            Log.d("SSDFSS", "bd type $type")
-            Log.d("SSDFSS", "bd position $position")
-        }
-
-    }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,10 +96,13 @@ class MainActivity : ComponentActivity() {
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
         val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
-        val intentFilter = IntentFilter(SAVED_SETTINGS)
-        registerReceiver(activityReceiver, intentFilter)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
+        intent.extras?.let {
+            for (key in it.keySet()) {
+                val value = intent.extras?.get(key)
+                Log.d("BBBBBB", "Key: $key Value: $value")
+            }
+        }
         setContent {
             Sample(
                 outputDirectory = outputDirectory,
@@ -152,7 +144,6 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-        unregisterReceiver(activityReceiver)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
