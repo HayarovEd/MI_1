@@ -107,7 +107,7 @@ fun ConnectScreen(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    if (db.loans.isNotEmpty()) {
+                    if (!db.loans.isNullOrEmpty()) {
                         ItemBottomBar(
                             color = if (baseState is BaseState.Loans) green else lightGray,
                             content = stringResource(id = R.string.loans),
@@ -115,7 +115,7 @@ fun ConnectScreen(
                             onClick = onClickLoans
                         )
                     }
-                    if (db.cards.isNotEmpty()) {
+                    if (!db.cards.isNullOrEmpty()) {
                         ItemBottomBar(
                             color = if (baseState is Cards) green else lightGray,
                             content = stringResource(id = R.string.cards),
@@ -123,7 +123,7 @@ fun ConnectScreen(
                             onClick = onClickCards
                         )
                     }
-                    if (db.credits.isNotEmpty()) {
+                    if (!db.credits.isNullOrEmpty()) {
                         ItemBottomBar(
                             color = if (baseState is Credits) green else lightGray,
                             content = stringResource(id = R.string.credits),

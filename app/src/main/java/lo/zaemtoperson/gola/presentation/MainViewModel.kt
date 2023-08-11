@@ -169,7 +169,7 @@ class MainViewModel @Inject constructor(
                         .updateStateUI()
                 } else {
                     _state.value.copy(
-                        statusApplication = StatusApplication.NoConnect,
+                        statusApplication = NoConnect,
                     )
                         .updateStateUI()
                 }
@@ -238,7 +238,7 @@ class MainViewModel @Inject constructor(
                         is StatusApplication.Info -> {}
                         StatusApplication.Loading -> {}
                         Mock -> {}
-                        StatusApplication.NoConnect -> {}
+                        NoConnect -> {}
                         is StatusApplication.Offer -> {
                             sendGoToOffer(
                                 url = completeUrl,
@@ -253,7 +253,7 @@ class MainViewModel @Inject constructor(
                         .updateStateUI()
                 } else {
                     _state.value.copy(
-                        statusApplication = StatusApplication.NoConnect,
+                        statusApplication = NoConnect,
                     )
                         .updateStateUI()
                 }

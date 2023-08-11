@@ -78,7 +78,7 @@ class ServiceImpl @Inject constructor(
 
     //P4
     override fun getCurrentLocale(): String {
-        return Locale.getDefault().country
+        return "${Locale.getDefault().language}_${Locale.getDefault().country}"
     }
 
     //P5

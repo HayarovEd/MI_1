@@ -65,7 +65,7 @@ fun CardsScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (creditCards.isNotEmpty()) {
+            if (!creditCards.isNullOrEmpty()) {
                 Button(
                     modifier = modifier.weight(1f),
                     onClick = { onEvent(MainEvent.OnChangeTypeCard(TypeCard.CardCredit)) },
@@ -83,7 +83,7 @@ fun CardsScreen(
                     )
                 }
             }
-            if (debitCards.isNotEmpty()) {
+            if (!debitCards.isNullOrEmpty()) {
                 Button(
                     modifier = modifier.weight(1f),
                     onClick = { onEvent(MainEvent.OnChangeTypeCard(TypeCard.CardDebit)) },
@@ -101,7 +101,7 @@ fun CardsScreen(
                     )
                 }
             }
-            if (installmentCards.isNotEmpty()) {
+            if (!installmentCards.isNullOrEmpty()) {
                 Button(
                     modifier = modifier.weight(1f),
                     onClick = { onEvent(MainEvent.OnChangeTypeCard(TypeCard.CardInstallment)) },
