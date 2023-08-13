@@ -37,10 +37,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class InAppWebViewChromeClient {
+public class InAppWebViewChromeClient extends WebChromeClient {
 
     protected static final String LOG_TAG = "IABWebChromeClient";
-    Activity activity;
+    public Activity activity;
     private static final int PICKER = 1;
     private static final int PICKER_LEGACY = 3;
     final String DEFAULT_MIME_TYPES = "*/*";
@@ -54,6 +54,14 @@ public class InAppWebViewChromeClient {
     private Uri videoOutputFileUri;
     @Nullable
     private Uri imageOutputFileUri;
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
     protected static final FrameLayout.LayoutParams FULLSCREEN_LAYOUT_PARAMS = new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
