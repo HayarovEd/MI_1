@@ -15,6 +15,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.addCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -45,32 +47,7 @@ fun WebViewScreen(
         }
     }
     val context = LocalContext.current
-    /*val isLoadingUrl: MutableState<Boolean> = remember {
-        mutableStateOf(true)
-    }
-    webView.loadUrl(url)
-    webView.webViewClient = WebViewClientHand(isLoadingUrl = isLoadingUrl)
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = baseBackground)
-            .padding(5.dp)
-    ) {
-        AndroidView(
-            modifier = modifier
-                .fillMaxSize()
-                .background(color = baseBackground)
-                .padding(5.dp),
-            factory = { webView })
-        if (isLoadingUrl.value) {
-            CircularProgressIndicator(
-                modifier = modifier
-                    .size(100.dp)
-                    .align(alignment = Alignment.Center),
-                color = green
-            )
-        }
-    }*/
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     AndroidView(factory = {
         WebView(it).apply {
@@ -110,6 +87,11 @@ fun WebViewScreen(
             settings.useWideViewPort = true
             settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             settings.loadWithOverviewMode = true
+            onBackPressedDispatcher?.addCallback {
+                if (this@apply.canGoBack()) {
+                    this@apply.goBack()
+                }
+            }
             loadUrl(url)
         }
     }, update = {
