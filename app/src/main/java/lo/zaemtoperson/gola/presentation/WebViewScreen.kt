@@ -110,6 +110,8 @@ fun WebViewScreen(
                 onBackPressedDispatcher?.addCallback {
                     if (this@apply.canGoBack()) {
                         this@apply.goBack()
+                    } else {
+                        onEvent(MainEvent.Reconnect)
                     }
                 }
                 loadUrl(url)
