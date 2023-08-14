@@ -100,13 +100,18 @@ fun WebViewScreen(
 
 
                 }
-                settings.allowFileAccess = true
-                settings.javaScriptEnabled = true
-                isClickable = true
                 settings.domStorageEnabled = true
-                settings.useWideViewPort = true
-                settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+                settings.javaScriptCanOpenWindowsAutomatically = true
+                settings.javaScriptEnabled = true
                 settings.loadWithOverviewMode = true
+                settings.useWideViewPort = true
+                settings.domStorageEnabled = true
+                settings.databaseEnabled = true
+                settings.setSupportZoom(false)
+                settings.allowFileAccess = true
+                settings.allowContentAccess = true
+                settings.loadWithOverviewMode = true
+                settings.useWideViewPort = true
                 onBackPressedDispatcher?.addCallback {
                     if (this@apply.canGoBack()) {
                         this@apply.goBack()
