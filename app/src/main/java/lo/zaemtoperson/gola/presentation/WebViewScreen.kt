@@ -21,11 +21,26 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.domain.model.StatusApplication
+import lo.zaemtoperson.gola.ui.theme.baseBackground
+import lo.zaemtoperson.gola.ui.theme.black
+import lo.zaemtoperson.gola.ui.theme.lightBlue
 import java.io.File
 import java.io.IOException
 
@@ -36,6 +51,7 @@ private var imageOutputFileUri: Uri? = null
 fun WebViewScreen(
     modifier: Modifier = Modifier,
     url: String,
+    onEvent: (MainEvent) -> Unit,
 ) {
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -48,73 +64,74 @@ fun WebViewScreen(
     }
     val context = LocalContext.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    Box (modifier = modifier
+        .fillMaxSize()
+        .background(color = baseBackground)
+        .padding(4.dp),
+        ){
+        AndroidView(factory = {
+            WebView(it).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = WebViewClient()
+                webChromeClient = object : WebChromeClient() {
 
-    AndroidView(factory = {
-        WebView(it).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+                    override fun onShowFileChooser(
+                        webView: WebView?,
+                        filePathCallback: ValueCallback<Array<Uri>>?,
+                        fileChooserParams: FileChooserParams?
+                    ): Boolean {
+
+                        val acceptTypes = fileChooserParams!!.acceptTypes
+                        val allowMultiple =
+                            fileChooserParams!!.mode === FileChooserParams.MODE_OPEN_MULTIPLE
+                        val captureEnabled = fileChooserParams.isCaptureEnabled
+
+                        return startPickerIntent(
+                            callback = filePathCallback,
+                            acceptTypes =acceptTypes,
+                            allowMultiple = allowMultiple,
+                            captureEnabled = captureEnabled,
+                            activityResultLauncher = activityResultLauncher,
+                            context = context)
+                    }
+
+
+                }
+                settings.allowFileAccess = true
+                settings.javaScriptEnabled = true
+                isClickable = true
+                settings.domStorageEnabled = true
+                settings.useWideViewPort = true
+                settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+                settings.loadWithOverviewMode = true
+                onBackPressedDispatcher?.addCallback {
+                    if (this@apply.canGoBack()) {
+                        this@apply.goBack()
+                    }
+                }
+                loadUrl(url)
+            }
+        }, update = {
+            it.loadUrl(url)
+        })
+        IconButton(
+            modifier = modifier
+                .padding(top = 4.dp, start = 4.dp)
+                .align(alignment = Alignment.TopStart),
+            onClick = {
+                onEvent(MainEvent.Reconnect)
+        }) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_arrow_back_24),
+                tint = lightBlue,
+                contentDescription = ""
             )
-            webViewClient = WebViewClient()
-            webChromeClient = object : WebChromeClient() {
-
-                override fun onShowFileChooser(
-                    webView: WebView?,
-                    filePathCallback: ValueCallback<Array<Uri>>?,
-                    fileChooserParams: FileChooserParams?
-                ): Boolean {
-
-                    val acceptTypes = fileChooserParams!!.acceptTypes
-                    val allowMultiple =
-                        fileChooserParams!!.mode === FileChooserParams.MODE_OPEN_MULTIPLE
-                    val captureEnabled = fileChooserParams.isCaptureEnabled
-
-                    return startPickerIntent(
-                        callback = filePathCallback,
-                        acceptTypes =acceptTypes,
-                        allowMultiple = allowMultiple,
-                        captureEnabled = captureEnabled,
-                        activityResultLauncher = activityResultLauncher,
-                        context = context)
-                }
-
-
-            }
-            settings.allowFileAccess = true
-            settings.javaScriptEnabled = true
-            isClickable = true
-            settings.domStorageEnabled = true
-            settings.useWideViewPort = true
-            settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-            settings.loadWithOverviewMode = true
-            onBackPressedDispatcher?.addCallback {
-                if (this@apply.canGoBack()) {
-                    this@apply.goBack()
-                }
-            }
-            loadUrl(url)
         }
-    }, update = {
-        it.loadUrl(url)
-    })
+    }
 }
-
-/*
-class WebViewClientHand(val isLoadingUrl: MutableState<Boolean>) : android.webkit.WebViewClient() {
-
-    // Load the URL
-    @Deprecated("Deprecated in Java")
-    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-        view.loadUrl(url)
-        return false
-    }
-
-    // ProgressBar will disappear once page is loaded
-    override fun onPageFinished(view: WebView, url: String) {
-        super.onPageFinished(view, url)
-        isLoadingUrl.value = false
-    }
-}*/
 
 fun startPickerIntent(
     callback: ValueCallback<Array<Uri>>?,
