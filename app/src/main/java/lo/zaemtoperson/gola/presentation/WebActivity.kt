@@ -11,44 +11,26 @@ import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.view.ViewGroup
-import android.webkit.CookieManager
 import android.webkit.MimeTypeMap
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
-import coil.compose.rememberImagePainter
+import lo.zaemtoperson.gola.R.layout
 import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
-import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.R.layout
-import lo.zaemtoperson.gola.data.FILECHOOSER_RESULTCODE
-import lo.zaemtoperson.gola.data.INPUT_FILE_REQUEST_CODE
 
 class WebActivity : AppCompatActivity() {
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
@@ -108,7 +90,7 @@ class WebActivity : AppCompatActivity() {
 
                         val acceptTypes = fileChooserParams!!.acceptTypes
                         val allowMultiple =
-                            fileChooserParams!!.mode === FileChooserParams.MODE_OPEN_MULTIPLE
+                            fileChooserParams.mode == FileChooserParams.MODE_OPEN_MULTIPLE
                         val captureEnabled = fileChooserParams.isCaptureEnabled
 
                         return startPickerIntent(filePathCallback, acceptTypes, allowMultiple, captureEnabled)
@@ -130,26 +112,51 @@ class WebActivity : AppCompatActivity() {
         })
     }
 
-    fun startPickerIntent(callback: ValueCallback<Array<Uri>>?,
-                          acceptTypes: Array<String>,
-                          allowMultiple: Boolean?,
-                          captureEnabled: Boolean?
-    ): Boolean{
-        mFilePathCallback = callback;
-        val extraIntents = ArrayList<Parcelable>()
-        extraIntents.add(getPhotoIntent());
-        val fileSelectionIntent = getFileChooserIntent(acceptTypes, allowMultiple)
-        val pickerIntent = Intent(Intent.ACTION_CHOOSER);
-        pickerIntent.putExtra(Intent.EXTRA_INTENT, fileSelectionIntent);
-        pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray());
-        launcher.launch(pickerIntent);
-        return true;
+    fun startPickerIntent(
+        callback: ValueCallback<Array<Uri>>?,
+        acceptTypes: Array<String>,
+        allowMultiple: Boolean?,
+        captureEnabled: Boolean?
+    ): Boolean {
+        mFilePathCallback = callback
+        val isImage = acceptsImages(acceptTypes)
+        val isVideo = acceptsVideo(acceptTypes)
+        var pickerIntent: Intent?
+        pickerIntent = if (captureEnabled != null && captureEnabled) {
+            if (isImage) {
+                getPhotoIntent()
+            } else if (isVideo) {
+                getVideoIntent()
+            } else null
+        } else null
+        if (pickerIntent == null) {
+            val extraIntents = ArrayList<Parcelable>()
+            if (isImage) {
+                extraIntents.add(getPhotoIntent())
+            }
+            if (isVideo) {
+                extraIntents.add(getVideoIntent())
+            }
+            val fileSelectionIntent = getFileChooserIntent(acceptTypes, allowMultiple)
+            pickerIntent = Intent(Intent.ACTION_CHOOSER)
+            pickerIntent.putExtra(Intent.EXTRA_INTENT, fileSelectionIntent)
+            pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray())
+        }
+        launcher.launch(pickerIntent)
+        return true
     }
 
     private fun getPhotoIntent(): Intent {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         imageOutputFileUri = getOutputUri(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputFileUri)
+        return intent
+    }
+
+    private fun getVideoIntent(): Intent {
+        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        val videoOutputFileUri = getOutputUri(MediaStore.ACTION_VIDEO_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, videoOutputFileUri)
         return intent
     }
 
@@ -255,5 +262,44 @@ class WebActivity : AppCompatActivity() {
 
     private fun getActivity(): Activity {
         return this
+    }
+
+    private fun acceptsImages(types: Array<String>): Boolean {
+        val mimeTypes = getAcceptedMimeType(types)
+        return acceptsAny(types) || arrayContainsString(mimeTypes, "image")
+    }
+
+    private fun acceptsVideo(types: Array<String>): Boolean {
+        val mimeTypes = getAcceptedMimeType(types)
+        return acceptsAny(types) || arrayContainsString(mimeTypes, "video")
+    }
+
+    private fun acceptsAny(types: Array<String>): Boolean {
+        if (isArrayEmpty(types)) {
+            return true
+        }
+        for (type in types) {
+            if (type == "*/*") {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun arrayContainsString(array: Array<String?>?, pattern: String): Boolean {
+        if (array != null) {
+            for (content in array) {
+                if (content != null) {
+                    if (content.contains(pattern)) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    private fun isArrayEmpty(arr: Array<String>): Boolean {
+        return arr.isEmpty() || arr.size == 1 && arr[0].isEmpty()
     }
 }
