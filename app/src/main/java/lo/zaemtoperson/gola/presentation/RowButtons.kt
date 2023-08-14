@@ -119,17 +119,7 @@ fun RowButtons(
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(color = black)
                 .clickable(onClick = {
-                    val currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) permissions34 else permissions
-                    if(currentPermission.all {
-                            ContextCompat.checkSelfPermission(
-                                context,
-                                it
-                            ) == PackageManager.PERMISSION_GRANTED
-                        }) {
-                        onEvent(MainEvent.OnGoToWeb(order))
-                    } else {
-                        launcherMultiplePermissions.launch(currentPermission)
-                    }
+                    onEvent(MainEvent.OnGoToWeb(order))
                 })
                 .padding(vertical = 16.dp)
         ) {

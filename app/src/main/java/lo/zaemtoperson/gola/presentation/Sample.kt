@@ -26,8 +26,7 @@ import lo.zaemtoperson.gola.ui.presentation_v1.BaseScreen
 fun Sample(
     viewModel: MainViewModel = hiltViewModel(),
     outputDirectory: File,
-    executor: ExecutorService,
-    webView: WebView,
+    executor: ExecutorService
 ) {
 
     val state = viewModel.state.collectAsState()
@@ -116,8 +115,7 @@ fun Sample(
 
         is StatusApplication.Web -> {
             WebViewScreen(
-                webView = webView,
-                url = currentState.url
+                url = currentState.url,
             )
         }
 

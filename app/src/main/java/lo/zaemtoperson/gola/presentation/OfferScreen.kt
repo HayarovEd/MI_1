@@ -144,17 +144,7 @@ fun OfferScreen(
                             .clip(shape = RoundedCornerShape(16.dp))
                             .background(color = black)
                             .clickable(onClick = {
-                                val currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) permissions34 else permissions
-                                if(currentPermission.all {
-                                        ContextCompat.checkSelfPermission(
-                                            context,
-                                            it
-                                        ) == PackageManager.PERMISSION_GRANTED
-                                    }) {
-                                    onEvent(MainEvent.OnGoToWeb(elementOffer.order))
-                                } else {
-                                    launcherMultiplePermissions.launch(permissions)
-                                }
+                                onEvent(MainEvent.OnGoToWeb(elementOffer.order))
                             })
                             .padding(vertical = 16.dp)
                     ) {
