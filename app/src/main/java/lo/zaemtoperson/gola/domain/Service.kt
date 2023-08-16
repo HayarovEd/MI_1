@@ -14,7 +14,7 @@ interface Service {
     fun getApplicationVersion(): String?
     fun checkedInternetConnection(): Boolean
     fun getMyTrackerDeeplink(callback: (String?) -> Unit)
-    fun getAppsFlyerDeeplink(callback: (String?) -> Unit)
+    fun getAppsFlyerDeeplink(): String
     fun sendAppsFlyerEvent(key: String, content:Map<String, String>)
     fun getYandexMetricaDeviceId (callback: (String?) -> Unit)
 }

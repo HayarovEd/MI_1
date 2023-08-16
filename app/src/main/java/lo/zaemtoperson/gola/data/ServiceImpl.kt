@@ -18,6 +18,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.my.tracker.MyTracker
 import com.yandex.metrica.AppMetricaDeviceIDListener
 import com.yandex.metrica.YandexMetrica
+import lo.zaemtoperson.gola.AppGola
 import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
@@ -175,30 +176,8 @@ class ServiceImpl @Inject constructor(
         }
     }
 
-    override fun getAppsFlyerDeeplink(callback: (String?) -> Unit) {
-
-        val conversionDataListener = object : AppsFlyerConversionListener {
-            override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
-                val conversionId = conversionData["af_adset_id"] as? String
-                callback(conversionId)
-            }
-
-            override fun onConversionDataFail(p0: String?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onAppOpenAttribution(p0: MutableMap<String, String>?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onAttributionFailure(p0: String?) {
-                TODO("Not yet implemented")
-            }
-
-            // ...
-        }
-        AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, application)
-        AppsFlyerLib.getInstance().start(application)
+    override fun getAppsFlyerDeeplink(): String {
+        return (application as AppGola).appsFlayer
     }
 
     override fun sendAppsFlyerEvent(key: String, content:Map<String, String>) {

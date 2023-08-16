@@ -84,6 +84,8 @@ class MainViewModel @Inject constructor(
                 val locale = service.getCurrentLocale()
                 val deviceId = service.getDeviceAndroidId()
                 val sharedFireBaseToken = sharedKeeper.getFireBaseToken()
+                val appsFlayer = service.getAppsFlyerDeeplink()
+                Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
                 if (sharedFireBaseToken.isNullOrBlank()) {
                     service.getFirebaseMessagingToken { token ->
                         _state.value.copy(
@@ -109,7 +111,7 @@ class MainViewModel @Inject constructor(
                     locale = locale,
                     deviceId = deviceId,
                     versionApplication = version,
-                    appsFlyerDeeplink = sharedKeeper.getAppsFlyerConversion()
+                    appsFlyerDeeplink = appsFlayer
                 )
                     .updateStateUI()
             }
@@ -128,14 +130,6 @@ class MainViewModel @Inject constructor(
                         .updateStateUI()
                 }
             }
-            /*viewModelScope.launch {
-                service.getAppsFlyerDeeplink { deeplink ->
-                    _state.value.copy(
-                        appsFlyerDeeplink = deeplink
-                    )
-                        .updateStateUI()
-                }
-            }*/
             getRemoteConfig()
             getSub1()
             getFirstSub2()
@@ -284,7 +278,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             delay(2000)
             service.getYandexMetricaDeviceId {
-                Log.d("ASDFGH", "getYandexMetricaDeviceId $it")
                 _state.value.copy(
                     yandexMetricaDeviceId = it
                 )
@@ -410,10 +403,9 @@ class MainViewModel @Inject constructor(
 
             val currentGaid = _state.value.gaid
             val currentMyTracker = _state.value.trackerDeeplink
-            val currentAppsFlyer = _state.value.appsFlyerDeeplink
-            Log.d("ASDFGH", "currentMyTracker $currentMyTracker")
-            Log.d("ASDFGH", "currentAppsFlyer $currentAppsFlyer")
-            if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isNullOrBlank()) {
+            val currentAppsFlyer = service.getAppsFlyerDeeplink()
+            Log.d("ASDFGH", "currentAppsFlyer-  $currentAppsFlyer")
+            if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -429,7 +421,6 @@ class MainViewModel @Inject constructor(
 
                     is Success -> {
                         val sub2 = result.data?.affsub2
-                        Log.d("ASDFGH", "affsub2 request $sub2")
                         _state.value.copy(
                             affsub2Unswer = sub2 ?: ""
                         )
@@ -457,7 +448,7 @@ class MainViewModel @Inject constructor(
                             .updateStateUI()
                     }
                 }
-            } else if (currentAppsFlyer != null) {
+            } else if (currentAppsFlyer.isBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -628,7 +619,6 @@ class MainViewModel @Inject constructor(
             key = EXTERNAL_LINK,
             content = sendingData
         )
-        Log.d("AAAAAA", "sendingOffer $sendingData")
     }
 
     private fun sendFromListOffers(url: String, parameter:String) {
@@ -636,7 +626,6 @@ class MainViewModel @Inject constructor(
             URL to url
         )
         YandexMetrica.reportEvent(parameter, sendingData)
-        Log.d("AAAAAA", "sendingData $sendingData")
         MyTracker.trackEvent(parameter, sendingData)
         service.sendAppsFlyerEvent(
             key = parameter,

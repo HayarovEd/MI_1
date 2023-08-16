@@ -2,6 +2,7 @@ package lo.zaemtoperson.gola
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.my.tracker.MyTracker
@@ -13,6 +14,7 @@ import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.MY_TRACKER
 import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_SUB
 import lo.zaemtoperson.gola.data.SHARED_DATA
+import java.lang.StringBuilder
 
 
 //import pro.userx.UserX
@@ -20,16 +22,25 @@ import lo.zaemtoperson.gola.data.SHARED_DATA
 
 @HiltAndroidApp
 class AppGola: Application() {
+    var appsFlayer = ""
     override fun onCreate() {
         super.onCreate()
         val sharedPref = this.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
         MyTracker.initTracker(MY_TRACKER, this)
         val conversionDataListener = object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
+                val temp = StringBuilder("{")
                 conversionData.forEach{
-                    println("SDFRD conversion key ${it.key} valur ${it.value}")
+                    if (it!=conversionData.entries.last()) {
+                        temp.append("\"${it.key}\": \"${it.value}\", ")
+                    } else {
+                        temp.append("\"${it.key}\": \"${it.value}\"")
+                    }
                     sharedPref.edit().putString(SHARED_APPSFLYER_SUB, it.value.toString()).apply()
                 }
+                temp.append("}")
+                appsFlayer = temp.toString()
+                Log.d("ASDFGH", "temp $temp")
             }
 
             override fun onConversionDataFail(error: String?) {
