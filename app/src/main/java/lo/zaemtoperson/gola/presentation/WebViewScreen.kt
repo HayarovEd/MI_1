@@ -22,21 +22,42 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.domain.model.StatusApplication
 import java.io.File
 import java.io.IOException
 import lo.zaemtoperson.gola.ui.theme.baseBackground
+import lo.zaemtoperson.gola.ui.theme.black
 
 private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
 private var imageOutputFileUri: Uri? = null
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WebViewScreen(
     modifier: Modifier = Modifier,
@@ -54,95 +75,114 @@ fun WebViewScreen(
     }
     val context = LocalContext.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    Box (modifier = modifier
-        .fillMaxSize()
-        .background(color = baseBackground)
-        .padding(4.dp),
-        ){
-        AndroidView(factory = {
-            WebView(it).apply {
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-                webViewClient = WebViewClient()
-                webChromeClient = object : WebChromeClient() {
-
-                    override fun onShowFileChooser(
-                        webView: WebView?,
-                        filePathCallback: ValueCallback<Array<Uri>>?,
-                        fileChooserParams: FileChooserParams?
-                    ): Boolean {
-
-                        val acceptTypes = fileChooserParams!!.acceptTypes
-                        val allowMultiple =
-                            fileChooserParams!!.mode === FileChooserParams.MODE_OPEN_MULTIPLE
-                        val captureEnabled = fileChooserParams.isCaptureEnabled
-
-                        return startPickerIntent(
-                            callback = filePathCallback,
-                            acceptTypes =acceptTypes,
-                            allowMultiple = allowMultiple,
-                            captureEnabled = captureEnabled,
-                            activityResultLauncher = activityResultLauncher,
-                            context = context)
-                    }
-
-
-                }
-                settings.domStorageEnabled = true
-                settings.javaScriptCanOpenWindowsAutomatically = true
-                settings.javaScriptEnabled = true
-                settings.loadWithOverviewMode = true
-                settings.useWideViewPort = true
-                settings.domStorageEnabled = true
-                settings.databaseEnabled = true
-                settings.setSupportZoom(false)
-                settings.allowFileAccess = true
-                settings.allowContentAccess = true
-                settings.loadWithOverviewMode = true
-                settings.useWideViewPort = true
-
-                settings.domStorageEnabled = true
-                settings.javaScriptCanOpenWindowsAutomatically = true
-                val cookieManager = CookieManager.getInstance()
-                cookieManager.setAcceptCookie(true)
-                settings.javaScriptEnabled = true
-                settings.loadWithOverviewMode = true
-                settings.useWideViewPort = true
-                settings.domStorageEnabled = true
-                settings.databaseEnabled = true
-                settings.setSupportZoom(false)
-                settings.allowFileAccess = true
-                settings.allowContentAccess = true
-                settings.loadWithOverviewMode = true
-                settings.useWideViewPort = true
-
-                onBackPressedDispatcher?.addCallback {
-                    if (this@apply.canGoBack()) {
-                        this@apply.goBack()
-                    } else {
-                        onEvent(MainEvent.Reconnect)
+    Scaffold (
+        modifier = modifier
+            .fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = baseBackground
+                ),
+                title = {
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = {
+                            onEvent(MainEvent.Reconnect)
+                        }) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_arrow_back_24),
+                                tint = black,
+                                contentDescription = ""
+                            )
+                        }
                     }
                 }
-                loadUrl(url)
-            }
-        }, update = {
-            it.loadUrl(url)
-        })
-        /*IconButton(
-            modifier = modifier
-                .padding(top = 4.dp, start = 4.dp)
-                .align(alignment = Alignment.TopStart),
-            onClick = {
-                onEvent(MainEvent.Reconnect)
-        }) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_arrow_back_24),
-                tint = lightBlue,
-                contentDescription = ""
             )
-        }*/
+        },
+    ) {valuePaddings->
+        Box (modifier = modifier
+            .fillMaxSize()
+            .background(color = baseBackground)
+            .padding(valuePaddings),
+        ){
+            AndroidView(
+                modifier = modifier.padding(4.dp),
+                factory = {
+                WebView(it).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    webViewClient = WebViewClient()
+                    webChromeClient = object : WebChromeClient() {
+
+                        override fun onShowFileChooser(
+                            webView: WebView?,
+                            filePathCallback: ValueCallback<Array<Uri>>?,
+                            fileChooserParams: FileChooserParams?
+                        ): Boolean {
+
+                            val acceptTypes = fileChooserParams!!.acceptTypes
+                            val allowMultiple =
+                                fileChooserParams!!.mode === FileChooserParams.MODE_OPEN_MULTIPLE
+                            val captureEnabled = fileChooserParams.isCaptureEnabled
+
+                            return startPickerIntent(
+                                callback = filePathCallback,
+                                acceptTypes =acceptTypes,
+                                allowMultiple = allowMultiple,
+                                captureEnabled = captureEnabled,
+                                activityResultLauncher = activityResultLauncher,
+                                context = context)
+                        }
+
+
+                    }
+                    settings.domStorageEnabled = true
+                    settings.javaScriptCanOpenWindowsAutomatically = true
+                    settings.javaScriptEnabled = true
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+                    settings.domStorageEnabled = true
+                    settings.databaseEnabled = true
+                    settings.setSupportZoom(false)
+                    settings.allowFileAccess = true
+                    settings.allowContentAccess = true
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+
+                    settings.domStorageEnabled = true
+                    settings.javaScriptCanOpenWindowsAutomatically = true
+                    val cookieManager = CookieManager.getInstance()
+                    cookieManager.setAcceptCookie(true)
+                    settings.javaScriptEnabled = true
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+                    settings.domStorageEnabled = true
+                    settings.databaseEnabled = true
+                    settings.setSupportZoom(false)
+                    settings.allowFileAccess = true
+                    settings.allowContentAccess = true
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+
+                    onBackPressedDispatcher?.addCallback {
+                        if (this@apply.canGoBack()) {
+                            this@apply.goBack()
+                        } else {
+                            onEvent(MainEvent.Reconnect)
+                        }
+                    }
+                    loadUrl(url)
+                }
+            }, update = {
+                it.loadUrl(url)
+            })
+        }
     }
 }
 
