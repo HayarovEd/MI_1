@@ -2,6 +2,7 @@ package lo.zaemtoperson.gola
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
@@ -23,6 +24,7 @@ import java.lang.StringBuilder
 @HiltAndroidApp
 class AppGola: Application() {
     var appsFlayer = ""
+    var myTarcker = ""
     override fun onCreate() {
         super.onCreate()
         val sharedPref = this.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
@@ -40,7 +42,6 @@ class AppGola: Application() {
                 }
                 temp.append("}")
                 appsFlayer = temp.toString()
-                Log.d("ASDFGH", "temp $temp")
             }
 
             override fun onConversionDataFail(error: String?) {
@@ -63,7 +64,9 @@ class AppGola: Application() {
         AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, this)
         AppsFlyerLib.getInstance().start(this)
         val config = YandexMetricaConfig.newConfigBuilder(APP_METRICA).build()
-
+        val intent = Intent()
+        myTarcker = MyTracker.handleDeeplink(intent)?:""
+        Log.d("ASDFGH", "myTarcker $myTarcker")
         YandexMetrica.activate(applicationContext, config)
         YandexMetrica.enableActivityAutoTracking(this)
         //UserX.init(USER_X)

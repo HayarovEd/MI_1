@@ -85,6 +85,7 @@ class MainViewModel @Inject constructor(
                 val deviceId = service.getDeviceAndroidId()
                 val sharedFireBaseToken = sharedKeeper.getFireBaseToken()
                 val appsFlayer = service.getAppsFlyerDeeplink()
+                val myTracker = service.getMyTrackerDeeplink()
                 Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
                 if (sharedFireBaseToken.isNullOrBlank()) {
                     service.getFirebaseMessagingToken { token ->
@@ -111,7 +112,8 @@ class MainViewModel @Inject constructor(
                     locale = locale,
                     deviceId = deviceId,
                     versionApplication = version,
-                    appsFlyerDeeplink = appsFlayer
+                    appsFlyerDeeplink = appsFlayer,
+                    trackerDeeplink = myTracker
                 )
                     .updateStateUI()
             }
@@ -121,14 +123,6 @@ class MainViewModel @Inject constructor(
                     gaid = gaid,
                 )
                     .updateStateUI()
-            }
-            viewModelScope.launch {
-                service.getMyTrackerDeeplink { deeplink ->
-                    _state.value.copy(
-                        trackerDeeplink = deeplink
-                    )
-                        .updateStateUI()
-                }
             }
             getRemoteConfig()
             getSub1()
@@ -402,10 +396,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
 
             val currentGaid = _state.value.gaid
-            val currentMyTracker = _state.value.trackerDeeplink
+            val currentMyTracker = service.getMyTrackerDeeplink()
             val currentAppsFlyer = service.getAppsFlyerDeeplink()
             Log.d("ASDFGH", "currentAppsFlyer-  $currentAppsFlyer")
-            if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isBlank()) {
+            if (currentMyTracker.isBlank() && currentAppsFlyer.isBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -427,7 +421,7 @@ class MainViewModel @Inject constructor(
                             .updateStateUI()
                     }
                 }
-            } else if (currentMyTracker != null) {
+            } else if (currentMyTracker.isNotBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -448,7 +442,7 @@ class MainViewModel @Inject constructor(
                             .updateStateUI()
                     }
                 }
-            } else if (currentAppsFlyer.isBlank()) {
+            } else if (currentAppsFlyer.isNotBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -463,8 +457,10 @@ class MainViewModel @Inject constructor(
                     }
 
                     is Success -> {
+                        val affsub2Unswer = result.data?.affsub2 ?: ""
+                        Log.d("ASDFGH", "affsub2 second-  $affsub2Unswer")
                         _state.value.copy(
-                            affsub2Unswer = result.data?.affsub2 ?: ""
+                            affsub2Unswer = affsub2Unswer
                         )
                             .updateStateUI()
                     }

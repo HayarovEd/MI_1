@@ -168,12 +168,8 @@ class ServiceImpl @Inject constructor(
     }
 
 
-    override fun getMyTrackerDeeplink(callback: (String?) -> Unit) {
-        MyTracker.initTracker(MY_TRACKER, application)
-        MyTracker.setAttributionListener { attribution ->
-            val deeplink = attribution.deeplink
-            callback (deeplink)
-        }
+    override fun getMyTrackerDeeplink(): String {
+        return (application as AppGola).myTarcker
     }
 
     override fun getAppsFlyerDeeplink(): String {
