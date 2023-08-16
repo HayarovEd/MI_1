@@ -14,6 +14,7 @@ const val SHARED_MY_TRACKER_INSTANCE_ID = "my_tracker_id"
 const val SHARED_APPSFLYER_INSTANCE_ID = "appsflyer_id"
 const val SHARED_DATE = "shared_date"
 const val SHARED_APPSFLYER_SUB = "shared_appsflyer_sub"
+const val SHARED_SUB2 = "shared_sub_2"
 const val VALUE_ONE = "1"
 
 

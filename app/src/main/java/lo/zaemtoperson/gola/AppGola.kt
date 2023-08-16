@@ -1,8 +1,6 @@
 package lo.zaemtoperson.gola
 
 import android.app.Application
-import android.content.Context
-import android.content.Intent
 import android.util.Log
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
@@ -13,9 +11,6 @@ import dagger.hilt.android.HiltAndroidApp
 import lo.zaemtoperson.gola.data.APPS_FLYER
 import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.MY_TRACKER
-import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_SUB
-import lo.zaemtoperson.gola.data.SHARED_DATA
-import java.lang.StringBuilder
 
 
 //import pro.userx.UserX
@@ -27,21 +22,10 @@ class AppGola: Application() {
     var myTarcker = ""
     override fun onCreate() {
         super.onCreate()
-        val sharedPref = this.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
         val conversionDataListener = object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
-                val temp = StringBuilder("{")
-                conversionData.forEach{
-                    if (it!=conversionData.entries.last()) {
-                        temp.append("\"${it.key}\": \"${it.value}\", ")
-                    } else {
-                        temp.append("\"${it.key}\": \"${it.value}\"")
-                    }
-                    sharedPref.edit().putString(SHARED_APPSFLYER_SUB, it.value.toString()).apply()
-                }
-                temp.append("}")
-                Log.d("ASDFGH", "temp -  $temp")
-                appsFlayer = temp.toString()
+                appsFlayer = conversionData.entries.joinToString(separator = ", ") { "${it.key}=${it.value}" }
+                Log.d("ASDFGH", "temp -  $appsFlayer")
             }
 
             override fun onConversionDataFail(error: String?) {
@@ -68,6 +52,7 @@ class AppGola: Application() {
             myTarcker = it.deeplink
             Log.d("ASDFGH", "myTarcker app $myTarcker")
         }
+        MyTracker.initTracker(MY_TRACKER, this)
         YandexMetrica.activate(applicationContext, config)
         YandexMetrica.enableActivityAutoTracking(this)
     }

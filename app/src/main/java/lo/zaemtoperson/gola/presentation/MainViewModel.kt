@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.my.tracker.MyTracker
-import com.yandex.metrica.AppMetricaDeviceIDListener
 import com.yandex.metrica.YandexMetrica
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -187,7 +186,7 @@ class MainViewModel @Inject constructor(
                 )
                     .updateStateUI()
                 if (service.checkedInternetConnection()) {
-                    getSub2()
+                    //getSub2()
                     viewModelScope.launch {
                         delay(2000)
                         val completeUrl =
@@ -390,36 +389,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getSub2() {
+    private fun getSub2(currentMyTracker: String, currentAppsFlyer: String) {
         viewModelScope.launch {
 
             val currentGaid = _state.value.gaid
-            val currentMyTracker = _state.value.trackerDeeplink
-            val currentAppsFlyer = _state.value.appsFlyerDeeplink
-            Log.d("ASDFGH", "currentAppsFlyer-  $currentAppsFlyer")
-            if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isNullOrBlank()) {
-                when (val result = repositoryAnalytic.getSub2(
-                    applicationToken = APY_KEY,
-                    userId = currentGaid ?: "",
-                    appsflyer = "",
-                    myTracker = ""
-                )) {
-                    is Error -> {
-                        _state.value.copy(
-                            message = result.message ?: "unknown error"
-                        )
-                            .updateStateUI()
-                    }
-
-                    is Success -> {
-                        val sub2 = result.data?.affsub2
-                        _state.value.copy(
-                            affsub2Unswer = sub2 ?: ""
-                        )
-                            .updateStateUI()
-                    }
-                }
-            } else if (!currentMyTracker.isNullOrBlank()) {
+            if (currentMyTracker.isNotBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -435,12 +409,13 @@ class MainViewModel @Inject constructor(
 
                     is Success -> {
                         _state.value.copy(
-                            affsub2Unswer = result.data?.affsub2 ?: ""
+                            affsub2UnswerMT = result.data?.affsub2 ?: ""
                         )
                             .updateStateUI()
                     }
                 }
-            } else if (!currentAppsFlyer.isNullOrBlank()) {
+            }
+            if (currentAppsFlyer.isNotBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -456,9 +431,9 @@ class MainViewModel @Inject constructor(
 
                     is Success -> {
                         val affsub2Unswer = result.data?.affsub2 ?: ""
-                        Log.d("ASDFGH", "affsub2 second-  $affsub2Unswer")
+                        Log.d("ASDFGH", "affsub2Unswer $affsub2Unswer")
                         _state.value.copy(
-                            affsub2Unswer = affsub2Unswer
+                            affsub2UnswerAF = affsub2Unswer
                         )
                             .updateStateUI()
                     }
@@ -547,11 +522,40 @@ class MainViewModel @Inject constructor(
                                         dbData = db.data,
                                     )
                                         .updateStateUI()
-                                    delay(1000)
-                                    val appsFlayer = service.getAppsFlyerDeeplink()
-                                    Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
+                                    val sharedSub2 = sharedKeeper.getSub2()
+                                    val tempSub2 =
+                                        if (!sharedSub2.isNullOrBlank()) sharedSub2 else {
+                                            delay(1000)
+                                            val appsFlayer = service.getAppsFlyerDeeplink()
+                                            Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
+                                            val myTracker = service.getMyTrackerDeeplink()
+                                            Log.d("ASDFGH", "myTracker view model -  $myTracker")
+                                            getSub2(
+                                                currentAppsFlyer = appsFlayer,
+                                                currentMyTracker = myTracker
+                                            )
+                                            if (_state.value.affsub2UnswerAF.isBlank() && _state.value.affsub2UnswerMT.isBlank()) {
+                                                sharedKeeper.setSub2(_state.value.affsub2Unswer)
+                                                _state.value.affsub2Unswer
+                                            } else if (_state.value.affsub2UnswerAF.isBlank()) {
+                                                sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
+                                                _state.value.affsub2UnswerMT
+                                            } else if (_state.value.affsub2UnswerMT.isBlank()) {
+                                                sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
+                                                _state.value.affsub2UnswerAF
+                                            } else {
+                                                if (_state.value.affsub2UnswerAF == _state.value.affsub2Unswer) {
+                                                    sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
+                                                    _state.value.affsub2UnswerMT
+                                                } else {
+                                                    sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
+                                                    _state.value.affsub2UnswerAF
+                                                }
+                                            }
+                                        }
+
                                     _state.value.copy(
-                                        appsFlyerDeeplink = appsFlayer
+                                        affsub2Unswer = tempSub2
                                     )
                                         .updateStateUI()
                                 } else {

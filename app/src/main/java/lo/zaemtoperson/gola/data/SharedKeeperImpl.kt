@@ -32,6 +32,9 @@ class SharedKeeperImpl @Inject constructor(
 
     override fun getAppsFlyerConversion(): String? = sharedPref.getString(SHARED_APPSFLYER_SUB, "")
 
+    override fun setSub2(date: String) =
+        sharedPref.edit().putString(SHARED_SUB2, date).apply()
 
+    override fun getSub2(): String? = sharedPref.getString(SHARED_SUB2, "")
 
 }
