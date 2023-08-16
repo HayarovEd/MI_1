@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.view.ViewGroup
@@ -28,9 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
-import lo.zaemtoperson.gola.R.layout
 import java.io.File
 import java.io.IOException
+import lo.zaemtoperson.gola.R.layout
 
 class WebActivity : AppCompatActivity() {
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
@@ -130,17 +129,17 @@ class WebActivity : AppCompatActivity() {
             } else null
         } else null
         if (pickerIntent == null) {
-            val extraIntents = ArrayList<Parcelable>()
+            /*val extraIntents = ArrayList<Parcelable>()
             if (isImage) {
                 extraIntents.add(getPhotoIntent())
             }
             if (isVideo) {
                 extraIntents.add(getVideoIntent())
-            }
+            }*/
             val fileSelectionIntent = getFileChooserIntent(acceptTypes, allowMultiple)
             pickerIntent = Intent(Intent.ACTION_CHOOSER)
             pickerIntent.putExtra(Intent.EXTRA_INTENT, fileSelectionIntent)
-            pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray())
+            //pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray())
         }
         launcher.launch(pickerIntent)
         return true

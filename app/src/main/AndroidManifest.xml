@@ -48,10 +48,10 @@
             android:resource="@color/back" />
 
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.WebActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.WebActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MI_1">

@@ -5,14 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.webkit.MimeTypeMap
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.addCallback
@@ -25,24 +24,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
-import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.domain.model.StatusApplication
-import lo.zaemtoperson.gola.ui.theme.baseBackground
-import lo.zaemtoperson.gola.ui.theme.black
-import lo.zaemtoperson.gola.ui.theme.lightBlue
 import java.io.File
 import java.io.IOException
+import lo.zaemtoperson.gola.ui.theme.baseBackground
 
 private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
 private var imageOutputFileUri: Uri? = null
@@ -112,6 +102,22 @@ fun WebViewScreen(
                 settings.allowContentAccess = true
                 settings.loadWithOverviewMode = true
                 settings.useWideViewPort = true
+
+                settings.domStorageEnabled = true
+                settings.javaScriptCanOpenWindowsAutomatically = true
+                val cookieManager = CookieManager.getInstance()
+                cookieManager.setAcceptCookie(true)
+                settings.javaScriptEnabled = true
+                settings.loadWithOverviewMode = true
+                settings.useWideViewPort = true
+                settings.domStorageEnabled = true
+                settings.databaseEnabled = true
+                settings.setSupportZoom(false)
+                settings.allowFileAccess = true
+                settings.allowContentAccess = true
+                settings.loadWithOverviewMode = true
+                settings.useWideViewPort = true
+
                 onBackPressedDispatcher?.addCallback {
                     if (this@apply.canGoBack()) {
                         this@apply.goBack()
@@ -124,7 +130,7 @@ fun WebViewScreen(
         }, update = {
             it.loadUrl(url)
         })
-        IconButton(
+        /*IconButton(
             modifier = modifier
                 .padding(top = 4.dp, start = 4.dp)
                 .align(alignment = Alignment.TopStart),
@@ -136,7 +142,7 @@ fun WebViewScreen(
                 tint = lightBlue,
                 contentDescription = ""
             )
-        }
+        }*/
     }
 }
 
@@ -149,14 +155,14 @@ fun startPickerIntent(
     context: Context
 ): Boolean{
     mFilePathCallback = callback;
-    val extraIntents = ArrayList<Parcelable>()
+   /* val extraIntents = ArrayList<Parcelable>()
     extraIntents.add(getPhotoIntent(
         activityResultLauncher = activityResultLauncher,
-        context = context))
+        context = context))*/
     val fileSelectionIntent = getFileChooserIntent(acceptTypes, allowMultiple)
     val pickerIntent = Intent(Intent.ACTION_CHOOSER)
     pickerIntent.putExtra(Intent.EXTRA_INTENT, fileSelectionIntent);
-    pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray());
+    //pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray());
     activityResultLauncher.launch(pickerIntent)
     return true;
 }
