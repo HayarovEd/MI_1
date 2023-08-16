@@ -29,31 +29,37 @@ fun RowCard(
     ) {
         if(showVisa==VALUE_ONE) {
             Image(
+                modifier = modifier.weight(1f),
                 imageVector = ImageVector.vectorResource(id = R.drawable.visa),
                 contentDescription = "")
         }
         if(showMaster==VALUE_ONE) {
             Image(
+                modifier = modifier.weight(1f),
                 imageVector = ImageVector.vectorResource(id = R.drawable.master),
                 contentDescription = "")
         }
         if(showYandex==VALUE_ONE) {
             Image(
+                modifier = modifier.weight(1f),
                 imageVector = ImageVector.vectorResource(id = R.drawable.y_money),
                 contentDescription = "")
         }
         if(showMir==VALUE_ONE) {
             Image(
+                modifier = modifier.weight(1f),
                 imageVector = ImageVector.vectorResource(id = R.drawable.mir),
                 contentDescription = "")
         }
         if(showQivi==VALUE_ONE) {
             Image(
+                modifier = modifier.weight(1f),
                 imageVector = ImageVector.vectorResource(id = R.drawable.qivi),
                 contentDescription = "")
         }
         if(showCache==VALUE_ONE) {
             Image(
+                modifier = modifier.weight(1f),
                 imageVector = ImageVector.vectorResource(id = R.drawable.money),
                 contentDescription = "")
         }

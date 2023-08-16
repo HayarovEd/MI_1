@@ -16,6 +16,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.firebase.messaging.FirebaseMessaging
 import com.my.tracker.MyTracker
+import com.yandex.metrica.AppMetricaDeviceIDListener
+import com.yandex.metrica.YandexMetrica
 import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
@@ -201,6 +203,19 @@ class ServiceImpl @Inject constructor(
 
     override fun sendAppsFlyerEvent(key: String, content:Map<String, String>) {
         AppsFlyerLib.getInstance().logEvent(application, key, content)
+    }
+
+    override fun getYandexMetricaDeviceId (callback: (String?) -> Unit) {
+        YandexMetrica.requestAppMetricaDeviceID(object : AppMetricaDeviceIDListener {
+            override fun onLoaded(deviceId: String?) {
+                callback(deviceId)
+            }
+
+            override fun onError(p0: AppMetricaDeviceIDListener.Reason) {
+
+            }
+
+        })
     }
 
 }

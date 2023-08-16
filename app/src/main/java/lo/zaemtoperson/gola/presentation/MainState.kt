@@ -20,6 +20,7 @@ data class MainState(
     val versionApplication: String? = null,
     val trackerDeeplink: String? = null,
     val appsFlyerDeeplink: String? = null,
+    val yandexMetricaDeviceId: String? = null,
     //val isConnectInternet:Boolean = false,
     val message: String = "",
     val affsub1Unswer: String = "",

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.my.tracker.MyTracker
+import com.yandex.metrica.AppMetricaDeviceIDListener
 import com.yandex.metrica.YandexMetrica
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -201,52 +202,55 @@ class MainViewModel @Inject constructor(
                     .updateStateUI()
                 if (service.checkedInternetConnection()) {
                     getSub2()
-                    val completeUrl =
-                        "${mainEvent.urlOffer}&aff_sub1=${_state.value.affsub1Unswer}&aff_sub2=${_state.value.affsub2Unswer}&aff_sub3=${_state.value.affsub3Unswer}&aff_sub5=${_state.value.affsub5Unswer}"
-                    Log.d("AAAAAA", "url $completeUrl")
-                    when (val lastState = _lastState.value) {
-                        is Connect -> {
-                            sendGoToOffer(
-                                url = completeUrl,
-                                parameter = OFFER_WALL
-                            )
-                            when (lastState.baseState) {
-                                is BaseState.Cards -> {
-                                    sendFromListOffers(
-                                        url = completeUrl,
-                                        parameter = CARDS
-                                    )
-                                }
-                                BaseState.Credits -> {
-                                    sendFromListOffers(
-                                        url = completeUrl,
-                                        parameter = CREDITS
-                                    )
-                                }
-                                BaseState.Loans -> {
-                                    sendFromListOffers(
-                                        url = completeUrl,
-                                        parameter = LOANS
-                                    )
+                    viewModelScope.launch {
+                        delay(2000)
+                        val completeUrl =
+                            "${mainEvent.urlOffer}&aff_sub1=${_state.value.affsub1Unswer}&aff_sub2=${_state.value.affsub2Unswer}&aff_sub3=${_state.value.affsub3Unswer}&aff_sub5=${_state.value.affsub5Unswer}"
+                        Log.d("ASDFGH", "url $completeUrl")
+                        when (val lastState = _lastState.value) {
+                            is Connect -> {
+                                sendGoToOffer(
+                                    url = completeUrl,
+                                    parameter = OFFER_WALL
+                                )
+                                when (lastState.baseState) {
+                                    is BaseState.Cards -> {
+                                        sendFromListOffers(
+                                            url = completeUrl,
+                                            parameter = CARDS
+                                        )
+                                    }
+                                    BaseState.Credits -> {
+                                        sendFromListOffers(
+                                            url = completeUrl,
+                                            parameter = CREDITS
+                                        )
+                                    }
+                                    BaseState.Loans -> {
+                                        sendFromListOffers(
+                                            url = completeUrl,
+                                            parameter = LOANS
+                                        )
+                                    }
                                 }
                             }
+                            is StatusApplication.Info -> {}
+                            StatusApplication.Loading -> {}
+                            Mock -> {}
+                            NoConnect -> {}
+                            is StatusApplication.Offer -> {
+                                sendGoToOffer(
+                                    url = completeUrl,
+                                    parameter = MORE_DETAILS
+                                )
+                            }
+                            is StatusApplication.Web -> { }
                         }
-                        is StatusApplication.Info -> {}
-                        StatusApplication.Loading -> {}
-                        Mock -> {}
-                        NoConnect -> {}
-                        is StatusApplication.Offer -> {
-                            sendGoToOffer(
-                                url = completeUrl,
-                                parameter = MORE_DETAILS
-                            )
-                        }
-                        is StatusApplication.Web -> { }
+                        _state.value.copy(
+                            statusApplication = StatusApplication.Web(completeUrl),
+                        )
+                            .updateStateUI()
                     }
-                    _state.value.copy(
-                        statusApplication = StatusApplication.Web(completeUrl),
-                    )
-                        .updateStateUI()
                 } else {
                     _state.value.copy(
                         statusApplication = NoConnect,
@@ -279,15 +283,21 @@ class MainViewModel @Inject constructor(
     private fun getSub1() {
         viewModelScope.launch {
             delay(2000)
+            service.getYandexMetricaDeviceId {
+                Log.d("ASDFGH", "getYandexMetricaDeviceId $it")
+                _state.value.copy(
+                    yandexMetricaDeviceId = it
+                )
+                    .updateStateUI()
+            }
             val currentFireBaseToken = _state.value.fireBaseToken
-            Log.d("AAAAAA", "currentFireBaseToken $currentFireBaseToken")
             val currentGaid = _state.value.gaid
             val currentMyTrackerId = _state.value.instanceIdMyTracker
             val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
             when (val result = repositoryAnalytic.getSub1(
                 applicationToken = APY_KEY,
                 userId = currentGaid ?: "",
-                appMetricaId = APP_METRICA,
+                appMetricaId = _state.value.yandexMetricaDeviceId?:"",
                 appsflyer = currentAppsFlyerId ?: "",
                 firebaseToken = currentFireBaseToken ?: "",
                 myTrackerId = currentMyTrackerId ?: ""
@@ -384,8 +394,10 @@ class MainViewModel @Inject constructor(
                 }
 
                 is Success -> {
+                    val sub2 = result.data?.affsub2
+                    Log.d("ASDFGH", "affsub2 first $sub2")
                     _state.value.copy(
-                        affsub2Unswer = result.data?.affsub2 ?: ""
+                        affsub2Unswer = sub2?: ""
                     )
                         .updateStateUI()
                 }
@@ -395,10 +407,12 @@ class MainViewModel @Inject constructor(
 
     private fun getSub2() {
         viewModelScope.launch {
-            delay(2000)
+
             val currentGaid = _state.value.gaid
             val currentMyTracker = _state.value.trackerDeeplink
             val currentAppsFlyer = _state.value.appsFlyerDeeplink
+            Log.d("ASDFGH", "currentMyTracker $currentMyTracker")
+            Log.d("ASDFGH", "currentAppsFlyer $currentAppsFlyer")
             if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isNullOrBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
@@ -414,8 +428,10 @@ class MainViewModel @Inject constructor(
                     }
 
                     is Success -> {
+                        val sub2 = result.data?.affsub2
+                        Log.d("ASDFGH", "affsub2 request $sub2")
                         _state.value.copy(
-                            affsub2Unswer = result.data?.affsub2 ?: ""
+                            affsub2Unswer = sub2 ?: ""
                         )
                             .updateStateUI()
                     }
