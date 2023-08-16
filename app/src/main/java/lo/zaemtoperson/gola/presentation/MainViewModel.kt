@@ -84,9 +84,6 @@ class MainViewModel @Inject constructor(
                 val locale = service.getCurrentLocale()
                 val deviceId = service.getDeviceAndroidId()
                 val sharedFireBaseToken = sharedKeeper.getFireBaseToken()
-                val appsFlayer = service.getAppsFlyerDeeplink()
-                val myTracker = service.getMyTrackerDeeplink()
-                Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
                 if (sharedFireBaseToken.isNullOrBlank()) {
                     service.getFirebaseMessagingToken { token ->
                         _state.value.copy(
@@ -102,6 +99,8 @@ class MainViewModel @Inject constructor(
                         .updateStateUI()
                 }
                 val version = service.getApplicationVersion()
+
+                val myTracker = service.getMyTrackerDeeplink()
                 val instanceIdAppsFlyer = sharedKeeper.getAppsFlyerInstanceId()
                 _state.value.copy(
                     appMetrica = appMetrika,
@@ -112,7 +111,6 @@ class MainViewModel @Inject constructor(
                     locale = locale,
                     deviceId = deviceId,
                     versionApplication = version,
-                    appsFlyerDeeplink = appsFlayer,
                     trackerDeeplink = myTracker
                 )
                     .updateStateUI()
@@ -396,10 +394,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
 
             val currentGaid = _state.value.gaid
-            val currentMyTracker = service.getMyTrackerDeeplink()
-            val currentAppsFlyer = service.getAppsFlyerDeeplink()
+            val currentMyTracker = _state.value.trackerDeeplink
+            val currentAppsFlyer = _state.value.appsFlyerDeeplink
             Log.d("ASDFGH", "currentAppsFlyer-  $currentAppsFlyer")
-            if (currentMyTracker.isBlank() && currentAppsFlyer.isBlank()) {
+            if (currentMyTracker.isNullOrBlank() && currentAppsFlyer.isNullOrBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -421,7 +419,7 @@ class MainViewModel @Inject constructor(
                             .updateStateUI()
                     }
                 }
-            } else if (currentMyTracker.isNotBlank()) {
+            } else if (!currentMyTracker.isNullOrBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -442,7 +440,7 @@ class MainViewModel @Inject constructor(
                             .updateStateUI()
                     }
                 }
-            } else if (currentAppsFlyer.isNotBlank()) {
+            } else if (!currentAppsFlyer.isNullOrBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
                     userId = currentGaid ?: "",
@@ -549,6 +547,13 @@ class MainViewModel @Inject constructor(
                                         dbData = db.data,
                                     )
                                         .updateStateUI()
+                                    delay(1000)
+                                    val appsFlayer = service.getAppsFlyerDeeplink()
+                                    Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
+                                    _state.value.copy(
+                                        appsFlyerDeeplink = appsFlayer
+                                    )
+                                        .updateStateUI()
                                 } else {
                                     delay(1000)
                                     val statusApplication = link.setStatusByPush(
@@ -561,6 +566,13 @@ class MainViewModel @Inject constructor(
                                     _state.value.copy(
                                         statusApplication = statusApplication,
                                         dbData = db.data,
+                                    )
+                                        .updateStateUI()
+                                    delay(1000)
+                                    val appsFlayer = service.getAppsFlyerDeeplink()
+                                    Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
+                                    _state.value.copy(
+                                        appsFlyerDeeplink = appsFlayer
                                     )
                                         .updateStateUI()
                                 }

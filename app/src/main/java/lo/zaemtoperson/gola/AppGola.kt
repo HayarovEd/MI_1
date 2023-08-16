@@ -41,24 +41,22 @@ class AppGola: Application() {
                     sharedPref.edit().putString(SHARED_APPSFLYER_SUB, it.value.toString()).apply()
                 }
                 temp.append("}")
+                Log.d("ASDFGH", "temp -  $temp")
                 appsFlayer = temp.toString()
             }
 
             override fun onConversionDataFail(error: String?) {
                 println("SDFRD conversion error $error")
-                //sharedPref.edit().putString(SHARED_APPSFLYER_SUB, error).apply()
             }
 
             override fun onAppOpenAttribution(attributionData: MutableMap<String, String>?) {
                 attributionData?.forEach{
                     println("SDFRD attribution key ${it.key} valur ${it.value}")
-                    //sharedPref.edit().putString(SHARED_APPSFLYER_SUB, it.value).apply()
                 }
             }
 
             override fun onAttributionFailure(error: String?) {
                 println("SDFRD attribution error $error")
-                //sharedPref.edit().putString(SHARED_APPSFLYER_SUB, error).apply()
             }
         }
         AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, this)
@@ -69,7 +67,6 @@ class AppGola: Application() {
         Log.d("ASDFGH", "myTarcker $myTarcker")
         YandexMetrica.activate(applicationContext, config)
         YandexMetrica.enableActivityAutoTracking(this)
-        //UserX.init(USER_X)
     }
 
 
