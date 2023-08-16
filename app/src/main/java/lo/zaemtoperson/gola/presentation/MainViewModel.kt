@@ -408,8 +408,11 @@ class MainViewModel @Inject constructor(
                     }
 
                     is Success -> {
+                        Log.d("ASDFGH", "currentMyTracker $currentMyTracker")
+                        val affsub2Unswer = result.data?.affsub2 ?: ""
+                        Log.d("ASDFGH", "affsub2UnswerMT $affsub2Unswer")
                         _state.value.copy(
-                            affsub2UnswerMT = result.data?.affsub2 ?: ""
+                            affsub2UnswerMT = affsub2Unswer
                         )
                             .updateStateUI()
                     }
@@ -431,7 +434,7 @@ class MainViewModel @Inject constructor(
 
                     is Success -> {
                         val affsub2Unswer = result.data?.affsub2 ?: ""
-                        Log.d("ASDFGH", "affsub2Unswer $affsub2Unswer")
+                        Log.d("ASDFGH", "affsub2UnswerAF $affsub2Unswer")
                         _state.value.copy(
                             affsub2UnswerAF = affsub2Unswer
                         )
