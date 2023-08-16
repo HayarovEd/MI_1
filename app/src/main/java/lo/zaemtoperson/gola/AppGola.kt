@@ -28,7 +28,6 @@ class AppGola: Application() {
     override fun onCreate() {
         super.onCreate()
         val sharedPref = this.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
-        MyTracker.initTracker(MY_TRACKER, this)
         val conversionDataListener = object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
                 val temp = StringBuilder("{")
@@ -62,9 +61,13 @@ class AppGola: Application() {
         AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, this)
         AppsFlyerLib.getInstance().start(this)
         val config = YandexMetricaConfig.newConfigBuilder(APP_METRICA).build()
-        val intent = Intent()
-        myTarcker = MyTracker.handleDeeplink(intent)?:""
-        Log.d("ASDFGH", "myTarcker $myTarcker")
+        //val intent = Intent()
+        //myTarcker = MyTracker.handleDeeplink(intent)?:""
+
+        MyTracker.setAttributionListener {
+            myTarcker = it.deeplink
+            Log.d("ASDFGH", "myTarcker app $myTarcker")
+        }
         YandexMetrica.activate(applicationContext, config)
         YandexMetrica.enableActivityAutoTracking(this)
     }

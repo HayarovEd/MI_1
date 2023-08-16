@@ -3,10 +3,12 @@ package lo.zaemtoperson.gola.presentation
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -16,6 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsflyer.AppsFlyerLib
+import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.concurrent.ExecutorService
@@ -46,7 +49,7 @@ class MainActivity : ComponentActivity() {
             ).show()
         }
     }
-
+    var myTarcker = ""
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("SourceLockedOrientationActivity")
@@ -58,6 +61,9 @@ class MainActivity : ComponentActivity() {
         val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        val intent = Intent()
+        myTarcker = MyTracker.handleDeeplink(intent)?:""
+        Log.d("ASDFGH", "myTarcker $myTarcker")
         var link = ""
         intent.extras?.let {
             for (key in it.keySet()) {
@@ -79,6 +85,12 @@ class MainActivity : ComponentActivity() {
 
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        myTarcker = MyTracker.handleDeeplink(intent)?:""
+        Log.d("ASDFGH", "myTarcker intent $myTarcker")
     }
 
     private fun getOutputDirectory(): File {
