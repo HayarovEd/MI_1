@@ -537,42 +537,36 @@ class MainViewModel @Inject constructor(
                                     )
                                         .updateStateUI()
                                     val sharedSub2 = sharedKeeper.getSub2()
-                                    Log.d("ASDFGH", "myTracker view model1 -  ${_myTracker.value}")
-                                    val tempSub2 =
-                                        if (!sharedSub2.isNullOrBlank()) sharedSub2 else {
-                                            delay(4000)
-                                            //val myTracker = appWorker.myTracker
-                                            Log.d("ASDFGH", "myTracker view model2 -  ${_myTracker.value}")
-                                            val appsFlayer = appWorker.appsFlyer
-                                            Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
-                                            getSub2(
-                                                currentAppsFlyer = appsFlayer,
-                                                currentMyTracker = _myTracker.value
-                                            )
-                                            if (_state.value.affsub2UnswerAF.isBlank() && _state.value.affsub2UnswerMT.isBlank()) {
-                                                sharedKeeper.setSub2(_state.value.affsub2UnswerEmpty)
-                                                _state.value.affsub2UnswerEmpty
-                                            } else if (_state.value.affsub2UnswerAF.isBlank()) {
-                                                sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
-                                                _state.value.affsub2UnswerMT
-                                            } else if (_state.value.affsub2UnswerMT.isBlank()) {
-                                                sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
-                                                _state.value.affsub2UnswerAF
-                                            } else {
-                                                if (_state.value.affsub2UnswerAF == _state.value.affsub2UnswerEmpty) {
-                                                    sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
-                                                    _state.value.affsub2UnswerMT
-                                                } else {
-                                                    sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
-                                                    _state.value.affsub2UnswerAF
-                                                }
-                                            }
+                                    if (!sharedSub2.isNullOrBlank()) {
+                                        _state.value.copy(
+                                            affsub2Unswer = sharedSub2
+                                        )
+                                            .updateStateUI()
+                                    } else {
+                                        delay(2000)
+                                        Log.d("ASDFGH", "myTracker view model2 -  ${_myTracker.value}")
+                                        val appsFlayer = appWorker.appsFlyer
+                                        Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
+                                        getSub2(
+                                            currentAppsFlyer = appsFlayer,
+                                            currentMyTracker = _myTracker.value
+                                        )
+                                        delay(2000)
+                                        val tempSub2 = if (_state.value.affsub2UnswerMT.isNotBlank()) {
+                                            sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
+                                            _state.value.affsub2UnswerMT
+                                        } else if (state.value.affsub2UnswerAF.isNotBlank()) {
+                                            sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
+                                            _state.value.affsub2UnswerAF
+                                        } else {
+                                            sharedKeeper.setSub2(_state.value.affsub2UnswerEmpty)
+                                            _state.value.affsub2UnswerEmpty
                                         }
-
-                                    _state.value.copy(
-                                        affsub2Unswer = tempSub2
-                                    )
-                                        .updateStateUI()
+                                        _state.value.copy(
+                                            affsub2Unswer = tempSub2
+                                        )
+                                            .updateStateUI()
+                                    }
                                 } else {
                                     delay(1000)
                                     val statusApplication = _link.value.setStatusByPush(
