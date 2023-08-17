@@ -2,22 +2,18 @@ package lo.zaemtoperson.gola.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.appsflyer.AppsFlyerLib
 import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -25,8 +21,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.data.LINK
-import lo.zaemtoperson.gola.data.SHARED_APPSFLYER_INSTANCE_ID
-import lo.zaemtoperson.gola.data.SHARED_DATA
 
 
 @AndroidEntryPoint
@@ -34,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-    private val mHandler = Handler(Looper.getMainLooper())
+    private val viewModel: MainViewModel by viewModels()
     private val requestPermissionLauncherFireBase = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
@@ -56,36 +50,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        //var myTracker = ""
-        /*MyTracker.setAttributionListener {
-            myTracker = it.deeplink
-            Log.d("ASDFGH", "myTracker activity $myTracker")
-        }*/
-
-        var link = ""
         intent.extras?.let {
             for (key in it.keySet()) {
                 val value = intent.extras?.get(key)
                 if (key==LINK) {
-                    link = value.toString()
+                    viewModel.loadlink(
+                        link = value.toString(),
+                    )
                 }
             }
         }
-        //Log.d("ASDFGH", "myTracker activity $myTracker")
-        mHandler.postDelayed({
-            setContent {
-                val viewModel: MainViewModel = hiltViewModel()
-                viewModel.loadData(
-                    link = link
-                )
-                Sample(
-                    outputDirectory = outputDirectory,
-                    executor = cameraExecutor,
-                    viewModel = viewModel,
-                )
-            }
-        }, 1000)
 
+        MyTracker.setAttributionListener {
+            Log.d("ASDFGH", "myTracker activity $it")
+            viewModel.loadDeeplink(
+                deeplink = it.deeplink
+            )
+        }
+        setContent {
+
+            Sample(
+                outputDirectory = outputDirectory,
+                executor = cameraExecutor,
+                viewModel = viewModel,
+            )
+        }
 
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()

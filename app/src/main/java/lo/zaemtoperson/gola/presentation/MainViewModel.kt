@@ -64,12 +64,21 @@ class MainViewModel @Inject constructor(
 
     private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
     private val _myTracker = MutableStateFlow("")
+    private val _link = MutableStateFlow("")
     init {
-       // loadData()
+        loadData()
     }
 
-    fun loadData(link: String) {
 
+    fun loadDeeplink(deeplink: String) {
+        _myTracker.value = deeplink
+    }
+
+    fun loadlink(link: String) {
+        _link.value = link
+    }
+
+    private fun loadData() {
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
                 val appMetrika = service.appMetrika
@@ -144,9 +153,7 @@ class MainViewModel @Inject constructor(
             }
             getSub3()
             getSub5()
-            loadDbData(
-                link = link
-            )
+            loadDbData()
         } else {
             _state.value.copy(
                 statusApplication = NoConnect
@@ -449,7 +456,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun loadDbData(link: String) {
+    private fun loadDbData() {
 
         viewModelScope.launch {
             delay(2000)
@@ -511,7 +518,7 @@ class MainViewModel @Inject constructor(
                             is Success -> {
                                 collectCards(db.data?.cards)
                                 Log.d("SDFGT", "sert ${db.data?.loans?.get(3)?.id}")
-                                if (link.isBlank()||link==" ") {
+                                if (_link.value.isBlank()||_link.value==" ") {
                                     val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
                                         Connect(BaseState.Loans)
                                     } else if (!db.data?.credits.isNullOrEmpty()) {
@@ -530,12 +537,10 @@ class MainViewModel @Inject constructor(
                                     )
                                         .updateStateUI()
                                     val sharedSub2 = sharedKeeper.getSub2()
-                                    _myTracker.value = appWorker.getMyTracker()
                                     Log.d("ASDFGH", "myTracker view model1 -  ${_myTracker.value}")
                                     val tempSub2 =
                                         if (!sharedSub2.isNullOrBlank()) sharedSub2 else {
                                             delay(4000)
-                                            _myTracker.value = appWorker.getMyTracker()
                                             //val myTracker = appWorker.myTracker
                                             Log.d("ASDFGH", "myTracker view model2 -  ${_myTracker.value}")
                                             val appsFlayer = appWorker.appsFlyer
@@ -570,7 +575,7 @@ class MainViewModel @Inject constructor(
                                         .updateStateUI()
                                 } else {
                                     delay(1000)
-                                    val statusApplication = link.setStatusByPush(
+                                    val statusApplication = _link.value.setStatusByPush(
                                         loans = db.data?.loans?: emptyList(),
                                         credits = db.data?.credits?: emptyList(),
                                         creditCards = _state.value.creditCards,
