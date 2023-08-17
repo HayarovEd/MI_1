@@ -2,9 +2,7 @@ package lo.zaemtoperson.gola
 
 import android.app.Application
 import android.util.Log
-import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
-import com.appsflyer.deeplink.DeepLink
 import com.appsflyer.deeplink.DeepLinkListener
 import com.appsflyer.deeplink.DeepLinkResult
 import com.my.tracker.MyTracker
@@ -14,15 +12,16 @@ import dagger.hilt.android.HiltAndroidApp
 import lo.zaemtoperson.gola.data.APPS_FLYER
 import lo.zaemtoperson.gola.data.APP_METRICA
 import lo.zaemtoperson.gola.data.MY_TRACKER
+import javax.inject.Inject
 
 
 //import pro.userx.UserX
 
 
 @HiltAndroidApp
-class AppGola: Application() {
+class AppGola @Inject constructor(): Application() {
     var appsFlayer = ""
-    var myTarcker = ""
+    var myTracker = ""
     override fun onCreate() {
         super.onCreate()
         AppsFlyerLib.getInstance().subscribeForDeepLink(object : DeepLinkListener {
@@ -81,8 +80,8 @@ class AppGola: Application() {
         //myTarcker = MyTracker.handleDeeplink(intent)?:""
 
         MyTracker.setAttributionListener {
-            myTarcker = it.deeplink
-            Log.d("ASDFGH", "myTarcker app $myTarcker")
+            myTracker = it.deeplink
+            Log.d("ASDFGH", "myTracker app $myTracker")
         }
         MyTracker.initTracker(MY_TRACKER, this)
         YandexMetrica.activate(applicationContext, config)

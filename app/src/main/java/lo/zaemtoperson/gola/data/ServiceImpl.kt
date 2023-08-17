@@ -9,7 +9,6 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
-import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
@@ -169,7 +168,7 @@ class ServiceImpl @Inject constructor(
 
 
     override fun getMyTrackerDeeplink(): String {
-        return (application as AppGola).myTarcker
+        return (application as AppGola).myTracker
     }
 
     override fun getAppsFlyerDeeplink(): String {

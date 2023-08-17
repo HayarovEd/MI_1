@@ -33,6 +33,7 @@ import lo.zaemtoperson.gola.data.Resource.Error
 import lo.zaemtoperson.gola.data.Resource.Success
 import lo.zaemtoperson.gola.data.URL
 import lo.zaemtoperson.gola.data.setStatusByPush
+import lo.zaemtoperson.gola.domain.AppWorker
 import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
@@ -56,6 +57,7 @@ class MainViewModel @Inject constructor(
     private val sharedKeeper: SharedKepper,
     private val repositoryAnalytic: RepositoryAnalytic,
     private val repositoryServer: RepositoryServer,
+    private val appWorker: AppWorker
 ) : ViewModel() {
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -362,7 +364,7 @@ class MainViewModel @Inject constructor(
 
     private fun getFirstSub2() {
         viewModelScope.launch {
-            delay(2000)
+            delay(1000)
             val currentGaid = _state.value.gaid
             when (val result = repositoryAnalytic.getSub2(
                 applicationToken = APY_KEY,
@@ -528,10 +530,10 @@ class MainViewModel @Inject constructor(
                                     val sharedSub2 = sharedKeeper.getSub2()
                                     val tempSub2 =
                                         if (!sharedSub2.isNullOrBlank()) sharedSub2 else {
-                                            delay(1000)
-                                            val appsFlayer = service.getAppsFlyerDeeplink()
+                                            delay(2000)
+                                            val appsFlayer = appWorker.appsFlyer
                                             Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
-                                            val myTracker = service.getMyTrackerDeeplink()
+                                            val myTracker = appWorker.myTracker
                                             Log.d("ASDFGH", "myTracker view model -  $myTracker")
                                             getSub2(
                                                 currentAppsFlyer = appsFlayer,
