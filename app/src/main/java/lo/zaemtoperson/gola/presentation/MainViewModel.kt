@@ -125,7 +125,9 @@ class MainViewModel @Inject constructor(
             }
             getRemoteConfig()
             getSub1()
-            getFirstSub2()
+            if (sharedKeeper.getSub2().isNullOrBlank()) {
+                getFirstSub2()
+            }
             getSub3()
             getSub5()
             loadDbData(link = link)
@@ -383,9 +385,9 @@ class MainViewModel @Inject constructor(
 
                 is Success -> {
                     val sub2 = result.data?.affsub2
-                    Log.d("ASDFGH", "affsub2 first $sub2")
+                    Log.d("ASDFGH", "affsub2UnswerEmpty $sub2")
                     _state.value.copy(
-                        affsub2Unswer = sub2?: ""
+                        affsub2UnswerEmpty = sub2?: ""
                     )
                         .updateStateUI()
                 }
@@ -542,8 +544,8 @@ class MainViewModel @Inject constructor(
                                                 currentMyTracker = myTracker
                                             )
                                             if (_state.value.affsub2UnswerAF.isBlank() && _state.value.affsub2UnswerMT.isBlank()) {
-                                                sharedKeeper.setSub2(_state.value.affsub2Unswer)
-                                                _state.value.affsub2Unswer
+                                                sharedKeeper.setSub2(_state.value.affsub2UnswerEmpty)
+                                                _state.value.affsub2UnswerEmpty
                                             } else if (_state.value.affsub2UnswerAF.isBlank()) {
                                                 sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
                                                 _state.value.affsub2UnswerMT
@@ -551,7 +553,7 @@ class MainViewModel @Inject constructor(
                                                 sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
                                                 _state.value.affsub2UnswerAF
                                             } else {
-                                                if (_state.value.affsub2UnswerAF == _state.value.affsub2Unswer) {
+                                                if (_state.value.affsub2UnswerAF == _state.value.affsub2UnswerEmpty) {
                                                     sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
                                                     _state.value.affsub2UnswerMT
                                                 } else {

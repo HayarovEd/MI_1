@@ -27,6 +27,7 @@ data class MainState(
     val affsub2Unswer: String = "",
     val affsub2UnswerAF: String = "",
     val affsub2UnswerMT: String = "",
+    val affsub2UnswerEmpty: String = "",
     val affsub3Unswer: String = "",
     val affsub5Unswer: String = "",
     val dbData: BaseDto? = null,
