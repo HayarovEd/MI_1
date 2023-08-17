@@ -15,6 +15,7 @@ const val SHARED_APPSFLYER_INSTANCE_ID = "appsflyer_id"
 const val SHARED_DATE = "shared_date"
 const val SHARED_APPSFLYER_SUB = "shared_appsflyer_sub"
 const val SHARED_SUB2 = "shared_sub_2"
+const val SHARED_YANDEX_DEVICE_ID = "shared_yandex_device_id"
 const val VALUE_ONE = "1"
 
 

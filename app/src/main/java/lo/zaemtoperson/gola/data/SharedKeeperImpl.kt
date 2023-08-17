@@ -30,11 +30,14 @@ class SharedKeeperImpl @Inject constructor(
     override fun setCurrentDate(date: String) =
         sharedPref.edit().putString(SHARED_DATE, date).apply()
 
-    override fun getAppsFlyerConversion(): String? = sharedPref.getString(SHARED_APPSFLYER_SUB, "")
-
     override fun setSub2(date: String) =
         sharedPref.edit().putString(SHARED_SUB2, date).apply()
 
     override fun getSub2(): String? = sharedPref.getString(SHARED_SUB2, "")
+
+    override fun setYandexMetricaDeviceId(date: String) =
+        sharedPref.edit().putString(SHARED_YANDEX_DEVICE_ID, date).apply()
+
+    override fun getYandexMetricaDeviceId(): String? = sharedPref.getString(SHARED_YANDEX_DEVICE_ID, "")
 
 }

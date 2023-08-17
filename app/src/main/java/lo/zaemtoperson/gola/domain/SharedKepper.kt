@@ -18,9 +18,11 @@ interface SharedKepper {
 
     fun setCurrentDate(date: String)
 
-    fun getAppsFlyerConversion(): String?
-
     fun setSub2(date: String)
 
     fun getSub2(): String?
+
+    fun setYandexMetricaDeviceId(date: String)
+
+    fun getYandexMetricaDeviceId(): String?
 }

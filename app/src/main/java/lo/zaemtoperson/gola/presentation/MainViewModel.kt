@@ -116,6 +116,21 @@ class MainViewModel @Inject constructor(
                 )
                     .updateStateUI()
             }
+            val sharedYandexMetrica = sharedKeeper.getYandexMetricaDeviceId()
+            if (sharedYandexMetrica.isNullOrBlank()) {
+                service.getYandexMetricaDeviceId {
+                    _state.value.copy(
+                        yandexMetricaDeviceId = it
+                    )
+                        .updateStateUI()
+                    sharedKeeper.setYandexMetricaDeviceId(it?:"")
+                }
+            } else {
+                _state.value.copy(
+                    yandexMetricaDeviceId = sharedYandexMetrica
+                )
+                    .updateStateUI()
+            }
             viewModelScope.launch(Dispatchers.IO) {
                 val gaid = service.getGAID()
                 _state.value.copy(
@@ -274,23 +289,13 @@ class MainViewModel @Inject constructor(
     private fun getSub1() {
         viewModelScope.launch {
             delay(2000)
-            service.getYandexMetricaDeviceId {
-                _state.value.copy(
-                    yandexMetricaDeviceId = it
-                )
-                    .updateStateUI()
-            }
-            val currentFireBaseToken = _state.value.fireBaseToken
-            val currentGaid = _state.value.gaid
-            val currentMyTrackerId = _state.value.instanceIdMyTracker
-            val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
             when (val result = repositoryAnalytic.getSub1(
                 applicationToken = APY_KEY,
-                userId = currentGaid ?: "",
+                userId = _state.value.gaid ?: "",
                 appMetricaId = _state.value.yandexMetricaDeviceId?:"",
-                appsflyer = currentAppsFlyerId ?: "",
-                firebaseToken = currentFireBaseToken ?: "",
-                myTrackerId = currentMyTrackerId ?: ""
+                appsflyer = _state.value.instanceIdAppsFlyer ?: "",
+                firebaseToken = _state.value.fireBaseToken ?: "",
+                myTrackerId = _state.value.instanceIdMyTracker ?: ""
             )) {
                 is Error -> {
                     _state.value.copy(
@@ -311,17 +316,13 @@ class MainViewModel @Inject constructor(
     private fun getSub3() {
         viewModelScope.launch {
             delay(2000)
-            val currentFireBaseToken = _state.value.fireBaseToken
-            val currentGaid = _state.value.gaid
-            val currentMyTrackerId = _state.value.instanceIdMyTracker
-            val currentAppsFlyerId = _state.value.instanceIdAppsFlyer
             when (val result = repositoryAnalytic.getSub3(
                 applicationToken = APY_KEY,
-                userId = currentGaid ?: "",
+                userId = _state.value.gaid ?: "",
                 appMetricaId = APP_METRICA,
-                appsflyer = currentAppsFlyerId ?: "",
-                firebaseToken = currentFireBaseToken ?: "",
-                myTrackerId = currentMyTrackerId ?: ""
+                appsflyer = _state.value.instanceIdAppsFlyer ?: "",
+                firebaseToken = _state.value.fireBaseToken ?: "",
+                myTrackerId = _state.value.instanceIdMyTracker ?: ""
             )) {
                 is Error -> {
                     _state.value.copy(
@@ -343,11 +344,10 @@ class MainViewModel @Inject constructor(
     private fun getSub5() {
         viewModelScope.launch {
             delay(2000)
-            val currentGaid = _state.value.gaid
             when (val result = repositoryAnalytic.getSub5(
                 applicationToken = APY_KEY,
-                userId = currentGaid ?: "",
-                gaid = currentGaid ?: ""
+                userId = _state.value.gaid ?: "",
+                gaid = _state.value.gaid ?: ""
             )) {
                 is Error -> {
                     _state.value.copy(
@@ -369,10 +369,9 @@ class MainViewModel @Inject constructor(
     private fun getFirstSub2() {
         viewModelScope.launch {
             delay(1000)
-            val currentGaid = _state.value.gaid
             when (val result = repositoryAnalytic.getSub2(
                 applicationToken = APY_KEY,
-                userId = currentGaid ?: "",
+                userId = _state.value.gaid ?: "",
                 appsflyer = "",
                 myTracker = ""
             )) {
@@ -397,12 +396,10 @@ class MainViewModel @Inject constructor(
 
     private fun getSub2(currentMyTracker: String, currentAppsFlyer: String) {
         viewModelScope.launch {
-
-            val currentGaid = _state.value.gaid
             if (currentMyTracker.isNotBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
-                    userId = currentGaid ?: "",
+                    userId = _state.value.gaid ?: "",
                     appsflyer = "",
                     myTracker = currentMyTracker
                 )) {
@@ -427,7 +424,7 @@ class MainViewModel @Inject constructor(
             if (currentAppsFlyer.isNotBlank()) {
                 when (val result = repositoryAnalytic.getSub2(
                     applicationToken = APY_KEY,
-                    userId = currentGaid ?: "",
+                    userId = _state.value.gaid ?: "",
                     appsflyer = currentAppsFlyer,
                     myTracker = ""
                 )) {
