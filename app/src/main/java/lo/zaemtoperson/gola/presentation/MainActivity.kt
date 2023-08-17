@@ -14,12 +14,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import com.appsflyer.AppsFlyerLib
+import com.appsflyer.deeplink.DeepLinkResult
 import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.data.APPS_FLYER
 import lo.zaemtoperson.gola.data.LINK
 
 
@@ -48,6 +51,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         askNotificationPermission()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         intent.extras?.let {
@@ -63,10 +67,57 @@ class MainActivity : ComponentActivity() {
 
         MyTracker.setAttributionListener {
             Log.d("ASDFGH", "myTracker activity $it")
-            viewModel.loadDeeplink(
+            viewModel.loadMTDeeplink(
                 deeplink = it.deeplink
             )
         }
+
+        AppsFlyerLib.getInstance().subscribeForDeepLink{deepLinkResult->
+            when (deepLinkResult.status) {
+                DeepLinkResult.Status.FOUND -> {
+                    Log.d(
+                        "ASDFGH","Deep link found1"
+                    )
+                }
+                DeepLinkResult.Status.NOT_FOUND -> {
+                    Log.d(
+                        "ASDFGH","Deep link not found1"
+                    )
+                }
+                else -> {
+                    val dlError = deepLinkResult.error
+                    Log.d(
+                        "ASDFGH","There was an error getting Deep Link data1: $dlError"
+                    )
+                }
+            }
+            val deepLinkObj = deepLinkResult.deepLink
+            try {
+                viewModel.loadAFDeeplink(deepLinkObj.deepLinkValue?:"")
+                Log.d(
+                    "ASDFGH","The DeepLink data is1: $deepLinkObj"
+                )
+            } catch (e: Exception) {
+                Log.d(
+                    "ASDFGH","DeepLink data came back null1"
+                )
+            }
+            if (deepLinkObj.isDeferred == true) {
+                Log.d("ASDFGH", "This is a deferred deep link1")
+            } else {
+                Log.d("ASDFGH", "This is a direct deep link1")
+            }
+
+            try {
+                val fruitName = deepLinkObj.deepLinkValue
+                viewModel.loadAFDeeplink(fruitName?:"")
+                Log.d("ASDFGH", "The DeepLink will route to1: $fruitName")
+            } catch (e:Exception) {
+                Log.d("ASDFGH", "There's been an error1: $e")
+            }
+        }
+        AppsFlyerLib.getInstance().init(APPS_FLYER, null, this)
+        AppsFlyerLib.getInstance().start(this)
         setContent {
 
             Sample(
@@ -93,14 +144,7 @@ class MainActivity : ComponentActivity() {
         cameraExecutor.shutdown()
     }
 
-    /*override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
-        }
-    }*/
-
     private fun askNotificationPermission() {
-        // This is only necessary for API Level > 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED

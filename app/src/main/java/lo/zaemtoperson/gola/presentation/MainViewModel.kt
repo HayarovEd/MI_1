@@ -33,7 +33,6 @@ import lo.zaemtoperson.gola.data.Resource.Error
 import lo.zaemtoperson.gola.data.Resource.Success
 import lo.zaemtoperson.gola.data.URL
 import lo.zaemtoperson.gola.data.setStatusByPush
-import lo.zaemtoperson.gola.domain.AppWorker
 import lo.zaemtoperson.gola.domain.RepositoryAnalytic
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.Service
@@ -57,20 +56,24 @@ class MainViewModel @Inject constructor(
     private val sharedKeeper: SharedKepper,
     private val repositoryAnalytic: RepositoryAnalytic,
     private val repositoryServer: RepositoryServer,
-    private val appWorker: AppWorker
 ) : ViewModel() {
     private var _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
     private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
     private val _myTracker = MutableStateFlow("")
+    private val _appsFlayer = MutableStateFlow("")
     private val _link = MutableStateFlow("")
     init {
         loadData()
     }
 
+    fun loadAFDeeplink(deeplink: String) {
+        _appsFlayer.value = deeplink
+    }
 
-    fun loadDeeplink(deeplink: String) {
+
+    fun loadMTDeeplink(deeplink: String) {
         _myTracker.value = deeplink
     }
 
@@ -545,10 +548,9 @@ class MainViewModel @Inject constructor(
                                     } else {
                                         delay(2000)
                                         Log.d("ASDFGH", "myTracker view model2 -  ${_myTracker.value}")
-                                        val appsFlayer = appWorker.appsFlyer
-                                        Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
+                                        Log.d("ASDFGH", "appsFlayer view model -  ${_appsFlayer.value}")
                                         getSub2(
-                                            currentAppsFlyer = appsFlayer,
+                                            currentAppsFlyer = _appsFlayer.value,
                                             currentMyTracker = _myTracker.value
                                         )
                                         delay(2000)
