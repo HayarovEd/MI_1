@@ -3,13 +3,13 @@ package lo.zaemtoperson.gola.presentation
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,9 +18,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsflyer.AppsFlyerLib
-import com.appsflyer.deeplink.DeepLink
-import com.appsflyer.deeplink.DeepLinkListener
-import com.appsflyer.deeplink.DeepLinkResult
 import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -62,6 +59,12 @@ class MainActivity : ComponentActivity() {
         val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        var myTracker = ""
+        MyTracker.setAttributionListener {
+            myTracker = it.deeplink
+            Log.d("ASDFGH", "myTracker activity ${it.deeplink}")
+        }
+
         var link = ""
         intent.extras?.let {
             for (key in it.keySet()) {
@@ -73,7 +76,10 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             val viewModel: MainViewModel = hiltViewModel()
-            viewModel.loadData(link = link)
+            viewModel.loadData(
+                link = link,
+                myTracker = myTracker
+            )
             Sample(
                 outputDirectory = outputDirectory,
                 executor = cameraExecutor,

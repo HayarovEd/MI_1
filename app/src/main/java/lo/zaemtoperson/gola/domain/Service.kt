@@ -13,8 +13,6 @@ interface Service {
     suspend fun getGAID(): String?
     fun getApplicationVersion(): String?
     fun checkedInternetConnection(): Boolean
-    fun getMyTrackerDeeplink(): String
-    fun getAppsFlyerDeeplink(): String
     fun sendAppsFlyerEvent(key: String, content:Map<String, String>)
     fun getYandexMetricaDeviceId (callback: (String?) -> Unit)
 }

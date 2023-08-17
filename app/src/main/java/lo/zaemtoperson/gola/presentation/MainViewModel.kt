@@ -67,7 +67,7 @@ class MainViewModel @Inject constructor(
        // loadData()
     }
 
-    fun loadData(link: String) {
+    fun loadData(link: String, myTracker: String) {
 
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
@@ -101,7 +101,6 @@ class MainViewModel @Inject constructor(
                 }
                 val version = service.getApplicationVersion()
 
-                val myTracker = service.getMyTrackerDeeplink()
                 val instanceIdAppsFlyer = sharedKeeper.getAppsFlyerInstanceId()
                 _state.value.copy(
                     appMetrica = appMetrika,
@@ -112,7 +111,6 @@ class MainViewModel @Inject constructor(
                     locale = locale,
                     deviceId = deviceId,
                     versionApplication = version,
-                    trackerDeeplink = myTracker
                 )
                     .updateStateUI()
             }
@@ -145,7 +143,10 @@ class MainViewModel @Inject constructor(
             }
             getSub3()
             getSub5()
-            loadDbData(link = link)
+            loadDbData(
+                link = link,
+                myTracker = myTracker
+            )
         } else {
             _state.value.copy(
                 statusApplication = NoConnect
@@ -448,7 +449,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun loadDbData(link: String) {
+    private fun loadDbData(link: String, myTracker: String) {
 
         viewModelScope.launch {
             delay(2000)
@@ -531,11 +532,10 @@ class MainViewModel @Inject constructor(
                                     val sharedSub2 = sharedKeeper.getSub2()
                                     val tempSub2 =
                                         if (!sharedSub2.isNullOrBlank()) sharedSub2 else {
-                                            delay(4000)
+                                            //delay(4000)
+                                            Log.d("ASDFGH", "myTracker view model -  $myTracker")
                                             val appsFlayer = appWorker.appsFlyer
                                             Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
-                                            val myTracker = appWorker.myTracker
-                                            Log.d("ASDFGH", "myTracker view model -  $myTracker")
                                             getSub2(
                                                 currentAppsFlyer = appsFlayer,
                                                 currentMyTracker = myTracker
@@ -579,12 +579,6 @@ class MainViewModel @Inject constructor(
                                     )
                                         .updateStateUI()
                                     delay(1000)
-                                    val appsFlayer = service.getAppsFlyerDeeplink()
-                                    Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
-                                    _state.value.copy(
-                                        appsFlyerDeeplink = appsFlayer
-                                    )
-                                        .updateStateUI()
                                 }
                             }
 

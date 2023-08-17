@@ -167,14 +167,6 @@ class ServiceImpl @Inject constructor(
     }
 
 
-    override fun getMyTrackerDeeplink(): String {
-        return (application as AppGola).myTracker
-    }
-
-    override fun getAppsFlyerDeeplink(): String {
-        return (application as AppGola).appsFlayer
-    }
-
     override fun sendAppsFlyerEvent(key: String, content:Map<String, String>) {
         AppsFlyerLib.getInstance().logEvent(application, key, content)
     }
