@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltAndroidApp
 class AppGola @Inject constructor(): Application() {
     var appsFlayer = ""
-    var myTracker = ""
+    private var myTracker = ""
     override fun onCreate() {
         super.onCreate()
         AppsFlyerLib.getInstance().subscribeForDeepLink(object : DeepLinkListener {
@@ -85,6 +85,7 @@ class AppGola @Inject constructor(): Application() {
         val config = YandexMetricaConfig.newConfigBuilder(APP_METRICA).build()
         MyTracker.setAttributionListener {
             myTracker= it.deeplink
+            getAppMyDeeplink()
             Log.d("ASDFGH", "myTracker app $myTracker")
         }
 
@@ -92,5 +93,9 @@ class AppGola @Inject constructor(): Application() {
         MyTracker.initTracker(MY_TRACKER, this)
         YandexMetrica.activate(applicationContext, config)
         YandexMetrica.enableActivityAutoTracking(this)
+    }
+
+    fun getAppMyDeeplink(): String {
+        return  myTracker
     }
 }

@@ -8,10 +8,10 @@ import javax.inject.Inject
 class AppWorkerImpl @Inject constructor(private val appGola: AppGola) : AppWorker {
     //override val myTracker = appGola.myTracker
     override suspend fun getMyTracker(): String {
-        appGola
         delay(1000)
-        Log.d("ASDFGH", "myTracker worker -  ${appGola.myTracker}")
-        return appGola.myTracker
+        val tmp = appGola.getAppMyDeeplink()
+        Log.d("ASDFGH", "myTracker worker -  ${tmp}")
+        return tmp
     }
 
     override val appsFlyer = appGola.appsFlayer
