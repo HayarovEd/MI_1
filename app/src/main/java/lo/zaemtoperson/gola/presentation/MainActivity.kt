@@ -18,6 +18,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.appsflyer.AppsFlyerLib
+import com.appsflyer.deeplink.DeepLink
+import com.appsflyer.deeplink.DeepLinkListener
+import com.appsflyer.deeplink.DeepLinkResult
 import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -49,21 +52,16 @@ class MainActivity : ComponentActivity() {
             ).show()
         }
     }
-    var myTarcker = ""
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
-
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
         val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        val intent = Intent()
-        myTarcker = MyTracker.handleDeeplink(intent)?:""
-        Log.d("ASDFGH", "myTarcker $myTarcker")
         var link = ""
         intent.extras?.let {
             for (key in it.keySet()) {
@@ -85,12 +83,6 @@ class MainActivity : ComponentActivity() {
 
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        myTarcker = MyTracker.handleDeeplink(intent)?:""
-        Log.d("ASDFGH", "myTarcker intent $myTarcker")
     }
 
     private fun getOutputDirectory(): File {

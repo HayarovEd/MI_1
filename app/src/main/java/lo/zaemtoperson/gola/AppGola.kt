@@ -4,6 +4,9 @@ import android.app.Application
 import android.util.Log
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
+import com.appsflyer.deeplink.DeepLink
+import com.appsflyer.deeplink.DeepLinkListener
+import com.appsflyer.deeplink.DeepLinkResult
 import com.my.tracker.MyTracker
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
@@ -22,27 +25,56 @@ class AppGola: Application() {
     var myTarcker = ""
     override fun onCreate() {
         super.onCreate()
-        val conversionDataListener = object : AppsFlyerConversionListener {
-            override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
-                appsFlayer = conversionData.entries.joinToString(separator = ", ") { "${it.key}=${it.value}" }
-                Log.d("ASDFGH", "temp -  $appsFlayer")
-            }
+        AppsFlyerLib.getInstance().subscribeForDeepLink(object : DeepLinkListener {
+            override fun onDeepLinking(deepLinkResult: DeepLinkResult) {
+                when (deepLinkResult.status) {
+                    DeepLinkResult.Status.FOUND -> {
+                        Log.d(
+                            "ASDFGH","Deep link found"
+                        )
+                    }
+                    DeepLinkResult.Status.NOT_FOUND -> {
+                        Log.d(
+                            "ASDFGH","Deep link not found"
+                        )
+                        return
+                    }
+                    else -> {
+                        val dlError = deepLinkResult.error
+                        Log.d(
+                            "ASDFGH","There was an error getting Deep Link data: $dlError"
+                        )
+                        return
+                    }
+                }
+                val deepLinkObj = deepLinkResult.deepLink
+                try {
+                    Log.d(
+                        "ASDFGH","The DeepLink data is: $deepLinkObj"
+                    )
+                } catch (e: Exception) {
+                    Log.d(
+                        "ASDFGH","DeepLink data came back null"
+                    )
+                    return
+                }
+                if (deepLinkObj.isDeferred == true) {
+                    Log.d("ASDFGH", "This is a deferred deep link");
+                } else {
+                    Log.d("ASDFGH", "This is a direct deep link");
+                }
 
-            override fun onConversionDataFail(error: String?) {
-                println("SDFRD conversion error $error")
-            }
-
-            override fun onAppOpenAttribution(attributionData: MutableMap<String, String>?) {
-                attributionData?.forEach{
-                    println("SDFRD attribution key ${it.key} valur ${it.value}")
+                try {
+                    val fruitName = deepLinkObj.deepLinkValue
+                    appsFlayer = fruitName?:""
+                    Log.d("ASDFGH", "The DeepLink will route to: $fruitName")
+                } catch (e:Exception) {
+                    Log.d("ASDFGH", "There's been an error: $e");
+                    return;
                 }
             }
-
-            override fun onAttributionFailure(error: String?) {
-                println("SDFRD attribution error $error")
-            }
-        }
-        AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, this)
+        })
+        AppsFlyerLib.getInstance().init(APPS_FLYER, null, this)
         AppsFlyerLib.getInstance().start(this)
         val config = YandexMetricaConfig.newConfigBuilder(APP_METRICA).build()
         //val intent = Intent()
