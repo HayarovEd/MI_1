@@ -116,6 +116,7 @@ fun Sample(
         is StatusApplication.Web -> {
             WebViewScreen(
                 url = currentState.url,
+                offerName = currentState.offerName,
                 onEvent = viewModel::onEvent,
             )
         }

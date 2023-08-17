@@ -62,6 +62,7 @@ private var imageOutputFileUri: Uri? = null
 fun WebViewScreen(
     modifier: Modifier = Modifier,
     url: String,
+    offerName: String,
     onEvent: (MainEvent) -> Unit,
 ) {
     val activityResultLauncher = rememberLauncherForActivityResult(
@@ -87,7 +88,7 @@ fun WebViewScreen(
                     Row(
                         modifier = modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
+                            .padding(horizontal = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = {
@@ -99,6 +100,14 @@ fun WebViewScreen(
                                 contentDescription = ""
                             )
                         }
+                        Spacer(modifier = modifier.width(16.dp))
+                        Text(
+                            color = black,
+                            fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Normal,
+                            text = offerName
+                        )
                     }
                 }
             )

@@ -234,7 +234,9 @@ class MainViewModel @Inject constructor(
                             is StatusApplication.Web -> { }
                         }
                         _state.value.copy(
-                            statusApplication = StatusApplication.Web(completeUrl),
+                            statusApplication = StatusApplication.Web(
+                                url = completeUrl,
+                                offerName = mainEvent.nameOffer),
                         )
                             .updateStateUI()
                     }
@@ -530,7 +532,7 @@ class MainViewModel @Inject constructor(
                                     val sharedSub2 = sharedKeeper.getSub2()
                                     val tempSub2 =
                                         if (!sharedSub2.isNullOrBlank()) sharedSub2 else {
-                                            delay(2000)
+                                            delay(4000)
                                             val appsFlayer = appWorker.appsFlyer
                                             Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
                                             val myTracker = appWorker.myTracker

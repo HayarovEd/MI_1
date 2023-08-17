@@ -144,7 +144,10 @@ fun OfferScreen(
                             .clip(shape = RoundedCornerShape(16.dp))
                             .background(color = black)
                             .clickable(onClick = {
-                                onEvent(MainEvent.OnGoToWeb(elementOffer.order))
+                                onEvent(MainEvent.OnGoToWeb(
+                                    urlOffer = elementOffer.order,
+                                    nameOffer = elementOffer.name
+                                ))
                             })
                             .padding(vertical = 16.dp)
                     ) {

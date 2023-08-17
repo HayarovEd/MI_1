@@ -18,7 +18,8 @@ sealed class StatusApplication {
         ):StatusApplication()
 
     class Web (
-        val url: String
+        val url: String,
+        val offerName: String
     ):StatusApplication()
 
     object NoConnect:StatusApplication()

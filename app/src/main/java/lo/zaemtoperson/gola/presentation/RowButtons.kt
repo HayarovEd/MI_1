@@ -1,8 +1,6 @@
 package lo.zaemtoperson.gola.presentation
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,11 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.R.font
-import lo.zaemtoperson.gola.data.permissions
-import lo.zaemtoperson.gola.data.permissions34
 import lo.zaemtoperson.gola.domain.model.ElementOffer
 import lo.zaemtoperson.gola.domain.model.StatusApplication
 import lo.zaemtoperson.gola.domain.model.basedto.BaseState
@@ -119,7 +114,12 @@ fun RowButtons(
                 .clip(shape = RoundedCornerShape(16.dp))
                 .background(color = black)
                 .clickable(onClick = {
-                    onEvent(MainEvent.OnGoToWeb(order))
+                    onEvent(
+                        MainEvent.OnGoToWeb(
+                            urlOffer = order,
+                            nameOffer = name
+                        )
+                    )
                 })
                 .padding(vertical = 16.dp)
         ) {

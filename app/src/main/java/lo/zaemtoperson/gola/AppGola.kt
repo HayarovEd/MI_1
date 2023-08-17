@@ -5,6 +5,7 @@ import android.util.Log
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.deeplink.DeepLinkListener
 import com.appsflyer.deeplink.DeepLinkResult
+import com.google.firebase.messaging.FirebaseMessaging
 import com.my.tracker.MyTracker
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
@@ -87,6 +88,4 @@ class AppGola @Inject constructor(): Application() {
         YandexMetrica.activate(applicationContext, config)
         YandexMetrica.enableActivityAutoTracking(this)
     }
-
-
 }
