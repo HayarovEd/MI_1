@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-
+    private val mHandler = Handler(Looper.getMainLooper())
     private val requestPermissionLauncherFireBase = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
@@ -55,15 +55,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
-        val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
-        val instance = AppsFlyerLib.getInstance().getAppsFlyerUID(application)
-        sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instance).apply()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        var myTracker = ""
-        MyTracker.setAttributionListener {
+        //var myTracker = ""
+        /*MyTracker.setAttributionListener {
             myTracker = it.deeplink
-            Log.d("ASDFGH", "myTracker activity ${it.deeplink}")
-        }
+            Log.d("ASDFGH", "myTracker activity $myTracker")
+        }*/
 
         var link = ""
         intent.extras?.let {
@@ -74,18 +71,21 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        setContent {
-            val viewModel: MainViewModel = hiltViewModel()
-            viewModel.loadData(
-                link = link,
-                myTracker = myTracker
-            )
-            Sample(
-                outputDirectory = outputDirectory,
-                executor = cameraExecutor,
-                viewModel = viewModel,
+        //Log.d("ASDFGH", "myTracker activity $myTracker")
+        mHandler.postDelayed({
+            setContent {
+                val viewModel: MainViewModel = hiltViewModel()
+                viewModel.loadData(
+                    link = link
                 )
-        }
+                Sample(
+                    outputDirectory = outputDirectory,
+                    executor = cameraExecutor,
+                    viewModel = viewModel,
+                )
+            }
+        }, 1000)
+
 
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()

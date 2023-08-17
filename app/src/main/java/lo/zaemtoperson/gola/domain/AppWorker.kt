@@ -1,6 +1,9 @@
 package lo.zaemtoperson.gola.domain
 
+import androidx.compose.runtime.MutableState
+
 interface AppWorker {
-    val myTracker: String
+    suspend fun getMyTracker(): String
+    //val myTracker: MutableState<String>
     val appsFlyer:String
 }

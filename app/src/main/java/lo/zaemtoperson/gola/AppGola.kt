@@ -1,9 +1,13 @@
 package lo.zaemtoperson.gola
 
 import android.app.Application
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.deeplink.DeepLinkListener
 import com.appsflyer.deeplink.DeepLinkResult
@@ -79,15 +83,10 @@ class AppGola @Inject constructor(): Application() {
         AppsFlyerLib.getInstance().init(APPS_FLYER, null, this)
         AppsFlyerLib.getInstance().start(this)
         val config = YandexMetricaConfig.newConfigBuilder(APP_METRICA).build()
-        //val intent = Intent()
-        //myTarcker = MyTracker.handleDeeplink(intent)?:""
-        val mHandler = Handler(Looper.getMainLooper())
-        mHandler.postDelayed({
-            MyTracker.setAttributionListener {
-                myTracker = it.deeplink
-                Log.d("ASDFGH", "myTracker app $myTracker")
-            }
-        }, 1000)
+        MyTracker.setAttributionListener {
+            myTracker= it.deeplink
+            Log.d("ASDFGH", "myTracker app $myTracker")
+        }
 
 
         MyTracker.initTracker(MY_TRACKER, this)

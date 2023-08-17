@@ -63,11 +63,12 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     private var _lastState = MutableStateFlow<StatusApplication>(StatusApplication.Loading)
+    private val _myTracker = MutableStateFlow("")
     init {
        // loadData()
     }
 
-    fun loadData(link: String, myTracker: String) {
+    fun loadData(link: String) {
 
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
@@ -144,8 +145,7 @@ class MainViewModel @Inject constructor(
             getSub3()
             getSub5()
             loadDbData(
-                link = link,
-                myTracker = myTracker
+                link = link
             )
         } else {
             _state.value.copy(
@@ -449,7 +449,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun loadDbData(link: String, myTracker: String) {
+    private fun loadDbData(link: String) {
 
         viewModelScope.launch {
             delay(2000)
@@ -530,15 +530,19 @@ class MainViewModel @Inject constructor(
                                     )
                                         .updateStateUI()
                                     val sharedSub2 = sharedKeeper.getSub2()
+                                    _myTracker.value = appWorker.getMyTracker()
+                                    Log.d("ASDFGH", "myTracker view model1 -  ${_myTracker.value}")
                                     val tempSub2 =
                                         if (!sharedSub2.isNullOrBlank()) sharedSub2 else {
-                                            //delay(4000)
-                                            Log.d("ASDFGH", "myTracker view model -  $myTracker")
+                                            delay(4000)
+                                            _myTracker.value = appWorker.getMyTracker()
+                                            //val myTracker = appWorker.myTracker
+                                            Log.d("ASDFGH", "myTracker view model2 -  ${_myTracker.value}")
                                             val appsFlayer = appWorker.appsFlyer
                                             Log.d("ASDFGH", "appsFlayer view model -  $appsFlayer")
                                             getSub2(
                                                 currentAppsFlyer = appsFlayer,
-                                                currentMyTracker = myTracker
+                                                currentMyTracker = _myTracker.value
                                             )
                                             if (_state.value.affsub2UnswerAF.isBlank() && _state.value.affsub2UnswerMT.isBlank()) {
                                                 sharedKeeper.setSub2(_state.value.affsub2UnswerEmpty)
