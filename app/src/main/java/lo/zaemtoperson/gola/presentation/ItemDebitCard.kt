@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -46,6 +47,11 @@ fun ItemDebitCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .padding(end = 4.dp, bottom = 4.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(16.dp)
+            )
             .clip(shape = RoundedCornerShape(16.dp))
             .background(color = white)
             .padding(16.dp)
