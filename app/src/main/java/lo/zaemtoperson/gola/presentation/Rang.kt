@@ -42,7 +42,7 @@ fun Rang (
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.baseline_star_9),
-            tint = green,
+            tint = white,
             contentDescription = "")
         Spacer(modifier = modifier.width(4.dp))
         Text(

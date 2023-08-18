@@ -114,12 +114,13 @@ fun OfferScreen(
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
+                        .padding(start = 24.dp, end = 24.dp, bottom = 15.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = modifier
+                            .height(60.dp)
                             .weight(1f)
                             .padding(end = 4.dp, bottom = 4.dp)
                             .shadow(
@@ -147,6 +148,7 @@ fun OfferScreen(
                     Spacer(modifier = modifier.width(9.dp))
                     Box(
                         modifier = modifier
+                            .height(60.dp)
                             .weight(3f)
                             .clip(shape = RoundedCornerShape(16.dp))
                             .background(color = black)

@@ -87,8 +87,7 @@ fun WebViewScreen(
                 title = {
                     Row(
                         modifier = modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = {
