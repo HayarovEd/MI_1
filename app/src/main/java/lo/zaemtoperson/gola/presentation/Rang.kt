@@ -1,6 +1,7 @@
 package lo.zaemtoperson.gola.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -34,8 +35,10 @@ fun Rang (
         modifier = modifier
             .clip(shape = RoundedCornerShape(CornerSize(100)))
             .background(color = absoluteDark)
-            .padding(2.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .width(40.dp)
+            .padding(vertical = 2.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.baseline_star_9),

@@ -78,8 +78,7 @@ fun OfferScreen(
                 title = {
                     Row(
                         modifier = modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = {
