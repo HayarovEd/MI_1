@@ -65,12 +65,16 @@ class MainViewModel @Inject constructor(
     private val _appsFlayer = MutableStateFlow("")
     private val _link = MutableStateFlow("")
     private val _yandexMetrikaDeviceId = MutableStateFlow("")
+    private val _appsFlayerInstanceId = MutableStateFlow("")
     init {
         loadData()
     }
 
     fun loadAFDeeplink(deeplink: String) {
+        Log.d("ASDFGH", "appsFlayer deeplink -  $deeplink")
         _appsFlayer.value = deeplink
+        Log.d("ASDFGH", "appsFlayer start -  ${_appsFlayer.value}")
+
     }
 
 
@@ -124,11 +128,10 @@ class MainViewModel @Inject constructor(
                 }
                 val version = service.getApplicationVersion()
 
-                val instanceIdAppsFlyer = sharedKeeper.getAppsFlyerInstanceId()
+                _appsFlayerInstanceId.value = sharedKeeper.getAppsFlyerInstanceId()?:""
                 _state.value.copy(
                     sim = sim,
                     instanceIdMyTracker = instanceIdMyTracker,
-                    instanceIdAppsFlyer = instanceIdAppsFlyer,
                     isRoot = isRoot,
                     locale = locale,
                     deviceId = deviceId,
@@ -137,6 +140,7 @@ class MainViewModel @Inject constructor(
                     .updateStateUI()
             }
             Log.d("ASDFGH", "_yandexMetrikaDeviceId ${_yandexMetrikaDeviceId.value}")
+            Log.d("ASDFGH", "_appsFlayerInstanceId ${_appsFlayerInstanceId.value}")
             viewModelScope.launch(Dispatchers.IO) {
                 val gaid = service.getGAID()
                 _state.value.copy(
@@ -298,11 +302,12 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             delay(2000)
             Log.d("ASDFGH", "_yandexMetrikaDeviceId sub1 ${_yandexMetrikaDeviceId.value}")
+            Log.d("ASDFGH", "_appsFlayerInstanceId sub1 ${_appsFlayerInstanceId.value}")
             when (val result = repositoryAnalytic.getSub1(
                 applicationToken = APY_KEY,
                 userId = _state.value.gaid ?: "",
                 appMetricaId = _yandexMetrikaDeviceId.value,
-                appsflyer = _state.value.instanceIdAppsFlyer ?: "",
+                appsflyer = _appsFlayerInstanceId.value,
                 firebaseToken = _state.value.fireBaseToken ?: "",
                 myTrackerId = _state.value.instanceIdMyTracker ?: ""
             )) {
@@ -329,7 +334,7 @@ class MainViewModel @Inject constructor(
                 applicationToken = APY_KEY,
                 userId = _state.value.gaid ?: "",
                 appMetricaId = APP_METRICA,
-                appsflyer = _state.value.instanceIdAppsFlyer ?: "",
+                appsflyer = _appsFlayerInstanceId.value,
                 firebaseToken = _state.value.fireBaseToken ?: "",
                 myTrackerId = _state.value.instanceIdMyTracker ?: ""
             )) {

@@ -10,7 +10,7 @@ data class MainState(
     val colorFb: String = "",
     val sim: String? = null,
     val instanceIdMyTracker: String? = null,
-    val instanceIdAppsFlyer: String? = null,
+    //val instanceIdAppsFlyer: String? = null,
     val isRoot: Boolean = false,
     val locale: String = "",
     val deviceId: String? = null,
