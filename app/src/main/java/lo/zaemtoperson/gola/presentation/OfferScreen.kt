@@ -176,7 +176,7 @@ fun OfferScreen(
             AsyncImage(
                 modifier = modifier
                     .fillMaxWidth()
-                    .background(color = white),
+                    /*.background(color = white)*/,
                 model = elementOffer.pathImage,
                 contentScale = ContentScale.FillWidth,
                 contentDescription = ""

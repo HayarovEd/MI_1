@@ -91,12 +91,12 @@ fun ConnectScreen(
                             fontWeight = FontWeight.Normal,
                             text = title
                         )
-                        IconButton(onClick = onClickRules) {
+                        /*IconButton(onClick = onClickRules) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.info),
                                 tint = black,
                                 contentDescription = "")
-                        }
+                        }*/
                     }
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
