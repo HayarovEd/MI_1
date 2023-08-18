@@ -115,7 +115,7 @@ dependencies {
     implementation ("com.yandex.android:mobmetricalib:5.3.0")
 
     //MyTracker
-    implementation ("com.my.tracker:mytracker-sdk:3.0.0")
+    implementation ("com.my.tracker:mytracker-sdk:3.1.0")
 
     //Appsflyer
     implementation ("com.appsflyer:af-android-sdk:6.12.2")
