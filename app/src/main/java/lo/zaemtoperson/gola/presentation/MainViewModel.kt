@@ -82,7 +82,7 @@ class MainViewModel @Inject constructor(
         _myTracker.value = deeplink
     }
 
-    fun loadlink(link: String) {
+    fun loadLink(link: String) {
         _link.value = link
     }
 
@@ -176,10 +176,14 @@ class MainViewModel @Inject constructor(
         when (mainEvent) {
             Reconnect -> {
                 if (service.checkedInternetConnection()) {
-                    _state.value.copy(
-                        statusApplication = _lastState.value
-                    )
-                        .updateStateUI()
+                    if (_lastState.value !is StatusApplication.Loading) {
+                        _state.value.copy(
+                            statusApplication = _lastState.value
+                        )
+                            .updateStateUI()
+                    } else {
+                        loadData()
+                    }
                 } else {
                     _state.value.copy(
                         statusApplication = NoConnect,

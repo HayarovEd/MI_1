@@ -17,7 +17,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
-import com.appsflyer.deeplink.DeepLinkResult
 import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
 import lo.zaemtoperson.gola.R
@@ -62,7 +61,7 @@ class MainActivity : ComponentActivity() {
             for (key in it.keySet()) {
                 val value = intent.extras?.get(key)
                 if (key==LINK) {
-                    viewModel.loadlink(
+                    viewModel.loadLink(
                         link = value.toString(),
                     )
                 }
