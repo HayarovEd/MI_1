@@ -1,6 +1,10 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("kotlin-kapt")
+    id ("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -11,9 +15,9 @@ android {
         applicationId = "lo.zaemtoperson.gola"
         minSdk = 21
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
+        versionCode = 2
+        versionName = "2.0"
+        multiDexEnabled =  true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -59,6 +63,10 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -76,11 +84,49 @@ dependencies {
     implementation ("androidx.compose.material:material-icons-extended:1.4.3")
 
     // Coil
-    implementation ("io.coil-kt:coil-compose:2.2.2")
+    implementation ("io.coil-kt:coil-compose:2.4.0")
 
     //Permissions
     implementation ("com.google.accompanist:accompanist-permissions:0.31.5-beta")
 
     implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
     coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.1.6")
+
+    //Dagger
+    implementation ("com.google.dagger:hilt-android:2.45")
+    annotationProcessor ("com.google.dagger:hilt-compiler:2.45")
+    kapt ("com.google.dagger:hilt-compiler:2.45")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    //retrofit
+    implementation ("com.google.code.gson:gson:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation ("com.google.code.gson:gson:2.9.0")
+
+    //firebase
+    implementation("com.google.firebase:firebase-config-ktx:21.4.1")
+    implementation("com.google.firebase:firebase-crashlytics-ktx:18.4.0")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.2.1")
+
+    //AppMetrica
+    implementation ("com.yandex.android:mobmetricalib:5.3.0")
+
+    //MyTracker
+    implementation ("com.my.tracker:mytracker-sdk:3.0.0")
+
+    //Appsflyer
+    implementation ("com.appsflyer:af-android-sdk:6.12.2")
+
+    //UserX
+
+    //dataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+}
+
+
+kapt{
+    correctErrorTypes = true
 }

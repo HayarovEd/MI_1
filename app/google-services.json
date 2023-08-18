@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "243689198604",
+    "project_id": "id418-412b1",
+    "storage_bucket": "id418-412b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243689198604:android:5825f58900d2f10a3f4a29",
+        "android_client_info": {
+          "package_name": "lo.zaemtoperson.gola"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243689198604-nbqegngfefdu75944jb1mbtg3ouarj4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB8ZVb0XTj-ns2hfMpUUDcRQdmLOYrVTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243689198604-nbqegngfefdu75944jb1mbtg3ouarj4n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
