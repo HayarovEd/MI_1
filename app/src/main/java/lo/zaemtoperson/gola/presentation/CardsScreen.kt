@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -72,12 +73,15 @@ fun CardsScreen(
                     onClick = { onEvent(MainEvent.OnChangeTypeCard(TypeCard.CardCredit)) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (typeCard is TypeCard.CardCredit) green else baseBackground
-                    )
+                    ),
+                    contentPadding = ButtonDefaults.ContentPadding.apply {
+                        PaddingValues(horizontal = 11.dp)
+                    }
                 ) {
                     Text(
                         color = absoluteDark,
-                        fontStyle = FontStyle(R.font.onast_500),
-                        fontSize = 10.sp,
+                        fontStyle = FontStyle(R.font.inter_600),
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Normal,
                         text = stringResource(id = R.string.credit),
                         textAlign = TextAlign.Center
@@ -90,12 +94,15 @@ fun CardsScreen(
                     onClick = { onEvent(MainEvent.OnChangeTypeCard(TypeCard.CardDebit)) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (typeCard is TypeCard.CardDebit) green else baseBackground
-                    )
+                    ),
+                    contentPadding = ButtonDefaults.ContentPadding.apply {
+                        PaddingValues(horizontal = 11.dp)
+                    }
                 ) {
                     Text(
                         color = absoluteDark,
-                        fontStyle = FontStyle(R.font.onast_500),
-                        fontSize = 10.sp,
+                        fontStyle = FontStyle(R.font.inter_600),
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Normal,
                         text = stringResource(id = R.string.debit),
                         textAlign = TextAlign.Center
@@ -108,12 +115,15 @@ fun CardsScreen(
                     onClick = { onEvent(MainEvent.OnChangeTypeCard(TypeCard.CardInstallment)) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (typeCard is TypeCard.CardInstallment) green else baseBackground
-                    )
+                    ),
+                    contentPadding = ButtonDefaults.ContentPadding.apply {
+                        PaddingValues(horizontal = 11.dp)
+                    }
                 ) {
                     Text(
                         color = absoluteDark,
-                        fontStyle = FontStyle(R.font.onast_500),
-                        fontSize = 10.sp,
+                        fontStyle = FontStyle(R.font.inter_600),
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Normal,
                         text = stringResource(id = R.string.installment),
                         textAlign = TextAlign.Center

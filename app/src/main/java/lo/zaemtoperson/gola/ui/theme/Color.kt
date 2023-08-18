@@ -15,7 +15,7 @@ val black = Color(0xFF0D0D0D)
 val green = Color(0xFF13F287)
 val gray = Color(0xFF77847D)
 
-val baseBackground = Color(0xFFDEF5EA)
+val baseBackground = Color(0xFFF0F8F4)
 val baseBlue = Color(0xFF0057A0)
 val darkGreen = Color(0xFF0E9347)
 val absoluteDark = Color(0xFF000000)

@@ -88,7 +88,7 @@ fun ConnectScreen(
                             color = black,
                             fontStyle = FontStyle(font.soyuz_grotesk_bold),
                             fontSize = 20.sp,
-                            fontWeight = FontWeight.Normal,
+                            fontWeight = FontWeight.Bold,
                             text = title
                         )
                         /*IconButton(onClick = onClickRules) {

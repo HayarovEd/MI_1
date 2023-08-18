@@ -30,10 +30,10 @@ fun RowData(
 ) {
     Row (
         modifier = modifier
-            .border(width = 1.dp, color = baseBackground)
             .fillMaxWidth()
-            .background(color = white)
             .clip(shape = RoundedCornerShape(4.dp))
+            .background(color = white)
+            .border(width = 2.dp, color = baseBackground)
             .padding(horizontal = 8.dp, vertical = 7.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
