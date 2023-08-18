@@ -74,15 +74,13 @@ fun CardsScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (typeCard is TypeCard.CardCredit) green else baseBackground
                     ),
-                    contentPadding = ButtonDefaults.ContentPadding.apply {
-                        PaddingValues(horizontal = 11.dp)
-                    }
+                    contentPadding = PaddingValues(horizontal = 11.dp, vertical = 8.dp)
                 ) {
                     Text(
                         color = absoluteDark,
                         fontStyle = FontStyle(R.font.inter_600),
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Normal,
+                        fontWeight = FontWeight.SemiBold,
                         text = stringResource(id = R.string.credit),
                         textAlign = TextAlign.Center
                     )
@@ -95,15 +93,13 @@ fun CardsScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (typeCard is TypeCard.CardDebit) green else baseBackground
                     ),
-                    contentPadding = ButtonDefaults.ContentPadding.apply {
-                        PaddingValues(horizontal = 11.dp)
-                    }
+                    contentPadding = PaddingValues(horizontal = 11.dp, vertical = 8.dp)
                 ) {
                     Text(
                         color = absoluteDark,
                         fontStyle = FontStyle(R.font.inter_600),
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Normal,
+                        fontWeight = FontWeight.SemiBold,
                         text = stringResource(id = R.string.debit),
                         textAlign = TextAlign.Center
                     )
@@ -116,15 +112,13 @@ fun CardsScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (typeCard is TypeCard.CardInstallment) green else baseBackground
                     ),
-                    contentPadding = ButtonDefaults.ContentPadding.apply {
-                        PaddingValues(horizontal = 11.dp)
-                    }
+                    contentPadding = PaddingValues(horizontal = 11.dp, vertical = 8.dp)
                 ) {
                     Text(
                         color = absoluteDark,
                         fontStyle = FontStyle(R.font.inter_600),
                         fontSize = 13.sp,
-                        fontWeight = FontWeight.Normal,
+                        fontWeight = FontWeight.SemiBold,
                         text = stringResource(id = R.string.installment),
                         textAlign = TextAlign.Center
                     )
