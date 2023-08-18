@@ -7,7 +7,6 @@ import lo.zaemtoperson.gola.domain.model.basedto.CardsDebit
 import lo.zaemtoperson.gola.domain.model.basedto.CardsInstallment
 
 data class MainState(
-    val appMetrica: String = "",
     val colorFb: String = "",
     val sim: String? = null,
     val instanceIdMyTracker: String? = null,
@@ -18,10 +17,7 @@ data class MainState(
     val fireBaseToken: String? = null,
     val gaid: String? = null,
     val versionApplication: String? = null,
-    //val trackerDeeplink: String? = null,
-    //val appsFlyerDeeplink: String? = null,
-    val yandexMetricaDeviceId: String? = null,
-    //val isConnectInternet:Boolean = false,
+    //val yandexMetricaDeviceId: String? = null,
     val message: String = "",
     val affsub1Unswer: String = "",
     val affsub2Unswer: String = "",

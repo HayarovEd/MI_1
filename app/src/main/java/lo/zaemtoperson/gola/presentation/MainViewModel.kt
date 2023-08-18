@@ -64,6 +64,7 @@ class MainViewModel @Inject constructor(
     private val _myTracker = MutableStateFlow("")
     private val _appsFlayer = MutableStateFlow("")
     private val _link = MutableStateFlow("")
+    private val _yandexMetrikaDeviceId = MutableStateFlow("")
     init {
         loadData()
     }
@@ -84,7 +85,16 @@ class MainViewModel @Inject constructor(
     private fun loadData() {
         if (service.checkedInternetConnection()) {
             viewModelScope.launch {
-                val appMetrika = service.appMetrika
+                val sharedYandexMetrica = sharedKeeper.getYandexMetricaDeviceId()
+                if (sharedYandexMetrica.isNullOrBlank()) {
+                    service.getYandexMetricaDeviceId {
+                        _yandexMetrikaDeviceId.value = it?:""
+                        sharedKeeper.setYandexMetricaDeviceId(it?:"")
+                    }
+                } else {
+                    _yandexMetrikaDeviceId.value = sharedYandexMetrica
+                }
+                //
                 val instanceIdMyTracker =
                     if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
                         val instance = service.instanceIdMyTracker
@@ -116,7 +126,6 @@ class MainViewModel @Inject constructor(
 
                 val instanceIdAppsFlyer = sharedKeeper.getAppsFlyerInstanceId()
                 _state.value.copy(
-                    appMetrica = appMetrika,
                     sim = sim,
                     instanceIdMyTracker = instanceIdMyTracker,
                     instanceIdAppsFlyer = instanceIdAppsFlyer,
@@ -127,30 +136,18 @@ class MainViewModel @Inject constructor(
                 )
                     .updateStateUI()
             }
-            val sharedYandexMetrica = sharedKeeper.getYandexMetricaDeviceId()
-            if (sharedYandexMetrica.isNullOrBlank()) {
-                service.getYandexMetricaDeviceId {
-                    _state.value.copy(
-                        yandexMetricaDeviceId = it
-                    )
-                        .updateStateUI()
-                    sharedKeeper.setYandexMetricaDeviceId(it?:"")
-                }
-            } else {
-                _state.value.copy(
-                    yandexMetricaDeviceId = sharedYandexMetrica
-                )
-                    .updateStateUI()
-            }
+            Log.d("ASDFGH", "_yandexMetrikaDeviceId ${_yandexMetrikaDeviceId.value}")
             viewModelScope.launch(Dispatchers.IO) {
                 val gaid = service.getGAID()
                 _state.value.copy(
                     gaid = gaid,
                 )
                     .updateStateUI()
+                delay(2000)
+                getSub1()
             }
             getRemoteConfig()
-            getSub1()
+
             if (sharedKeeper.getSub2().isNullOrBlank()) {
                 getFirstSub2()
             }
@@ -300,10 +297,11 @@ class MainViewModel @Inject constructor(
     private fun getSub1() {
         viewModelScope.launch {
             delay(2000)
+            Log.d("ASDFGH", "_yandexMetrikaDeviceId sub1 ${_yandexMetrikaDeviceId.value}")
             when (val result = repositoryAnalytic.getSub1(
                 applicationToken = APY_KEY,
                 userId = _state.value.gaid ?: "",
-                appMetricaId = _state.value.yandexMetricaDeviceId?:"",
+                appMetricaId = _yandexMetrikaDeviceId.value,
                 appsflyer = _state.value.instanceIdAppsFlyer ?: "",
                 firebaseToken = _state.value.fireBaseToken ?: "",
                 myTrackerId = _state.value.instanceIdMyTracker ?: ""
@@ -472,7 +470,7 @@ class MainViewModel @Inject constructor(
                 gaid = currentGaid,
                 instanceMyTracker = _state.value.instanceIdMyTracker ?: "",
                 local = _state.value.locale,
-                metrikaKey = _state.value.appMetrica,
+                metrikaKey = APP_METRICA,
                 root = if (_state.value.isRoot) "granted" else "null",
                 version = _state.value.versionApplication ?: ""
             )) {
