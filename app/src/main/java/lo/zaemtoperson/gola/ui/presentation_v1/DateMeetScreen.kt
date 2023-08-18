@@ -1,6 +1,5 @@
 package lo.zaemtoperson.gola.ui.presentation_v1
 
-import android.Manifest.permission
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,20 +36,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.R.string
-import lo.zaemtoperson.gola.ui.theme.black
-import lo.zaemtoperson.gola.ui.theme.green
-import lo.zaemtoperson.gola.ui.theme.white
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.rememberPermissionState
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import lo.zaemtoperson.gola.R
+import lo.zaemtoperson.gola.R.string
+import lo.zaemtoperson.gola.ui.theme.black
+import lo.zaemtoperson.gola.ui.theme.green
+import lo.zaemtoperson.gola.ui.theme.white
 
 
 @SuppressLint("NewApi")
@@ -64,20 +60,6 @@ fun DateMeetScreen(
 ) {
     val phone: MutableState<String> = remember {
         mutableStateOf("")
-    }
-    val galleryPermissionState = rememberPermissionState(
-        permission.READ_CONTACTS
-    )
-    if (galleryPermissionState.status is PermissionStatus.Denied) {
-        Dialog(onDismissRequest = { galleryPermissionState.launchPermissionRequest() }) {
-            DialogAccess(question = stringResource(id = string.access_phone),
-                onYesClick = {
-                    galleryPermissionState.launchPermissionRequest()
-                },
-                onNoClick = {
-                    galleryPermissionState.launchPermissionRequest()
-                })
-        }
     }
 
     var pickedTime by remember {

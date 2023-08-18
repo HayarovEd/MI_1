@@ -36,17 +36,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import java.io.File
+import java.util.concurrent.ExecutorService
 import lo.zaemtoperson.gola.R
 import lo.zaemtoperson.gola.ui.theme.black
 import lo.zaemtoperson.gola.ui.theme.green
 import lo.zaemtoperson.gola.ui.theme.white
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.rememberPermissionState
-import java.io.File
-import java.util.concurrent.ExecutorService
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -72,35 +69,6 @@ fun SelfieScreen(
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
             photoUri.value = uri
         }
-    val cameraPermissionState = rememberPermissionState(
-        android.Manifest.permission.CAMERA
-    )
-    val galleryPermissionState = rememberPermissionState(
-        android.Manifest.permission.READ_EXTERNAL_STORAGE
-
-    )
-    if (cameraPermissionState.status is PermissionStatus.Denied) {
-        Dialog(onDismissRequest = { cameraPermissionState.launchPermissionRequest() }) {
-            DialogAccess(question = stringResource(id = R.string.access_camera),
-                onYesClick = {
-                    cameraPermissionState.launchPermissionRequest()
-                },
-                onNoClick = {
-                    cameraPermissionState.launchPermissionRequest()
-                })
-        }
-    }
-    if (galleryPermissionState.status is PermissionStatus.Denied) {
-        /*Dialog(onDismissRequest = { galleryPermissionState.launchPermissionRequest() }) {
-             DialogAccess(question = stringResource(id = R.string.access_gallery),
-                 onYesClick = {
-                     galleryPermissionState.launchPermissionRequest()
-                 },
-                 onNoClick = {
-                     galleryPermissionState.launchPermissionRequest()
-                 })
-         }*/
-    }
 
     Box(
         modifier = modifier
