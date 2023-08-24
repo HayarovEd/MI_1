@@ -1,5 +1,6 @@
 package lo.zaemtoperson.gola.data
 
+import android.util.Log
 import javax.inject.Inject
 import lo.zaemtoperson.gola.domain.RepositoryServer
 import lo.zaemtoperson.gola.domain.model.CurrentDateDto
@@ -22,6 +23,16 @@ class RepositoryServerImpl @Inject constructor(
         version: String,
     ) : Resource<FolderPathDto> {
         return try {
+            Log.d("AABBCC", "sim $sim")
+            Log.d("AABBCC", "colorFb $colorFb")
+            Log.d("AABBCC", "root $root")
+            Log.d("AABBCC", "local $local")
+            Log.d("AABBCC", "metrikaKey $metrikaKey")
+            Log.d("AABBCC", "deviceId $deviceId")
+            Log.d("AABBCC", "fbKey $fbKey")
+            Log.d("AABBCC", "gaid $gaid")
+            Log.d("AABBCC", "instanceMyTracker $instanceMyTracker")
+            Log.d("AABBCC", "version $version")
             val folder = apiServer.getFolder(
                 sim = sim,
                 colorFb = colorFb,
