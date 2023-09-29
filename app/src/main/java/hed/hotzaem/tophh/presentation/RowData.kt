@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import hed.hotzaem.tophh.R
 import hed.hotzaem.tophh.gola.ui.theme.absoluteDark
 import hed.hotzaem.tophh.gola.ui.theme.baseBackground
 import hed.hotzaem.tophh.gola.ui.theme.white
@@ -39,7 +40,7 @@ fun RowData(
     ) {
         Text(
             color = absoluteDark,
-            fontStyle = FontStyle(font.onest_400),
+            fontStyle = FontStyle(R.font.onest_400),
             fontSize = 13.sp,
             fontWeight = FontWeight.Normal,
             text = title,
@@ -47,7 +48,7 @@ fun RowData(
         )
         Text(
             color = absoluteDark,
-            fontStyle = FontStyle(font.onest_700),
+            fontStyle = FontStyle(R.font.onest_700),
             fontSize = 13.sp,
             fontWeight = FontWeight.Normal,
             text = content,

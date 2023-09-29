@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,9 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.R.string
-import hed.hotzaem.tophh.gola.presentation.MainEvent.Reconnect
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.R.string
+import hed.hotzaem.tophh.presentation.MainEvent.Reconnect
 import hed.hotzaem.tophh.gola.ui.theme.absoluteDark
 import hed.hotzaem.tophh.gola.ui.theme.green
 import hed.hotzaem.tophh.gola.ui.theme.white
@@ -51,7 +51,7 @@ fun NoInternetScreen(
                 text = stringResource(id = string.not_connect),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle(font.soyuz_grotesk_bold),
+                fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
                 color = green,
                 textAlign = TextAlign.Center
             )
@@ -60,7 +60,7 @@ fun NoInternetScreen(
                 text = stringResource(id = string.try_internet),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle(font.onest_400),
+                fontStyle = FontStyle(R.font.onest_400),
                 color = white,
                 textAlign = TextAlign.Center
             )
@@ -75,7 +75,7 @@ fun NoInternetScreen(
                 text = stringResource(id = string.reconnect),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle(font.soyuz_grotesk_bold),
+                fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
                 color = white,
                 textAlign = TextAlign.Center
             )

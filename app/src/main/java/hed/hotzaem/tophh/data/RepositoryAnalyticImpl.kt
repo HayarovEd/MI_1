@@ -1,16 +1,16 @@
-package hed.hotzaem.tophh.gola.data
+package hed.hotzaem.tophh.data
 
 import com.google.gson.Gson
 import javax.inject.Inject
 import hed.hotzaem.tophh.gola.domain.RepositoryAnalytic
-import hed.hotzaem.tophh.gola.domain.model.AffSub1
-import hed.hotzaem.tophh.gola.domain.model.AffSub2
-import hed.hotzaem.tophh.gola.domain.model.AffSub3
-import hed.hotzaem.tophh.gola.domain.model.AffSub5
-import hed.hotzaem.tophh.gola.domain.model.Sub1
-import hed.hotzaem.tophh.gola.domain.model.Sub2
-import hed.hotzaem.tophh.gola.domain.model.Sub3
-import hed.hotzaem.tophh.gola.domain.model.Sub5
+import hed.hotzaem.tophh.domain.model.AffSub1
+import hed.hotzaem.tophh.domain.model.AffSub2
+import hed.hotzaem.tophh.domain.model.AffSub3
+import hed.hotzaem.tophh.domain.model.AffSub5
+import hed.hotzaem.tophh.domain.model.Sub1
+import hed.hotzaem.tophh.domain.model.Sub2
+import hed.hotzaem.tophh.domain.model.Sub3
+import hed.hotzaem.tophh.domain.model.Sub5
 
 
 class RepositoryAnalyticImpl @Inject constructor(
@@ -148,7 +148,8 @@ class RepositoryAnalyticImpl @Inject constructor(
         appsflyer: String,
         firebaseToken: String
     ): String =
-        "{\"AppMetricaDeviceID\":\"$appMetricaId\",\"Appsflyer\":\"$appsflyer\",\"FireBaseToken\":\"${firebaseToken}\",\"MyTracker\":\"$myTrackerId\"}"
+        "{\"FireBaseToken\":\"${firebaseToken}\"}"
+        //"{\"AppMetricaDeviceID\":\"$appMetricaId\",\"Appsflyer\":\"$appsflyer\",\"FireBaseToken\":\"${firebaseToken}\",\"MyTracker\":\"$myTrackerId\"}"
 
 
     private fun createPayloadAffsub5(

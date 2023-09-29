@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.content.Context
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -29,14 +29,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import lo.zaemtoperson.gola.R
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseDto
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState.Cards
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState.Credits
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsCredit
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsDebit
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsInstallment
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.domain.model.basedto.BaseDto
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.domain.model.basedto.BaseState.Cards
+import hed.hotzaem.tophh.domain.model.basedto.BaseState.Credits
+import hed.hotzaem.tophh.domain.model.basedto.CardsCredit
+import hed.hotzaem.tophh.domain.model.basedto.CardsDebit
+import hed.hotzaem.tophh.domain.model.basedto.CardsInstallment
 import hed.hotzaem.tophh.gola.ui.theme.baseBackground
 import hed.hotzaem.tophh.gola.ui.theme.black
 import hed.hotzaem.tophh.gola.ui.theme.green
@@ -85,7 +85,7 @@ fun ConnectScreen(
                     ) {
                         Text(
                             color = black,
-                            fontStyle = FontStyle(font.soyuz_grotesk_bold),
+                            fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             text = title
@@ -205,7 +205,7 @@ fun ItemBottomBar(
         }
         Text(
             color = color,
-            fontStyle = FontStyle(font.onest_400),
+            fontStyle = FontStyle(R.font.onest_400),
             fontSize = 11.sp,
             fontWeight = FontWeight.Normal,
             text = content

@@ -1,11 +1,9 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.my.tracker.MyTracker
 import com.yandex.metrica.YandexMetrica
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,39 +14,37 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import hed.hotzaem.tophh.gola.data.ACTUAL_BACKEND_NULL
-import hed.hotzaem.tophh.gola.data.APP_METRICA
-import hed.hotzaem.tophh.gola.data.APY_KEY
-import hed.hotzaem.tophh.gola.data.BACKEND_UNAVAILABLE
-import hed.hotzaem.tophh.gola.data.CARDS
-import hed.hotzaem.tophh.gola.data.CREDITS
-import hed.hotzaem.tophh.gola.data.EXTERNAL_LINK
-import hed.hotzaem.tophh.gola.data.ITEM_ID
-import hed.hotzaem.tophh.gola.data.LOANS
-import hed.hotzaem.tophh.gola.data.MORE_DETAILS
-import hed.hotzaem.tophh.gola.data.OFFER_WALL
-import hed.hotzaem.tophh.gola.data.REQUEST_DATE
-import hed.hotzaem.tophh.gola.data.REQUEST_DB
-import hed.hotzaem.tophh.gola.data.Resource.Error
-import hed.hotzaem.tophh.gola.data.Resource.Success
-import hed.hotzaem.tophh.gola.data.URL
-import hed.hotzaem.tophh.gola.data.setStatusByPush
+import hed.hotzaem.tophh.data.APP_METRICA
+import hed.hotzaem.tophh.data.APY_KEY
+import hed.hotzaem.tophh.data.BACKEND_UNAVAILABLE
+import hed.hotzaem.tophh.data.CARDS
+import hed.hotzaem.tophh.data.CREDITS
+import hed.hotzaem.tophh.data.EXTERNAL_LINK
+import hed.hotzaem.tophh.data.ITEM_ID
+import hed.hotzaem.tophh.data.LOANS
+import hed.hotzaem.tophh.data.MORE_DETAILS
+import hed.hotzaem.tophh.data.OFFER_WALL
+import hed.hotzaem.tophh.data.REQUEST_DB
+import hed.hotzaem.tophh.data.Resource
+import hed.hotzaem.tophh.data.Resource.Success
+import hed.hotzaem.tophh.data.URL
+import hed.hotzaem.tophh.data.setStatusByPush
 import hed.hotzaem.tophh.gola.domain.RepositoryAnalytic
-import hed.hotzaem.tophh.gola.domain.RepositoryServer
-import hed.hotzaem.tophh.gola.domain.Service
-import hed.hotzaem.tophh.gola.domain.SharedKepper
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication.Connect
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication.Mock
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication.NoConnect
-import hed.hotzaem.tophh.gola.domain.model.TypeCard
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
-import hed.hotzaem.tophh.gola.domain.model.basedto.Card
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsCredit
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsDebit
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsInstallment
-import hed.hotzaem.tophh.gola.presentation.MainEvent.OnChangeBaseState
-import hed.hotzaem.tophh.gola.presentation.MainEvent.Reconnect
+import hed.hotzaem.tophh.domain.RepositoryServer
+import hed.hotzaem.tophh.domain.Service
+import hed.hotzaem.tophh.domain.SharedKepper
+import hed.hotzaem.tophh.domain.model.StatusApplication
+import hed.hotzaem.tophh.domain.model.StatusApplication.Connect
+import hed.hotzaem.tophh.domain.model.StatusApplication.Mock
+import hed.hotzaem.tophh.domain.model.StatusApplication.NoConnect
+import hed.hotzaem.tophh.domain.model.TypeCard
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.domain.model.basedto.Card
+import hed.hotzaem.tophh.domain.model.basedto.CardsCredit
+import hed.hotzaem.tophh.domain.model.basedto.CardsDebit
+import hed.hotzaem.tophh.domain.model.basedto.CardsInstallment
+import hed.hotzaem.tophh.presentation.MainEvent.OnChangeBaseState
+import hed.hotzaem.tophh.presentation.MainEvent.Reconnect
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -98,51 +94,45 @@ class MainViewModel @Inject constructor(
                 } else {
                     _yandexMetrikaDeviceId.value = sharedYandexMetrica
                 }
-                //
                 val instanceIdMyTracker =
                     if (sharedKeeper.getMyTrackerInstanceId().isNullOrBlank()) {
                         val instance = service.instanceIdMyTracker
                         sharedKeeper.setMyTrackerInstanceId(instance)
                         instance
                     } else {
-                    sharedKeeper.getMyTrackerInstanceId()
-                }
-                val sim = service.getSimCountryIso()
-                val isRoot = service.isRootedOne()
-                val locale = service.getCurrentLocale()
-                val deviceId = service.getDeviceAndroidId()
+                        sharedKeeper.getMyTrackerInstanceId()
+                    }
                 val sharedFireBaseToken = sharedKeeper.getFireBaseToken()
+                Log.d("GHJIOP", "result fb token $sharedFireBaseToken")
                 if (sharedFireBaseToken.isNullOrBlank()) {
-                    service.getFirebaseMessagingToken { token ->
-                        _state.value.copy(
-                            fireBaseToken = token
-                        )
-                            .updateStateUI()
-                        sharedKeeper.setFireBaseToken(token ?: "")
+                    viewModelScope.launch(Dispatchers.IO)
+                    {
+                        service.getHmsToken().let { token ->
+                            Log.d("GHJIOP", "result fb token? $token")
+                            _state.value.copy(
+                                fireBaseToken = token
+                            )
+                                .updateStateUI()
+                            sharedKeeper.setFireBaseToken(token ?: "")
+                        }
+                        getSub3()
                     }
                 } else {
                     _state.value.copy(
                         fireBaseToken = sharedFireBaseToken
                     )
                         .updateStateUI()
+                    getSub3()
                 }
-                val version = service.getApplicationVersion()
 
                 _appsFlayerInstanceId.value = sharedKeeper.getAppsFlyerInstanceId()?:""
                 _state.value.copy(
-                    sim = sim,
-                    instanceIdMyTracker = instanceIdMyTracker,
-                    isRoot = isRoot,
-                    locale = locale,
-                    deviceId = deviceId,
-                    versionApplication = version,
+                    instanceIdMyTracker = instanceIdMyTracker
                 )
                     .updateStateUI()
             }
-            Log.d("ASDFGH", "_yandexMetrikaDeviceId ${_yandexMetrikaDeviceId.value}")
-            Log.d("ASDFGH", "_appsFlayerInstanceId ${_appsFlayerInstanceId.value}")
             viewModelScope.launch(Dispatchers.IO) {
-                val gaid = service.getGAID()
+                val gaid = service.getOAID()
                 _state.value.copy(
                     gaid = gaid,
                 )
@@ -150,12 +140,11 @@ class MainViewModel @Inject constructor(
                 delay(2000)
                 getSub1()
             }
-            getRemoteConfig()
 
             if (sharedKeeper.getSub2().isNullOrBlank()) {
                 getFirstSub2()
             }
-            getSub3()
+
             getSub5()
             loadDbData()
         } else {
@@ -203,7 +192,7 @@ class MainViewModel @Inject constructor(
                 _state.value.copy(
                     statusApplication = Connect(
                         BaseState.Cards(
-                        mainEvent.typeCard)),
+                            mainEvent.typeCard)),
                 )
                     .updateStateUI()
             }
@@ -285,23 +274,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getRemoteConfig() {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(3600)
-            .build()
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        remoteConfig.fetchAndActivate()
-            .addOnCompleteListener { resultListener ->
-                if (resultListener.isSuccessful) {
-                    val result = remoteConfig.getString("color")
-                    _state.value.copy(
-                        colorFb = result
-                    )
-                        .updateStateUI()
-                }
-            }
-    }
 
     private fun getSub1() {
         viewModelScope.launch {
@@ -316,7 +288,7 @@ class MainViewModel @Inject constructor(
                 firebaseToken = _state.value.fireBaseToken ?: "",
                 myTrackerId = _state.value.instanceIdMyTracker ?: ""
             )) {
-                is Error -> {
+                is Resource.Error -> {
                     _state.value.copy(
                         message = result.message ?: "unknown error"
                     )
@@ -343,7 +315,7 @@ class MainViewModel @Inject constructor(
                 firebaseToken = _state.value.fireBaseToken ?: "",
                 myTrackerId = _state.value.instanceIdMyTracker ?: ""
             )) {
-                is Error -> {
+                is Resource.Error -> {
                     _state.value.copy(
                         message = result.message ?: "unknown error"
                     )
@@ -368,7 +340,7 @@ class MainViewModel @Inject constructor(
                 userId = _state.value.gaid ?: "",
                 gaid = _state.value.gaid ?: ""
             )) {
-                is Error -> {
+                is Resource.Error -> {
                     _state.value.copy(
                         message = result.message ?: "unknown error"
                     )
@@ -394,7 +366,7 @@ class MainViewModel @Inject constructor(
                 appsflyer = "",
                 myTracker = ""
             )) {
-                is Error -> {
+                is Resource.Error -> {
                     _state.value.copy(
                         message = result.message ?: "unknown error"
                     )
@@ -422,7 +394,7 @@ class MainViewModel @Inject constructor(
                     appsflyer = "",
                     myTracker = currentMyTracker
                 )) {
-                    is Error -> {
+                    is Resource.Error -> {
                         _state.value.copy(
                             message = result.message ?: "unknown error"
                         )
@@ -447,7 +419,7 @@ class MainViewModel @Inject constructor(
                     appsflyer = currentAppsFlyer,
                     myTracker = ""
                 )) {
-                    is Error -> {
+                    is Resource.Error -> {
                         _state.value.copy(
                             message = result.message ?: "unknown error"
                         )
@@ -468,148 +440,100 @@ class MainViewModel @Inject constructor(
     }
 
     private fun loadDbData() {
-
         viewModelScope.launch {
-            delay(2000)
+            delay(4000)
             val currentGaid = _state.value.gaid ?: ""
-            when (val folder = repositoryServer.getFolder(
-                sim = _state.value.sim ?: "",
-                colorFb = _state.value.colorFb,
-                deviceId = _state.value.deviceId ?: "",
-                fbKey = _state.value.fireBaseToken ?: "",
-                gaid = currentGaid,
-                instanceMyTracker = _state.value.instanceIdMyTracker ?: "",
-                local = _state.value.locale,
-                metrikaKey = APP_METRICA,
-                root = if (_state.value.isRoot) "granted" else "null",
-                version = _state.value.versionApplication ?: ""
-            )) {
-                is Error -> {
+
+            Log.d("SDFGH", "oaid ${_state.value.gaid}")
+            Log.d("SDFGH", "instanceMyTracker ${_state.value.instanceIdMyTracker}")
+            Log.d("SDFGH", "-------------------------")
+            val db = repositoryServer.getDataDb()
+            YandexMetrica.reportEvent(REQUEST_DB, currentGaid)
+            MyTracker.trackEvent(REQUEST_DB, mapOf(REQUEST_DB to currentGaid))
+            service.sendAppsFlyerEvent(
+                key = REQUEST_DB,
+                content = mapOf(REQUEST_DB to currentGaid)
+            )
+            when (db) {
+                is Resource.Error -> {
+                    YandexMetrica.reportEvent(BACKEND_UNAVAILABLE, currentGaid)
+                    MyTracker.trackEvent(BACKEND_UNAVAILABLE, mapOf(BACKEND_UNAVAILABLE to currentGaid))
+                    service.sendAppsFlyerEvent(
+                        key = BACKEND_UNAVAILABLE,
+                        content = mapOf(BACKEND_UNAVAILABLE to currentGaid)
+                    )
                     _state.value.copy(
-                        message = folder.message ?: "unknown error",
                         statusApplication = Mock,
                     )
                         .updateStateUI()
                 }
 
                 is Success -> {
-                    if (folder.data?.folder.isNullOrBlank() || folder.data?.folder == "null") {
-                        YandexMetrica.reportEvent(ACTUAL_BACKEND_NULL, currentGaid)
-                        MyTracker.trackEvent(ACTUAL_BACKEND_NULL, mapOf(ACTUAL_BACKEND_NULL to currentGaid))
-                        service.sendAppsFlyerEvent(
-                            key = ACTUAL_BACKEND_NULL,
-                            content = mapOf(ACTUAL_BACKEND_NULL to currentGaid)
-                        )
+                    collectCards(db.data?.cards)
+                    //Log.d("ASDFGH", "db data ${db.data}")
+                    if (_link.value.isBlank()||_link.value==" ") {
+                        val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
+                            Connect(BaseState.Loans)
+                        } else if (!db.data?.credits.isNullOrEmpty()) {
+                            Connect(BaseState.Credits)
+                        } else {
+                            val typeCard = if (_state.value.creditCards.isNotEmpty()) {
+                                TypeCard.CardCredit
+                            } else if (_state.value.debitCards.isNotEmpty()) {
+                                TypeCard.CardDebit
+                            } else TypeCard.CardInstallment
+                            Connect(BaseState.Cards(typeCard))
+                        }
                         _state.value.copy(
-                            statusApplication = Mock,
+                            statusApplication = statusApplication,
+                            dbData = db.data,
                         )
                             .updateStateUI()
-                    } else {
-                        val db = folder.data?.folder?.let { repositoryServer.getDataDb(it) }
-                        YandexMetrica.reportEvent(REQUEST_DB, currentGaid)
-                        MyTracker.trackEvent(REQUEST_DB, mapOf(REQUEST_DB to currentGaid))
-                        service.sendAppsFlyerEvent(
-                            key = REQUEST_DB,
-                            content = mapOf(REQUEST_DB to currentGaid)
-                        )
-                        when (db) {
-                            is Error -> {
-                                YandexMetrica.reportEvent(BACKEND_UNAVAILABLE, currentGaid)
-                                MyTracker.trackEvent(BACKEND_UNAVAILABLE, mapOf(BACKEND_UNAVAILABLE to currentGaid))
-                                service.sendAppsFlyerEvent(
-                                    key = BACKEND_UNAVAILABLE,
-                                    content = mapOf(BACKEND_UNAVAILABLE to currentGaid)
-                                )
-                                _state.value.copy(
-                                    statusApplication = Mock,
-                                )
-                                    .updateStateUI()
+                        val sharedSub2 = sharedKeeper.getSub2()
+                        if (!sharedSub2.isNullOrBlank()) {
+                            _state.value.copy(
+                                affsub2Unswer = sharedSub2
+                            )
+                                .updateStateUI()
+                        } else {
+                            delay(2000)
+                            Log.d("ASDFGH", "myTracker view model2 -  ${_myTracker.value}")
+                            Log.d("ASDFGH", "appsFlayer view model -  ${_appsFlayer.value}")
+                            getSub2(
+                                currentAppsFlyer = _appsFlayer.value,
+                                currentMyTracker = _myTracker.value
+                            )
+                            delay(2000)
+                            val tempSub2 = if (_state.value.affsub2UnswerMT.isNotBlank()) {
+                                sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
+                                _state.value.affsub2UnswerMT
+                            } else if (state.value.affsub2UnswerAF.isNotBlank()) {
+                                sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
+                                _state.value.affsub2UnswerAF
+                            } else {
+                                sharedKeeper.setSub2(_state.value.affsub2UnswerEmpty)
+                                _state.value.affsub2UnswerEmpty
                             }
-
-                            is Success -> {
-                                collectCards(db.data?.cards)
-                                Log.d("SDFGT", "sert ${db.data?.loans?.get(3)?.id}")
-                                if (_link.value.isBlank()||_link.value==" ") {
-                                    val statusApplication = if (!db.data?.loans.isNullOrEmpty()) {
-                                        Connect(BaseState.Loans)
-                                    } else if (!db.data?.credits.isNullOrEmpty()) {
-                                        Connect(BaseState.Credits)
-                                    } else {
-                                        val typeCard = if (_state.value.creditCards.isNotEmpty()) {
-                                            TypeCard.CardCredit
-                                        } else if (_state.value.debitCards.isNotEmpty()) {
-                                            TypeCard.CardDebit
-                                        } else TypeCard.CardInstallment
-                                        Connect(BaseState.Cards(typeCard))
-                                    }
-                                    _state.value.copy(
-                                        statusApplication = statusApplication,
-                                        dbData = db.data,
-                                    )
-                                        .updateStateUI()
-                                    val sharedSub2 = sharedKeeper.getSub2()
-                                    if (!sharedSub2.isNullOrBlank()) {
-                                        _state.value.copy(
-                                            affsub2Unswer = sharedSub2
-                                        )
-                                            .updateStateUI()
-                                    } else {
-                                        delay(2000)
-                                        Log.d("ASDFGH", "myTracker view model2 -  ${_myTracker.value}")
-                                        Log.d("ASDFGH", "appsFlayer view model -  ${_appsFlayer.value}")
-                                        getSub2(
-                                            currentAppsFlyer = _appsFlayer.value,
-                                            currentMyTracker = _myTracker.value
-                                        )
-                                        delay(2000)
-                                        val tempSub2 = if (_state.value.affsub2UnswerMT.isNotBlank()) {
-                                            sharedKeeper.setSub2(_state.value.affsub2UnswerMT)
-                                            _state.value.affsub2UnswerMT
-                                        } else if (state.value.affsub2UnswerAF.isNotBlank()) {
-                                            sharedKeeper.setSub2(_state.value.affsub2UnswerAF)
-                                            _state.value.affsub2UnswerAF
-                                        } else {
-                                            sharedKeeper.setSub2(_state.value.affsub2UnswerEmpty)
-                                            _state.value.affsub2UnswerEmpty
-                                        }
-                                        _state.value.copy(
-                                            affsub2Unswer = tempSub2
-                                        )
-                                            .updateStateUI()
-                                    }
-                                } else {
-                                    delay(1000)
-                                    val statusApplication = _link.value.setStatusByPush(
-                                        loans = db.data?.loans?: emptyList(),
-                                        credits = db.data?.credits?: emptyList(),
-                                        creditCards = _state.value.creditCards,
-                                        debitCards = _state.value.debitCards,
-                                        installmentCards = _state.value.installmentCards
-                                    )
-                                    _state.value.copy(
-                                        statusApplication = statusApplication,
-                                        dbData = db.data,
-                                    )
-                                        .updateStateUI()
-                                    delay(1000)
-                                }
-                            }
-
-                            null -> {
-                                _state.value.copy(
-                                    statusApplication = Mock,
-                                )
-                                    .updateStateUI()
-                            }
+                            _state.value.copy(
+                                affsub2Unswer = tempSub2
+                            )
+                                .updateStateUI()
                         }
-                        val currentDate =
-                            folder.data?.let { repositoryServer.getCurrentDate(it.folder) }
-                        YandexMetrica.reportEvent(REQUEST_DATE, currentGaid)
-                        MyTracker.trackEvent(REQUEST_DATE, mapOf(REQUEST_DATE to currentGaid))
-                        service.sendAppsFlyerEvent(
-                            key = REQUEST_DATE,
-                            content = mapOf(REQUEST_DATE to currentGaid)
+                    } else {
+                        delay(1000)
+                        val statusApplication = _link.value.setStatusByPush(
+                            loans = db.data?.loans?: emptyList(),
+                            credits = db.data?.credits?: emptyList(),
+                            creditCards = _state.value.creditCards,
+                            debitCards = _state.value.debitCards,
+                            installmentCards = _state.value.installmentCards
                         )
+                        _state.value.copy(
+                            statusApplication = statusApplication,
+                            dbData = db.data,
+                        )
+                            .updateStateUI()
+                        delay(1000)
                     }
                 }
             }

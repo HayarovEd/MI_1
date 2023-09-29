@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -19,11 +19,11 @@ import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
-import lo.zaemtoperson.gola.R
-import hed.hotzaem.tophh.gola.data.APPS_FLYER
-import hed.hotzaem.tophh.gola.data.LINK
-import hed.hotzaem.tophh.gola.data.SHARED_APPSFLYER_INSTANCE_ID
-import hed.hotzaem.tophh.gola.data.SHARED_DATA
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.data.APPS_FLYER
+import hed.hotzaem.tophh.data.LINK
+import hed.hotzaem.tophh.data.SHARED_APPSFLYER_INSTANCE_ID
+import hed.hotzaem.tophh.data.SHARED_DATA
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -100,52 +100,7 @@ class MainActivity : ComponentActivity() {
         val instanceId = AppsFlyerLib.getInstance().getAppsFlyerUID(this)
         val sharedPref = application.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
         sharedPref.edit().putString(SHARED_APPSFLYER_INSTANCE_ID, instanceId).apply()
-        /*AppsFlyerLib.getInstance().subscribeForDeepLink { deepLinkResult ->
-            when (deepLinkResult.status) {
-                DeepLinkResult.Status.FOUND -> {
-                    Log.d(
-                        "ASDFGH", "Deep link found1"
-                    )
-                }
 
-                DeepLinkResult.Status.NOT_FOUND -> {
-                    Log.d(
-                        "ASDFGH", "Deep link not found1"
-                    )
-                }
-
-                else -> {
-                    val dlError = deepLinkResult.error
-                    Log.d(
-                        "ASDFGH", "There was an error getting Deep Link data1: $dlError"
-                    )
-                }
-            }
-            val deepLinkObj = deepLinkResult.deepLink
-            try {
-                viewModel.loadAFDeeplink(deepLinkObj.deepLinkValue ?: "")
-                Log.d(
-                    "ASDFGH", "The DeepLink data is1: $deepLinkObj"
-                )
-            } catch (e: Exception) {
-                Log.d(
-                    "ASDFGH", "DeepLink data came back null1"
-                )
-            }
-            if (deepLinkObj.isDeferred == true) {
-                Log.d("ASDFGH", "This is a deferred deep link1")
-            } else {
-                Log.d("ASDFGH", "This is a direct deep link1")
-            }
-
-            try {
-                val fruitName = deepLinkObj.deepLinkValue
-                viewModel.loadAFDeeplink(fruitName ?: "")
-                Log.d("ASDFGH", "The DeepLink will route to1: $fruitName")
-            } catch (e: Exception) {
-                Log.d("ASDFGH", "There's been an error1: $e")
-            }
-        }*/
         AppsFlyerLib.getInstance().init(APPS_FLYER, conversionDataListener, this)
         AppsFlyerLib.getInstance().start(this)
         setContent {

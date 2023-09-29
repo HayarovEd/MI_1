@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.ui.presentation_v1
+package hed.hotzaem.tophh.ui.presentation_v1
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
@@ -19,7 +19,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import lo.zaemtoperson.gola.R
+import hed.hotzaem.tophh.R
 import hed.hotzaem.tophh.gola.ui.theme.black
 import hed.hotzaem.tophh.gola.ui.theme.gray
 import java.util.Calendar

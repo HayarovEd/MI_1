@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.ui.presentation_v1
+package hed.hotzaem.tophh.ui.presentation_v1
 
 import android.content.Context
 import android.net.Uri

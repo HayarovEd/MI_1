@@ -1,10 +1,10 @@
 package hed.hotzaem.tophh.gola.domain
 
-import hed.hotzaem.tophh.gola.data.Resource
-import hed.hotzaem.tophh.gola.domain.model.Sub1
-import hed.hotzaem.tophh.gola.domain.model.Sub2
-import hed.hotzaem.tophh.gola.domain.model.Sub3
-import hed.hotzaem.tophh.gola.domain.model.Sub5
+import hed.hotzaem.tophh.data.Resource
+import hed.hotzaem.tophh.domain.model.Sub1
+import hed.hotzaem.tophh.domain.model.Sub2
+import hed.hotzaem.tophh.domain.model.Sub3
+import hed.hotzaem.tophh.domain.model.Sub5
 
 interface RepositoryAnalytic {
     suspend fun getSub1 (

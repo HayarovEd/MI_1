@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.ui.presentation_v1
+package hed.hotzaem.tophh.ui.presentation_v1
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import lo.zaemtoperson.gola.R
+import hed.hotzaem.tophh.R
 import hed.hotzaem.tophh.gola.ui.theme.black
 import hed.hotzaem.tophh.gola.ui.theme.green
 import hed.hotzaem.tophh.gola.ui.theme.white

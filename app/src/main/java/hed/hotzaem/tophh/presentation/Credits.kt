@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.content.Context
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -15,8 +15,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
-import hed.hotzaem.tophh.gola.domain.model.basedto.Credit
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.domain.model.basedto.Credit
 import hed.hotzaem.tophh.gola.ui.theme.baseBackground
 
 @Composable

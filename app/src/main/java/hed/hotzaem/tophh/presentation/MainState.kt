@@ -1,23 +1,15 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseDto
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsCredit
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsDebit
-import hed.hotzaem.tophh.gola.domain.model.basedto.CardsInstallment
+import hed.hotzaem.tophh.domain.model.StatusApplication
+import hed.hotzaem.tophh.domain.model.basedto.BaseDto
+import hed.hotzaem.tophh.domain.model.basedto.CardsCredit
+import hed.hotzaem.tophh.domain.model.basedto.CardsDebit
+import hed.hotzaem.tophh.domain.model.basedto.CardsInstallment
 
 data class MainState(
-    val colorFb: String = "",
-    val sim: String? = null,
     val instanceIdMyTracker: String? = null,
-    //val instanceIdAppsFlyer: String? = null,
-    val isRoot: Boolean = false,
-    val locale: String = "",
-    val deviceId: String? = null,
     val fireBaseToken: String? = null,
     val gaid: String? = null,
-    val versionApplication: String? = null,
-    //val yandexMetricaDeviceId: String? = null,
     val message: String = "",
     val affsub1Unswer: String = "",
     val affsub2Unswer: String = "",
@@ -27,7 +19,7 @@ data class MainState(
     val affsub3Unswer: String = "",
     val affsub5Unswer: String = "",
     val dbData: BaseDto? = null,
-    val statusApplication: StatusApplication = StatusApplication.Loading,
+    val statusApplication: StatusApplication = StatusApplication.Loading/*Web(url = "https://ya.ru/", offerName = "Offer")*/,
     val creditCards: List<CardsCredit> = emptyList(),
     val debitCards: List<CardsDebit> = emptyList(),
     val installmentCards: List<CardsInstallment> = emptyList(),

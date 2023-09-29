@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import lo.zaemtoperson.gola.R
+import hed.hotzaem.tophh.R
 import hed.hotzaem.tophh.gola.ui.theme.absoluteDark
 import hed.hotzaem.tophh.gola.ui.theme.white
 
@@ -45,7 +45,7 @@ fun Rang (
         Spacer(modifier = modifier.width(4.dp))
         Text(
             color = white,
-            fontStyle = FontStyle(font.onest_400),
+            fontStyle = FontStyle(R.font.onest_400),
             fontSize = 10.sp,
             fontWeight = FontWeight.Normal,
             text = rang

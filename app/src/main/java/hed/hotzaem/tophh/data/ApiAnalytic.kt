@@ -1,9 +1,9 @@
-package hed.hotzaem.tophh.gola.data
+package hed.hotzaem.tophh.data
 
-import hed.hotzaem.tophh.gola.domain.model.AffSub1
-import hed.hotzaem.tophh.gola.domain.model.AffSub2
-import hed.hotzaem.tophh.gola.domain.model.AffSub3
-import hed.hotzaem.tophh.gola.domain.model.AffSub5
+import hed.hotzaem.tophh.domain.model.AffSub1
+import hed.hotzaem.tophh.domain.model.AffSub2
+import hed.hotzaem.tophh.domain.model.AffSub3
+import hed.hotzaem.tophh.domain.model.AffSub5
 import retrofit2.http.Body
 import retrofit2.http.POST
 

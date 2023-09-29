@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import lo.zaemtoperson.gola.R
-import hed.hotzaem.tophh.gola.data.VALUE_ONE
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.data.VALUE_ONE
 
 @Composable
 fun RowCard(

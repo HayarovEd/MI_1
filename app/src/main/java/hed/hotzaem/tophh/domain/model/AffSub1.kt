@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.domain.model
+package hed.hotzaem.tophh.domain.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

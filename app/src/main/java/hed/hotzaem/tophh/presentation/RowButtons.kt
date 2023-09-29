@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.content.Context
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -25,10 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import lo.zaemtoperson.gola.R
-import hed.hotzaem.tophh.gola.domain.model.ElementOffer
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.domain.model.ElementOffer
+import hed.hotzaem.tophh.domain.model.StatusApplication
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
 import hed.hotzaem.tophh.gola.ui.theme.absoluteDark
 import hed.hotzaem.tophh.gola.ui.theme.baseBackground
 import hed.hotzaem.tophh.gola.ui.theme.black
@@ -125,7 +125,7 @@ fun RowButtons(
             Text(
                 modifier = modifier.align(alignment = Alignment.Center),
                 color = white,
-                fontStyle = FontStyle(font.soyuz_grotesk_bold),
+                fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Normal,
                 text = titleOffer,

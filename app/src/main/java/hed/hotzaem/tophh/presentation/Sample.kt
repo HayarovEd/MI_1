@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.os.Build
 import android.widget.Toast
@@ -12,13 +12,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import java.io.File
 import java.util.concurrent.ExecutorService
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication.Connect
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication.Loading
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication.Mock
-import hed.hotzaem.tophh.gola.domain.model.TypeCard
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
-import hed.hotzaem.tophh.gola.ui.presentation_v1.BaseScreen
+import hed.hotzaem.tophh.domain.model.StatusApplication
+import hed.hotzaem.tophh.domain.model.StatusApplication.Connect
+import hed.hotzaem.tophh.domain.model.StatusApplication.Loading
+import hed.hotzaem.tophh.domain.model.StatusApplication.Mock
+import hed.hotzaem.tophh.domain.model.TypeCard
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.ui.presentation_v1.BaseScreen
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
@@ -55,7 +55,8 @@ fun Sample(
                 baseState = currentState.baseState,
                 db = state.value.dbData!!,
                 onClickCards = { onEvent(
-                    MainEvent.OnChangeBaseState(BaseState.Cards(
+                    MainEvent.OnChangeBaseState(
+                        BaseState.Cards(
                     typeCard = typeCard
                 ))
                 ) },

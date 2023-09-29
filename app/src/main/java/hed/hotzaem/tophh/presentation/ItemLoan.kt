@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.content.Context
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -25,12 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import lo.zaemtoperson.gola.R
-import hed.hotzaem.tophh.gola.data.VALUE_ONE
-import hed.hotzaem.tophh.gola.domain.model.ElementOffer
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
-import hed.hotzaem.tophh.gola.domain.model.basedto.Loan
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.data.VALUE_ONE
+import hed.hotzaem.tophh.domain.model.ElementOffer
+import hed.hotzaem.tophh.domain.model.StatusApplication
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.domain.model.basedto.Loan
 import hed.hotzaem.tophh.gola.ui.theme.black
 import hed.hotzaem.tophh.gola.ui.theme.white
 
@@ -98,7 +98,7 @@ fun ItemLoan(
         ) {
             Text(
                 color = black,
-                fontStyle = FontStyle(font.soyuz_grotesk_bold),
+                fontStyle = FontStyle(R.font.soyuz_grotesk_bold),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Normal,
                 text = loan.name

@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.domain
+package hed.hotzaem.tophh.domain
 
 interface SharedKepper {
 

@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.widget.TextView
 import androidx.compose.foundation.background
@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
-import lo.zaemtoperson.gola.R
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.domain.model.StatusApplication
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
 import hed.hotzaem.tophh.gola.ui.theme.absoluteDark
 import hed.hotzaem.tophh.gola.ui.theme.baseBackground
 

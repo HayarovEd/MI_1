@@ -5,8 +5,8 @@ import com.my.tracker.MyTracker
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
 import dagger.hilt.android.HiltAndroidApp
-import hed.hotzaem.tophh.gola.data.APP_METRICA
-import hed.hotzaem.tophh.gola.data.MY_TRACKER
+import hed.hotzaem.tophh.data.APP_METRICA
+import hed.hotzaem.tophh.data.MY_TRACKER
 
 
 //import pro.userx.UserX

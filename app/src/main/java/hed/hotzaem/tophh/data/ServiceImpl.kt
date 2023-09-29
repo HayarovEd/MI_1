@@ -1,138 +1,55 @@
-package hed.hotzaem.tophh.gola.data
+package hed.hotzaem.tophh.data
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.provider.Settings
-import android.telephony.TelephonyManager
+import android.util.Log
 import com.appsflyer.AppsFlyerLib
-import com.google.android.gms.ads.identifier.AdvertisingIdClient
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
-import com.google.firebase.messaging.FirebaseMessaging
+import com.huawei.hms.aaid.HmsInstanceId
+import com.huawei.hms.ads.identifier.AdvertisingIdClient
+import com.huawei.hms.common.ApiException
+import com.huawei.hms.push.HmsMessaging
 import com.my.tracker.MyTracker
 import com.yandex.metrica.AppMetricaDeviceIDListener
 import com.yandex.metrica.YandexMetrica
-import java.io.DataOutputStream
-import java.io.File
+import hed.hotzaem.tophh.domain.Service
 import java.io.IOException
-import java.util.Locale
 import javax.inject.Inject
-import hed.hotzaem.tophh.gola.domain.Service
 
 class ServiceImpl @Inject constructor(
     private val application: Application,) : Service {
-    //P1
-    override fun getSimCountryIso(): String? {
-        val telephonyManager =
-            application.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return telephonyManager.simCountryIso
-    }
-
-    //P3
-    override fun isRootedOne(): Boolean {
-        val locations = arrayOf(
-            "/sbin/su",
-            "/system/bin/su",
-            "/system/xbin/su",
-            "/data/local/xbin/su",
-            "/data/local/bin/su",
-            "/system/sd/xbin/su",
-            "/system/bin/failsafe/su",
-            "/data/local/su"
-        )
-
-        for (location in locations) {
-            if (File(location).exists()) {
-                return true
-            }
-        }
-
-        return false
-    }
-    //P3
-    override fun isRootedTwo(): Boolean {
-        return try {
-            val buildTags = Build.TAGS
-            buildTags != null && buildTags.contains("test-keys")
-        } catch (e: Exception) {
-            false
-        }
-    }
-    //P3
-    override fun isRootedThree(): Boolean {
-        return try {
-            val process = Runtime.getRuntime().exec("su")
-            val outputStream = DataOutputStream(process.outputStream)
-            outputStream.writeBytes("exit\n")
-            outputStream.flush()
-            process.waitFor()
-            process.exitValue() == 0
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    //P4
-    override fun getCurrentLocale(): String {
-        return "${Locale.getDefault().language}_${Locale.getDefault().country}"
-    }
-
-    //P5
-    override val appMetrika = APP_METRICA
-
-    //P6
-    @SuppressLint("HardwareIds")
-    override fun getDeviceAndroidId(): String? {
-        return Settings.Secure.getString(application.contentResolver, Settings.Secure.ANDROID_ID)
-    }
-
-    //P7
-    override fun getFirebaseMessagingToken(callback: (String?) -> Unit) {
-        FirebaseMessaging.getInstance().token
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val token = task.result
-                    callback(token)
-                } else {
-                    callback(null)
-                }
-            }
-    }
-
-    //P8
-    override suspend fun getGAID(): String? {
-        return try {
-            val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(application)
-
-            return adInfo.id
-        } catch (e: IOException) {
-            null
-        } catch (e: GooglePlayServicesNotAvailableException) {
-            null
-        } catch (e: GooglePlayServicesRepairableException) {
-            null
-        }
-    }
 
     //P9
-    override val instanceIdMyTracker = MyTracker.getInstanceId(application)
+    override val instanceIdMyTracker: String = MyTracker.getInstanceId(application)
 
-    //P10
-    override fun getApplicationVersion(): String? {
+    override suspend fun getOAID(): String? {
         return try {
-            val packageInfo = application.packageManager.getPackageInfo(application.packageName, 0)
-            packageInfo.versionName
-
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+            val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(application)
+            Log.i("RTYUE", "adInfo:${adInfo.id}")
+            return adInfo.id
+        } catch (e: IOException) {
+            Log.i("RTYUE", "OAID IOException:$e")
             null
         }
     }
+
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
+    override suspend fun getHmsToken() : String? {
+
+        //  val appId = AGConnectOptionsBuilder().build(application).getString("client/app_id")
+        return try {
+            val token = HmsInstanceId.getInstance(application).getToken(APP_ID_HMS, HmsMessaging.DEFAULT_TOKEN_SCOPE)
+            Log.i("RTYUE", "token:${token}")
+            return token
+        } catch (e: ApiException) {
+            Log.i("RTYUE", "HmsToken ApiException:$e")
+            null
+        }
+    }
+
 
     override fun checkedInternetConnection(): Boolean {
         var result = false

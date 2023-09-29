@@ -1,19 +1,19 @@
-package hed.hotzaem.tophh.gola.di
+package hed.hotzaem.tophh.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import hed.hotzaem.tophh.gola.data.RepositoryAnalyticImpl
-import hed.hotzaem.tophh.gola.data.RepositoryServerImpl
+import hed.hotzaem.tophh.data.RepositoryAnalyticImpl
+import hed.hotzaem.tophh.data.RepositoryServerImpl
 
-import hed.hotzaem.tophh.gola.data.ServiceImpl
-import hed.hotzaem.tophh.gola.data.SharedKeeperImpl
+import hed.hotzaem.tophh.data.ServiceImpl
+import hed.hotzaem.tophh.data.SharedKeeperImpl
 import hed.hotzaem.tophh.gola.domain.RepositoryAnalytic
-import hed.hotzaem.tophh.gola.domain.RepositoryServer
-import hed.hotzaem.tophh.gola.domain.Service
-import hed.hotzaem.tophh.gola.domain.SharedKepper
+import hed.hotzaem.tophh.domain.RepositoryServer
+import hed.hotzaem.tophh.domain.Service
+import hed.hotzaem.tophh.domain.SharedKepper
 
 
 @Module

@@ -1,9 +1,9 @@
-package hed.hotzaem.tophh.gola.data
+package hed.hotzaem.tophh.data
 
 import android.app.Application
 import android.content.Context
 import javax.inject.Inject
-import hed.hotzaem.tophh.gola.domain.SharedKepper
+import hed.hotzaem.tophh.domain.SharedKepper
 
 class SharedKeeperImpl @Inject constructor(
     application: Application

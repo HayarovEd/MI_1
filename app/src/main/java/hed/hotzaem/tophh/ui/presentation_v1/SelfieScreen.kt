@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.ui.presentation_v1
+package hed.hotzaem.tophh.ui.presentation_v1
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -40,7 +40,7 @@ import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import java.io.File
 import java.util.concurrent.ExecutorService
-import lo.zaemtoperson.gola.R
+import hed.hotzaem.tophh.R
 import hed.hotzaem.tophh.gola.ui.theme.black
 import hed.hotzaem.tophh.gola.ui.theme.green
 import hed.hotzaem.tophh.gola.ui.theme.white

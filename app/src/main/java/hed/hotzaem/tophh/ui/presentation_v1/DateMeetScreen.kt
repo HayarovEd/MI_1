@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.ui.presentation_v1
+package hed.hotzaem.tophh.ui.presentation_v1
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -42,8 +42,8 @@ import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import lo.zaemtoperson.gola.R
-import lo.zaemtoperson.gola.R.string
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.R.string
 import hed.hotzaem.tophh.gola.ui.theme.black
 import hed.hotzaem.tophh.gola.ui.theme.green
 import hed.hotzaem.tophh.gola.ui.theme.white

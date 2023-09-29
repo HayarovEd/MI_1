@@ -1,14 +1,14 @@
-package hed.hotzaem.tophh.gola.di
+package hed.hotzaem.tophh.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import hed.hotzaem.tophh.gola.data.ApiAnalytic
-import hed.hotzaem.tophh.gola.data.ApiServer
-import hed.hotzaem.tophh.gola.data.URL_ANALYTICS
-import hed.hotzaem.tophh.gola.data.URL_SERVER
+import hed.hotzaem.tophh.data.ApiAnalytic
+import hed.hotzaem.tophh.data.ApiServer
+import hed.hotzaem.tophh.data.URL_ANALYTICS
+import hed.hotzaem.tophh.data.URL_SERVER
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

@@ -1,8 +1,8 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
-import hed.hotzaem.tophh.gola.domain.model.StatusApplication
-import hed.hotzaem.tophh.gola.domain.model.TypeCard
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.domain.model.StatusApplication
+import hed.hotzaem.tophh.domain.model.TypeCard
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
 
 sealed class MainEvent {
     object Reconnect: MainEvent()

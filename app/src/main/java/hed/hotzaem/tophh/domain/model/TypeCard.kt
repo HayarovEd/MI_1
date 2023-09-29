@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.domain.model
+package hed.hotzaem.tophh.domain.model
 
 sealed interface TypeCard{
     object CardCredit: TypeCard

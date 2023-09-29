@@ -1,12 +1,12 @@
-package hed.hotzaem.tophh.gola.data
+package hed.hotzaem.tophh.data
 
-const val APP_METRICA = "b3e6ef73-8dd0-457e-88a4-9c1821524739"
-const val MY_TRACKER = "52218689000530193962"
-const val APY_KEY = "Rqm288d4omO/71QSRcB/o2c828ERA38zuMoMEgNeUkXM4IOfdQaIZojTEskdIDN8d6MRPX1jycU7fWfNvSYXaPLMjVyLzgYnbxcap6A68enehXn1YuCwcBGfhkIAvl0uk2Jwm3SYSIKNWvwnfKOz8+iMREgohWs5KAcfZkhWhhfZRN90N8YZvtTNreH3Gg=="
-const val USER_X = "91884d86-03d6-4e14-8b55-478f91732822"
+const val APP_METRICA = "c4ba3dc7-7173-48e9-88ae-40b2205fe66d"
+const val MY_TRACKER = "07051179601683965213"
+const val APY_KEY = "2HKImGUueWHofYCjA74Kq3QE7U2p5lfXO0RchBvWSd9afRRf+VvX0OIu4ookAqneXBGB0qNRlTNNL6K0ovCn+Z2TU+m2i72AUTWQTaaUSf1tvagKhwzdMm9DEkVlUKH8ynWRo0ba2EpWiOXo6/wxt5Ra1zZMrtFt05T+u/CJOs8Q/KAdje8SU5xK"
+const val USER_X = "4e23913b-42e3-47f6-a456-2618eacc2480"
 const val APPS_FLYER = "jLNYzxQAqxAFeturo6YEAD"
 const val URL_ANALYTICS = "https://analyticsharks.xyz"
-const val URL_SERVER = "https://powerful.cyou/"
+const val URL_SERVER = "https://scythians.xyz/"
 
 const val SHARED_DATA = "shared_data"
 const val SHARED_FIREBASE_TOKEN = "firebase_token"
@@ -48,6 +48,8 @@ const val NOTIFICATION_ID = "fcm_default_channel"
 const val CHANNEL_NAME = "Firebase Channel"
 const val LINK = "link"
 const val TAG = "AppTag"
+
+const val APP_ID_HMS = "109290205"
 
 const val KEY1 = "key1"
 const val KEY2 = "key2"

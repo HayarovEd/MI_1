@@ -1,10 +1,11 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.view.ViewGroup
@@ -47,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
-import lo.zaemtoperson.gola.R
+import hed.hotzaem.tophh.R
 import java.io.File
 import java.io.IOException
 import hed.hotzaem.tophh.gola.ui.theme.baseBackground
@@ -67,8 +68,12 @@ fun WebViewScreen(
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        result.data?.data.let {uri->
-            if (uri!=null) {
+        if (result.data!=null) {
+            result.data?.data?.let { uri->
+                mFilePathCallback?.onReceiveValue(arrayOf(uri))
+            }
+        } else {
+            imageOutputFileUri?.let { uri->
                 mFilePathCallback?.onReceiveValue(arrayOf(uri))
             }
         }
@@ -142,7 +147,6 @@ fun WebViewScreen(
                                 callback = filePathCallback,
                                 acceptTypes =acceptTypes,
                                 allowMultiple = allowMultiple,
-                                captureEnabled = captureEnabled,
                                 activityResultLauncher = activityResultLauncher,
                                 context = context)
                         }
@@ -197,31 +201,32 @@ fun startPickerIntent(
     callback: ValueCallback<Array<Uri>>?,
     acceptTypes: Array<String>,
     allowMultiple: Boolean?,
-    captureEnabled: Boolean?,
     activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     context: Context
 ): Boolean{
     mFilePathCallback = callback;
-   /* val extraIntents = ArrayList<Parcelable>()
-    extraIntents.add(getPhotoIntent(
-        activityResultLauncher = activityResultLauncher,
-        context = context))*/
+    val extraIntents = ArrayList<Parcelable>()
+    extraIntents.add(
+        getPhotoIntent(
+            //activityResultLauncher = activityResultLauncher,
+            context = context)
+    )
     val fileSelectionIntent = getFileChooserIntent(acceptTypes, allowMultiple)
     val pickerIntent = Intent(Intent.ACTION_CHOOSER)
     pickerIntent.putExtra(Intent.EXTRA_INTENT, fileSelectionIntent);
-    //pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray());
+    pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray())
     activityResultLauncher.launch(pickerIntent)
-    return true;
+    return true
 }
 
 private fun getPhotoIntent(
-    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    //activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     context: Context
 ): Intent {
     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     imageOutputFileUri = getOutputUri(
         intentType = MediaStore.ACTION_IMAGE_CAPTURE,
-        activityResultLauncher = activityResultLauncher,
+        //activityResultLauncher = activityResultLauncher,
         context = context)
     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputFileUri)
     return intent
@@ -229,16 +234,16 @@ private fun getPhotoIntent(
 
 private fun getOutputUri(
     intentType: String,
-    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    //activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     context: Context
 ): Uri? {
     var capturedFile: File? = null
     try {
         capturedFile = getCapturedFile(
             intentType = intentType,
-            activityResultLauncher = activityResultLauncher,
+            //activityResultLauncher = activityResultLauncher,
             context = context
-            )
+        )
     } catch (e: IOException) {
         Log.e("web_view", "Error occurred while creating the File", e);
         e.printStackTrace()
@@ -264,7 +269,7 @@ private fun getOutputUri(
 @Throws(IOException::class)
 private fun getCapturedFile(
     intentType: String,
-    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    //activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     context: Context
 ): File? {
     var prefix = ""
@@ -310,7 +315,7 @@ private fun getFileChooserIntent(
 private fun getAcceptedMimeType(types: Array<String>): Array<String?>? {
     if (types.isEmpty()) {
         val DEFAULT_MIME_TYPES = "*/*";
-        return arrayOf<String?>(DEFAULT_MIME_TYPES)
+        return arrayOf(DEFAULT_MIME_TYPES)
     }
     val mimeTypes = arrayOfNulls<String>(types.size)
     for (i in types.indices) {

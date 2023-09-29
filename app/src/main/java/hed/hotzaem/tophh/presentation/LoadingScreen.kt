@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.presentation
+package hed.hotzaem.tophh.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

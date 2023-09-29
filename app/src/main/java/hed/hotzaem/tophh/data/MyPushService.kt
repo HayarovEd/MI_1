@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.data
+package hed.hotzaem.tophh.data
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,25 +9,34 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
-import lo.zaemtoperson.gola.R
-import hed.hotzaem.tophh.gola.presentation.MainActivity
+import com.huawei.hms.push.HmsMessageService
+import com.huawei.hms.push.RemoteMessage
+import hed.hotzaem.tophh.R
+import hed.hotzaem.tophh.presentation.MainActivity
 
 
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+class MyPushService: HmsMessageService() {
 
-    override fun onNewToken(token: String) {
-        Log.d("BBBBBB", "Refreshed token: $token")
+    override fun onNewToken(token: String?) {
+        val context = applicationContext
+        val sharedPref = context.getSharedPreferences(SHARED_DATA, Context.MODE_PRIVATE)
+        Log.d("PushDemoLog", "have received refresh token:$token")
+        sharedPref.edit().putString(SHARED_FIREBASE_TOKEN, token).apply()
+        /*val intent = Intent("custom")
+        intent.putExtra("fb", token)
+        sendBroadcast(intent)*/
     }
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        if (remoteMessage.data.isNotEmpty()) {
-            handleDataMessage(remoteMessage.data.toMap())
+    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        if (remoteMessage != null) {
+            if (remoteMessage.data.isNotEmpty()) {
+                handleDataMessage(remoteMessage.dataOfMap)
+            }
         }
     }
 
     private fun handleDataMessage(data: Map<String, String>) {
+        Log.d("PushDemoLog", "data push:$data")
         val link = data[LINK]
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -63,5 +72,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationId = 0
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
-
 }

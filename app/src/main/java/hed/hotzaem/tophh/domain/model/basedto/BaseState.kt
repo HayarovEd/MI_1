@@ -1,6 +1,6 @@
-package hed.hotzaem.tophh.gola.domain.model.basedto
+package hed.hotzaem.tophh.domain.model.basedto
 
-import hed.hotzaem.tophh.gola.domain.model.TypeCard
+import hed.hotzaem.tophh.domain.model.TypeCard
 
 sealed class BaseState{
     object Loans: BaseState()

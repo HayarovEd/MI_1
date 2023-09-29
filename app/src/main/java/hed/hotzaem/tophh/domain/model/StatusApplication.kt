@@ -1,6 +1,6 @@
-package hed.hotzaem.tophh.gola.domain.model
+package hed.hotzaem.tophh.domain.model
 
-import hed.hotzaem.tophh.gola.domain.model.basedto.BaseState
+import hed.hotzaem.tophh.domain.model.basedto.BaseState
 
 sealed class StatusApplication {
     object Loading: StatusApplication()
