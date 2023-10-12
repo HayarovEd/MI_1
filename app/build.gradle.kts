@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "hed.hotzaem.tophh"
+    namespace = "com.fast.zai.loans"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "hed.hotzaem.tophh"
+        applicationId = "com.fast.zai.loans"
         minSdk = 21
         targetSdk = 34
         versionCode = 4
@@ -84,7 +84,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     testImplementation("junit:junit:4.13.2")
@@ -101,7 +101,7 @@ dependencies {
     implementation ("androidx.camera:camera-view:1.4.0-alpha01")
 
     // Icons
-    implementation ("androidx.compose.material:material-icons-extended:1.5.1")
+    implementation ("androidx.compose.material:material-icons-extended:1.5.3")
 
     // Coil
     implementation ("io.coil-kt:coil-compose:2.4.0")
