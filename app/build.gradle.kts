@@ -26,15 +26,15 @@ android {
 
     signingConfigs {
         getByName("debug") {
-            storeFile = file("id_441.keystore")
-            keyAlias = "hed.hotzaem.tophh"
+            storeFile = file("ID72.keystore")
+            keyAlias = "com.fast.zai.loans"
             storePassword = "mypass"
             keyPassword = "mypass"
         }
         create("release") {
-            keyAlias = "hed.hotzaem.tophh"
+            keyAlias = "com.fast.zai.loans"
             keyPassword = "mypass"
-            storeFile = file("id_441.keystore")
+            storeFile = file("ID72.keystore")
             storePassword = "mypass"
             enableV2Signing = true
         }

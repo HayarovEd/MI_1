@@ -214,10 +214,10 @@ fun ConnectScreen(
             }
 
             is WebPrimary -> {
-                WebViewScreen(
+                WebViewScreenPrimary(
                     url = db.appConfig.urlPrimary?:"",
                     offerName = db.appConfig.namePrimary?:"",
-                    isShowTopBar = false,
+                    valuePaddings = valuePaddings,
                     onEvent = onEvent)
             }
         }

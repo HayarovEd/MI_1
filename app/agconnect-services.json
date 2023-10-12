@@ -26,22 +26,22 @@
 		"SG_back":"connect-ws-dra.hispace.dbankcloud.com"
 	},
 	"client":{
-		"cp_id":"20007000029018172",
-		"product_id":"388421841221705284",
-		"client_id":"1255816074302105280",
-		"client_secret":"F6990D0B8FFCFD8DEC2387B970CC32EB8014A837AF605A9043BB6DB68905D6D2",
-		"project_id":"388421841221705284",
-		"app_id":"109290205",
-		"api_key":"DAEDACrj5dCnIOqICUvJZY02MF5nm+9Apoy3KGQR/q8RdbkmBe1FCrwHUQ2hFj4IulCS9cvwrQuckHNhk/d6czLPtRao2lH2+FxJwA==",
-		"package_name":"hed.hotzaem.tophh"
+		"cp_id":"20007000029018289",
+		"product_id":"388421841221722609",
+		"client_id":"1265449496825872512",
+		"client_secret":"291583BEA43E842F21DF4B8049B506703EDA7DD28947934BCA3E2897FD00176A",
+		"project_id":"388421841221722609",
+		"app_id":"109380259",
+		"api_key":"DAEDAIH3UBGhee2zEQ333/j1GV0kcVUKqJDkbLo5uZniGljV+qZqbssAXB4QiryUdo+EZXwvtV4EmKK877c2pYeI0MMutNytQ13n0A==",
+		"package_name":"com.fast.zai.loans"
 	},
 	"oauth_client":{
-		"client_id":"109290205",
+		"client_id":"109380259",
 		"client_type":1
 	},
 	"app_info":{
-		"app_id":"109290205",
-		"package_name":"hed.hotzaem.tophh"
+		"app_id":"109380259",
+		"package_name":"com.fast.zai.loans"
 	},
 	"service":{
 		"analytics":{
@@ -79,17 +79,17 @@
 	"configuration_version":"3.0",
 	"appInfos":[
 		{
-			"package_name":"hed.hotzaem.tophh",
+			"package_name":"com.fast.zai.loans",
 			"client":{
-				"app_id":"109290205"
+				"app_id":"109380259"
 			},
 			"app_info":{
-				"package_name":"hed.hotzaem.tophh",
-				"app_id":"109290205"
+				"package_name":"com.fast.zai.loans",
+				"app_id":"109380259"
 			},
 			"oauth_client":{
 				"client_type":1,
-				"client_id":"109290205"
+				"client_id":"109380259"
 			}
 		}
 	]
