@@ -1,4 +1,4 @@
-package hed.hotzaem.tophh.gola.ui.theme
+package com.fast.zai.loans.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
