@@ -14,8 +14,8 @@ android {
         applicationId = "com.fast.zai.loans"
         minSdk = 21
         targetSdk = 34
-        versionCode = 4
-        versionName = "4.0"
+        versionCode = 1
+        versionName = "1"
         multiDexEnabled =  true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
