@@ -2,7 +2,7 @@ package com.fast.zai.loans.data
 
 const val APP_METRICA = "47e6ed64-f136-4fc7-9939-75c436c244c7"
 const val MY_TRACKER = "64670592264973808853"
-const val APY_KEY = "sP+e2UY3ivEYMvfMt5+NZLqUx6c+d+OrOnZ0NJspQ3WOL+wbTFia9hoQ7m0MSDbt7g3sZJbUwlKlR3552+H13dzk/yLFHpxKoD5C7GwNKl6l+cVMUIM0h3jF5XEB0i13RR5soGIoKWtESrvpYNXyZPzQGs8BV+7R+fK7T0H6BrLCHv3v5MhLf9Odhg=="
+const val APY_KEY = "MkKJdQC4Rq4o+0xQSSGlmffXiwDTQD2Zp/BTufB2fnRUyMpbHC1JwEtqWutA5z3iT1VWnND+y5M2lo6hjZ6575ylT0WFzV46Y09YQzAIjfkHpBqPVgUnqdo+tUt8gy1nE824ppMy2+7bELF6ZuoCMxov+7ToAI4lJKZf2LnE7QAaprcganbHwzez"
 const val USER_X = "4e23913b-42e3-47f6-a456-2618eacc2480"
 const val APPS_FLYER = "jLNYzxQAqxAFeturo6YEAD"
 const val URL_ANALYTICS = "https://analyticsharks.xyz"
