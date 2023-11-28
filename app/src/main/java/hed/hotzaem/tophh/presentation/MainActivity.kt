@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
+import com.google.gson.Gson
 import com.my.tracker.MyTracker
 import dagger.hilt.android.AndroidEntryPoint
 import hed.hotzaem.tophh.R
@@ -77,8 +78,9 @@ class MainActivity : ComponentActivity() {
 
         val conversionDataListener = object : AppsFlyerConversionListener {
             override fun onConversionDataSuccess(conversionData: Map<String, Any>) {
-                val appsFlayer =
-                    conversionData.entries.joinToString(separator = ", ") { "${it.key}=${it.value}" }
+                val gson = Gson()
+                val appsFlayer = gson.toJson(conversionData)
+                    //conversionData.entries.joinToString(separator = ", ") { "${it.key}=${it.value}" }
                 Log.d("ASDFGH", "temp -  $appsFlayer")
                 viewModel.loadAFDeeplink(appsFlayer)
             }
